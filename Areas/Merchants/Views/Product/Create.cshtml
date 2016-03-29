@@ -1,0 +1,171 @@
+﻿@model Todoku.Models.Product
+
+@{
+    ViewBag.Title = "Todoku";
+}
+<script type="text/javascript">
+    $(function () {
+        //CalculateTotal();
+
+        $('#btnSave').click(function () {
+            var data = {
+                        ProductCode: $('#ProductCode').val(),
+                        ProductName: $('#ProductName').val(),
+                        Category: $('#Category').val(),
+                        ImgLink: $('#ImgLink').val(),
+                        Description: $('#Description').val(), 
+                        detail : {
+                                Quantity: $('#detail_Quantity').val(),
+                                Price: $('#detail_Price').val(),
+                                DiscountInPercentage: $('#detail_DiscountInPercentage').val(),
+                                DiscountInPercentage2: $('#detail_DiscountInPercentage2').val(),
+                                DiscountInPercentage3: 0,
+                                LineAmount: $('#detail_LineAmount').val()
+                                }
+                        };
+            OnSaveData('@Url.Content("~/Merchants/Product/Create")', data, function (result) {
+                if (result.ok) { 
+                    window.location.href = "@Url.Content("~/Merchants/Product")";
+                }
+            });
+        });
+
+        $('.txtPrice ').change(function () {
+            CalculateTotal();
+        });
+
+        $('#detail_DiscountInPercentage').change(function () {
+            CalculateTotal();
+        });
+
+        $('#detail_DiscountInPercentage2').change(function () {
+            CalculateTotal();
+        });
+
+    });
+    
+
+    function CalculateTotal() {
+        var price = parseFloat($('.txtPrice').val());
+        var discount1 = parseFloat($('#detail_DiscountInPercentage').val());
+        var discount2 = parseFloat($('#detail_DiscountInPercentage2').val());
+        var vatAmount = parseInt("@(Todoku.Models.SystemSetting.VATAmount)");
+        var totalAmount = price * (1 - ((discount1 + discount2) / 100) + (discount1 * discount2) / 10000);
+        $('#txtVATAmount').val(totalAmount * vatAmount / 100);
+        $('#detail_LineAmount').val(parseFloat(totalAmount * (1 + vatAmount / 100)).toFixed(0));
+    }
+</script>
+<h2>Tambah Produk</h2>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+    
+    <fieldset>
+        <legend>Product</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ProductCode)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.ProductCode)
+            @Html.ValidationMessageFor(model => model.ProductCode)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ProductName)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.ProductName)
+            @Html.ValidationMessageFor(model => model.ProductName)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Category)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("Category")
+            @Html.ValidationMessageFor(model => model.Category)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ImgLink)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.ImgLink)
+            @Html.ValidationMessageFor(model => model.ImgLink)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Description)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Description)
+            @Html.ValidationMessageFor(model => model.Description)
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>Detail</legend>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.detail.Quantity)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.detail.Quantity)
+            @Html.ValidationMessageFor(model => model.detail.Quantity)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.detail.Price)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.detail.Price, new {@class = "txtPrice txtNumber" })
+            @Html.ValidationMessageFor(model => model.detail.Price)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.detail.Profit)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.detail.Profit, new { @class = "txtPrice txtNumber" })
+            @Html.ValidationMessageFor(model => model.detail.Profit)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.detail.DiscountInPercentage)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.detail.DiscountInPercentage)
+            @Html.ValidationMessageFor(model => model.detail.DiscountInPercentage)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.detail.DiscountInPercentage2)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.detail.DiscountInPercentage2)
+            @Html.ValidationMessageFor(model => model.detail.DiscountInPercentage2)
+        </div>
+
+        <div class="editor-label">
+            @Html.Label("Pajak")
+        </div>
+        <div class="editor-field">
+            <input type="text" value="0" id="txtVATAmount" class="txtNumber" />
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.detail.LineAmount)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.detail.LineAmount, new {@class = "txtPrice txtNumber" })
+            @Html.ValidationMessageFor(model => model.detail.LineAmount)
+        </div>
+    </fieldset>
+    
+    <p>
+        <input type="button" value="Save" id="btnSave" />
+    </p>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

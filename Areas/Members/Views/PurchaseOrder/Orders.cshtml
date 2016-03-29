@@ -1,0 +1,44 @@
+﻿@model IEnumerable<Todoku.Models.PurchaseOrderHd>
+
+@{
+    ViewBag.Title = "Orders";
+}
+
+<h2>Orders</h2>
+
+<table class="grdView">
+    <thead>
+        <tr>
+            <th>OrderNo</th>
+            <th>AgentID</th>
+            <th>ValidUntil</th>
+            <th>PaymentMehod</th>
+            <th>TotalAmount</th>
+            <th></th>
+        </tr>
+    </thead>
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.OrderNo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.agent.UserName)
+        </td>
+        <td align="center">
+            @Html.DisplayFor(modelItem => item.ValidUntil)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PaymentMehod)
+        </td>
+        <td align="right">
+            @Html.DisplayFor(modelItem => item.TotalAmount)
+        </td>
+        <td align="center">
+            @Html.ActionLink("Details", "Details", new { id=item.OrderID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.OrderID })
+        </td>
+    </tr>
+}
+
+</table>

@@ -1,0 +1,11 @@
+﻿<div id="breadcrumb">
+    @{Int32 count = 1;}
+    @foreach(Todoku.Models.Menu menu in ViewBag.menus)
+    {
+        <a href="@Url.Content("~/"+menu.Path)">@menu.MenuName</a> 
+        if(count != ViewBag.menus.Count){
+            <span>></span>
+        }
+        {count++;}
+    }
+</div>

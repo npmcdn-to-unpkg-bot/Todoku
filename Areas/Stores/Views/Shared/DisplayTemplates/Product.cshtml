@@ -1,0 +1,12 @@
+﻿@model Todoku.Models.Product
+
+<div class="item">
+    <a href="@Url.Content("~/Stores/Detail/" + Model.ProductID)">
+        <img alt="Image not found" src='@Url.Content(@Model.ImgLink)' style="height:180px; width:100%;" onError="this.src='@Url.Content("~/Uploads/Todoku/Produk/Default/img_not_found.jpg")'"/>
+        <div class="itemName">@(Model.ProductName.Length < 50 ? Model.ProductName : Model.ProductName.Substring(0, 50) + "...")</div>
+        <div class="ItemDesc">
+            <p style=" text-align:justify;">@Model.ShortDescription</p>
+            @String.Format("{0:c}", Model.detail.Price).Replace("Rp","Rp ")
+        </div>
+    </a>
+</div>

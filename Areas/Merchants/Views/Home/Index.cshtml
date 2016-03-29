@@ -1,0 +1,37 @@
+﻿@model List<Todoku.Models.Merchant>
+@{
+    ViewBag.Title = "Todoku";
+}
+
+<h2>Merchants</h2>
+
+<div>
+    @foreach (var item in Model) 
+    { 
+        <div style="border:1px solid black; margin-bottom:3px;" class="item">
+            <a href='@Url.Content("~/Merchants/Detail/" + item.MerchantID)'>
+                <img alt="" style="height:180px; width:100%;" src="@Url.Content("~/Uploads/Todoku/Produk/Default/img_not_found.jpg")" class="imgMerchant" onError="this.src='@Url.Content("~/Uploads/Todoku/Produk/Default/img_not_found.jpg")'" />
+                <div class="itemName">@Html.DisplayFor(x => item.MerchantName)</div>
+                <div class="ItemDesc">
+                    <table cellpadding="0" cellspacing="0">
+                        <colgroup>
+                            <col width="90px" />
+                            <col width="10px" />
+                            <col />
+                        </colgroup>
+                        <tr>
+                            <td>@Html.LabelFor(x => item.JoinDate)</td>
+                            <td align="center">:</td>
+                            <td align="center">@Html.DisplayFor(x => item.JoinDate)</td>
+                        </tr>
+                        <tr>
+                            <td>Order</td>
+                            <td align="center">:</td>
+                            <td>0</td>
+                        </tr>
+                    </table>
+                </div>
+            </a>
+        </div>
+    }
+</div>

@@ -1,0 +1,7 @@
+D:\Project\Todoku\Todoku\bin\Todoku.dll
+D:\Project\Todoku\Todoku\bin\Todoku.pdb
+D:\Project\Todoku\Todoku\bin\EntityFramework.dll
+D:\Project\Todoku\Todoku\bin\EntityFramework.xml
+D:\Project\Todoku\Todoku\obj\Debug\Todoku.csprojResolveAssemblyReference.cache
+D:\Project\Todoku\Todoku\obj\Debug\Todoku.dll
+D:\Project\Todoku\Todoku\obj\Debug\Todoku.pdb

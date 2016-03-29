@@ -1,0 +1,17 @@
+﻿@model List<Todoku.Models.Product>
+           
+@{
+    ViewBag.Title = "Todoku";
+}
+           
+<div id="Banner">
+    <img style="" src="@Url.Content("~/Content/Image/Banner/Banner-img.jpg")" alt="" />
+</div>
+@{Html.RenderAction("Breadcrumbs", "PartialView", new {area = ""});}
+<div class="HotList">
+    <div class="ContentTitle">Hot List</div>
+    @foreach (var obj in Model)
+    { 
+        @Html.DisplayFor(modelItem => obj)
+    }
+</div>

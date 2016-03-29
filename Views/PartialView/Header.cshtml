@@ -1,0 +1,41 @@
+﻿<div id="logo">
+    <a href="@Url.Content("~/")">TODOKU</a>
+</div>
+<div id="navbar">
+    <input type="text" placeholder="Cari Produk" />
+    <select>
+        <option>Semua Kategori</option>
+        <option>Fashion</option>
+        <option>Elektronik</option>
+        <option>Kesehatan</option>
+        <option>Hoby</option>
+        <option>Game & Console</option>
+    </select>
+    <input type="button" value="Cari"/>
+</div>
+<div id="headerLink">
+    <div><a href="#" >Bantuan</a></div>
+    
+    @if (User.Identity.IsAuthenticated)
+    {
+        <div>
+            <a href="@Url.Content("~/Members/")" >@User.Identity.Name</a>
+        </div>
+        <div>
+            <a href="@Url.Content("~/Cart")" >Cart @(Convert.ToInt32(ViewData["CartQty"]) > 0 ? "("+ViewData["CartQty"] + ")" : "")</a>
+        </div>
+        <div style="border-right:1px solid #D9D9D9;">
+            <a href="@Url.Content("~/Account/LogOff")" >Keluar</a>
+        </div>
+    }
+    else
+    { 
+        <div><a href="@Url.Content("~/Registration/")" >Daftar</a></div>
+        <div>
+            <a href="@Url.Content("~/Cart")" >Cart @(Convert.ToInt32(ViewData["CartQty"]) > 0 ? "(" + ViewData["CartQty"] + ")" : "")</a>
+        </div>
+        <div style="border-right:1px solid #D9D9D9;">
+            <a href="@Url.Content("~/LogOn")" >Masuk</a>
+        </div>
+    }
+</div>

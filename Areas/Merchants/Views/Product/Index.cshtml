@@ -1,0 +1,60 @@
+﻿@model List<Todoku.Models.Product>
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Produk</h2>
+
+<div>
+    <fieldset>
+        <legend>Upload</legend>
+        @using (Html.BeginForm("UploadFile", "Product", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            <label for="file">File :</label>
+            <input type="file" name="file" id="file" />
+            <input type="submit" value="Upload" />
+        }
+    </fieldset>
+</div>
+<div>
+    <fieldset>
+        <legend>Daftar Produk</legend>
+        <p>@Html.ActionLink("Tambah", "Create", "Product")</p>
+        <table class="grdView" style="margin-top:10px;">
+            <colgroup>
+                <col width="100px" />
+                <col width="250px" />
+                <col width="150px" />
+                <col />
+                <col width="150px" />
+                <col width="150px" />
+            </colgroup>
+            <thead>
+                <tr>
+                    <td>Kode</td>
+                    <td>Nama</td>
+                    <td>Kategori</td>
+                    <td>Keterangan</td>
+                    <td>Harga</td>
+                    <td></td>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model) 
+                { 
+                    <tr valign="top">
+                        <td>@item.ProductCode</td>
+                        <td>@item.ProductName</td>
+                        <td>@item.sccategory.StandardCodeName</td>
+                        <td>@item.ShortDescription</td>
+                        <td align="right">@Html.DisplayFor(model => item.detail.Price)</td>
+                        <td align="center">
+                        @Html.ActionLink("Edit", "Edit", "Product", new { id = @item.ProductID }, null) | 
+                        @Html.ActionLink("Detail", "Detail", "Product", new { id = @item.ProductID }, null) | 
+                        @Html.ActionLink("Delete", "Delete", "Product", new { id = @item.ProductID }, null)</td>
+                    </tr>   
+                }
+            </tbody>
+        </table>
+    </fieldset>
+</div>

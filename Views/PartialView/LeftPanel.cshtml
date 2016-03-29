@@ -1,0 +1,51 @@
+﻿@{
+    ViewBag.Title = "LeftPaneMenu";
+}
+
+<div>
+    <div style="border-radius:5px; margin-top:75px; margin-bottom:3px; border:1px solid black;">
+        <ul>
+            <li>@Html.ActionLink("Toko", "Index", "", new { area = "Merchants" }, null)</li>
+            <li><a href="#">Agen</a></li>
+            @if (User.IsInRole("Administrator")) 
+            { 
+                <li>@Html.ActionLink("Admin", "Index", "Admin", new { area = "Members" }, null)</li>
+            } 
+        </ul>
+    </div>
+
+    @*Member Menu*@
+    <div style="border-radius:5px; border:1px solid black; @(ViewBag.MemberMenu != null && ViewBag.MemberMenu ? "" : "display:none;")">
+        <ul>
+            <li>@Html.ActionLink("Profil", "Index", "Members")</li>
+            <li><a href="#">Cart</a></li>
+            <li><a href="#">Riwayat</a></li>
+            @*<li>@Html.ActionLink("Order", "Orders", "PurchaseOrder", new { area = "Members" }, null)</li>*@
+            <li>
+                Konfirmasi
+                <ul>
+                    <li>@Html.ActionLink("Pendaftaran Toko", "MerchantRegistration", "Home", new { area="Members" }, null)</li>
+                    <li>@Html.ActionLink("Pemesanan", "OrderConfirmation", "Home", new { area = "Members" }, null)</li>
+                    <li>@Html.ActionLink("Pembayaran", "PaymentConfirmation", "Home", new { area = "Members" }, null)</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    @*Merchant Menu*@
+    <div style="border-radius:5px; border:1px solid black; @(ViewBag.MerchantMenu != null && ViewBag.MerchantMenu ? "" : "display:none;")">
+        <ul>
+            <li>@Html.ActionLink("Pendaftaran", "Index", "Registration", new { area = "Merchants" }, null)</li>
+        </ul>
+    </div>
+    
+    <div style="border-radius:5px; border:1px solid black; @(ViewBag.MerchantDetail != null && ViewBag.MerchantDetail ? "" : "display:none;")">
+        <ul>
+            <li>@Html.ActionLink("Profil","Index", "Profil", new { area = "Merchants" }, null)</li>
+            <li>@Html.ActionLink("Produk","Index", "Product", new { area = "Merchants" }, null)</li>
+            <li>@Html.ActionLink("Order","CustomerOrder", "Home", new { area = "Merchants" }, null)</li>
+            <li>@Html.ActionLink("Pengiriman", "SendPackage", "Home", new { area = "Merchants" }, null)</li>
+            <li><a href="#">Penjualan</a></li>
+        </ul>
+    </div>
+</div>

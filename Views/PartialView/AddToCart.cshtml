@@ -1,0 +1,20 @@
+﻿@model Todoku.Models.Cart
+           
+@using (Html.BeginForm("AddToCart", "Cart", new { area="Members"}))
+{ 
+    @Html.ValidationSummary(true, "Barang tidak bisa ditambahkan")
+    <div>
+        @Html.HiddenFor(m => m.ProductID)
+
+        <div class="editor-label">
+            @Html.LabelFor(m => m.Quantity)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(m => m.Quantity)
+            @Html.ValidationMessageFor(m => m.Quantity)
+        </div>
+        <p>
+            <input type="submit" value="Tambah Ke Keranjang" />
+        </p>
+    </div>
+}

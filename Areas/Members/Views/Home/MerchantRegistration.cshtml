@@ -1,0 +1,43 @@
+﻿@model List<Todoku.Models.Merchant>
+@{
+    ViewBag.Title = "Todoku";
+}
+
+<script type="text/javascript">
+    $(function () {
+        $("body").on("click", 'input[type="button"].btnConfirm', function () {
+            $tr = $(this).closest('table');
+            var data = { MerchantID: $tr.find(".hdnMerchantID").val() };
+            OnSaveData('@Url.Content("~/Members/Home/MerchantConfirmation")', data, function () {
+                window.location.href = '@Url.Content("~/Members/Home/MerchantRegistration/")';
+            });
+        });
+
+    });
+</script>
+
+<h2>Daftar Permintaan</h2>
+
+<div>
+    @foreach (var item in Model) 
+    { 
+        <div style="border:1px solid black; margin-bottom:3px;">
+            <table>
+                <tr>
+                    <td colspan="3">
+                        @Html.HiddenFor(x => item.MerchantID, new { @class = "hdnMerchantID" })
+                        @Html.DisplayFor(x => item.MerchantName)
+                    </td>
+                </tr>
+                <tr>
+                    <td>Pemilik</td>
+                    <td>:</td>
+                    <td>@Html.DisplayFor(x => item.userprofile.Fullname)</td>
+                </tr>
+                <tr>
+                    <td colspan="3"><input type="button" class="btnConfirm" value="Confirm" /></td>
+                </tr>
+            </table>
+        </div>
+    }
+</div>
