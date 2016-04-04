@@ -7,6 +7,10 @@ using System.Web.Mvc;
 using System.Linq.Expressions;
 using System.Collections;
 using System.IO;
+using System.Text;
+using System.Web.UI;
+using System.Web.Mvc.Html;
+using Todoku.Models;
 
 namespace Todoku.Models
 {
@@ -166,6 +170,90 @@ namespace System.Web.Mvc
                 return MvcHtmlString.Empty;
 
             return MvcHtmlString.Create(model);
+        }
+    }
+
+    public static class HtmlMenu
+    {
+        public static MvcHtmlString Menu(this HtmlHelper html, List<Todoku.Models.Menu> menus, Object htmlAttributes)
+        {
+            
+            StringWriter stringWriter = new StringWriter();
+
+            using (HtmlTextWriter writer = new HtmlTextWriter(stringWriter))
+            {
+                if (htmlAttributes.GetType().GetProperty("id") != null)
+                {
+                    String txtClass = htmlAttributes.GetType().GetProperty("id").GetValue(htmlAttributes,null).ToString();
+                    writer.AddAttribute("id", txtClass);
+                }
+                if (htmlAttributes.GetType().GetProperty("class") != null)
+                {
+                    String txtClass = htmlAttributes.GetType().GetProperty("class").GetValue(htmlAttributes, null).ToString();
+                    writer.AddAttribute("class", txtClass);
+                }
+                if (htmlAttributes.GetType().GetProperty("style") != null) 
+                {
+                    String temp = htmlAttributes.GetType().GetProperty("style").GetValue(htmlAttributes, null).ToString();
+                    writer.AddAttribute("style", temp);
+                }
+                writer.RenderBeginTag("ul");
+                foreach (Todoku.Models.Menu obj in menus)
+                {
+                    writer.Write(MenuItem(obj, 1));
+                }
+                writer.RenderEndTag();//ul
+            }
+            return new MvcHtmlString(stringWriter.ToString());
+        }
+
+        public static String MenuItem(Todoku.Models.Menu menu, Int32 Level) 
+        {
+            StringWriter stringWriter = new StringWriter();
+
+            using (HtmlTextWriter writer = new HtmlTextWriter(stringWriter))
+            {
+                if (menu.childs != null && menu.childs.Count() > 0)
+                {
+                    if (menu.parent == null)
+                    {
+                        writer.AddAttribute("class", "ui-widget-header");
+                        writer.RenderBeginTag(HtmlTextWriterTag.Li);
+                        writer.Write(menu.MenuName);
+                        writer.RenderEndTag();//li
+                        Int32 temp = ++Level;
+                        foreach (Todoku.Models.Menu child in menu.childs)
+                        {
+                            writer.Write(MenuItem(child, temp));
+                        }
+                    }
+                    else 
+                    {
+                        writer.RenderBeginTag(HtmlTextWriterTag.Li);
+                        writer.Write(menu.MenuName);
+                        writer.RenderBeginTag(HtmlTextWriterTag.Ul);
+                        Int32 temp = ++Level;
+                        foreach (Todoku.Models.Menu child in menu.childs)
+                        {
+                            writer.Write(MenuItem(child, temp));
+                        }
+                        writer.RenderEndTag();//ul
+                        writer.RenderEndTag();//li
+                    }
+                }
+                else
+                {
+                    if(Level > 2) writer.AddAttribute("style", "width: 150px");
+                    writer.RenderBeginTag(HtmlTextWriterTag.Li);
+                    writer.AddAttribute("href", String.Format("{0}{1}", SystemSetting.Default_URL, menu.Path));
+                    
+                    writer.RenderBeginTag(HtmlTextWriterTag.A);
+                    writer.Write(menu.MenuName);
+                    writer.RenderEndTag();//a
+                    writer.RenderEndTag();//li
+                }
+                return stringWriter.ToString();
+            }
         }
     }
 }

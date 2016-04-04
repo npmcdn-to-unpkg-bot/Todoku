@@ -86,10 +86,11 @@
         </div>
 		<div id="WebsiteBody">
             <div id="LeftPanel" style="width:200px;">
-                @if (ViewBag.PartialView != null){
+                @{Html.RenderAction("Menu", "PartialView", new { area = "" });}
+                @*@if (ViewBag.PartialView != null){
                     String partialView = ViewBag.PartialView.ToString();
                     Html.RenderAction(partialView, "PartialView", new { area = "", filterExpression = ViewBag.filterExpression });
-                }
+                }*@
             </div>
             <div id="MainPanel">
                 @{Html.RenderAction("Breadcrumbs", "PartialView", new {area = ""});}
@@ -113,4 +114,5 @@
 </html>
 
 <div id="ZipCodeDialog" />
+
 

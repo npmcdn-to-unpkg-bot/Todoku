@@ -1,4 +1,4 @@
-﻿@model List<Todoku.Models.Merchant>
+﻿@model List<Todoku.Models.MerchantRegistration>
 @{
     ViewBag.Title = "Todoku";
 }
@@ -7,7 +7,7 @@
     $(function () {
         $("body").on("click", 'input[type="button"].btnConfirm', function () {
             $tr = $(this).closest('table');
-            var data = { MerchantID: $tr.find(".hdnMerchantID").val() };
+            var data = { RegistrationID: $tr.find(".hdnMerchantID").val() };
             OnSaveData('@Url.Content("~/Members/Home/MerchantConfirmation")', data, function () {
                 window.location.href = '@Url.Content("~/Members/Home/MerchantRegistration/")';
             });
@@ -25,7 +25,7 @@
             <table>
                 <tr>
                     <td colspan="3">
-                        @Html.HiddenFor(x => item.MerchantID, new { @class = "hdnMerchantID" })
+                        @Html.HiddenFor(x => item.RegistrationID, new { @class = "hdnMerchantID" })
                         @Html.DisplayFor(x => item.MerchantName)
                     </td>
                 </tr>

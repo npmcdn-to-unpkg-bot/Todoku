@@ -59,9 +59,11 @@ namespace Todoku.Models
 
     public class RegistrationStatus 
     {
-        public const String Request = "SC0009.001";
-        public const String Approved = "SC0009.002";
-        public const String Void = "SC0009.003";
+        public const String Open = "SC0009.001";
+        public const String Request = "SC0009.002";
+        public const String ConfirmedByAdmin = "SC0009.003";
+        public const String ConfirmedByManagement = "SC0009.004";
+        public const String Void = "SC0009.999";
     }
 
     public class ProductCategories 
@@ -121,6 +123,7 @@ namespace Todoku.Models
         public const Int32 VATAmount = 10;
         public const String Default_Upload_Path = @"~\Uploads\";
         public const String Default_Upload_Registration = @"~\Uploads\Registration\";
+        public const String Default_URL = @"http://localhost/Todoku/";
         public const Int32 MinimumStock = 1;
         public const Int32 Default_Lock_Time = 5;
 

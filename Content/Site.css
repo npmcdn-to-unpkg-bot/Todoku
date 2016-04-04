@@ -120,6 +120,7 @@ textarea
     background-color:#FFFFFF;
     border:1px solid #FFFFFF;
     float:left;
+    margin-right:10px;
     }
 #RightPanel
 {
@@ -312,7 +313,12 @@ textarea
     text-decoration:none;
     color:#000000;
     }
-    
+ 
+.menu a
+{
+    text-decoration:none !important;
+    } 
+
 .footerItem
 {
     background-color:#F4F4F4;

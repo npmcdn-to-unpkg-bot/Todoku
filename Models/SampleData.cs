@@ -73,9 +73,41 @@ namespace Todoku.Models
                 #region Menu
                 new List<Menu>
                 {
-                    new Menu{ MenuID = 1, MenuName = "Home", Path="", ParentID = null},
-                    new Menu{ MenuID = 2, MenuName = "Product", Path="/Product/", ParentID = 1},
-                    new Menu{ MenuID = 3, MenuName = "Detail", Path="/Product/Detail/", ParentID = 2}
+                    new Menu{ MenuID = 1, MenuName = "User", Path = "", ParentID = null, IsParent = true, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                        new Menu{ MenuID = 2, MenuName = "User Profil", Path = "Members", ParentID = 1, IsParent = false, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                        new Menu{ MenuID = 3, MenuName = "Riwayat Pembelian", Path = "#", ParentID = 1, IsParent = false, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                        new Menu{ MenuID = 4, MenuName = "Cart", Path = "#", ParentID = 1, IsParent = false, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                        new Menu{ MenuID = 5, MenuName = "Konfirmasi", Path = "", ParentID = 1, IsParent = true, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                            new Menu{ MenuID = 6, MenuName = "Pemesanan Barang", Path = "Members/Home/OrderConfirmation", ParentID = 5, IsParent = false, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                            new Menu{ MenuID = 7, MenuName = "Pembayaran Barang", Path = "Members/Home/PaymentConfirmation", ParentID = 5, IsParent = false, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+
+                    new Menu{ MenuID = 8, MenuName = "Toko", Path = "", ParentID = null, IsParent = true, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                        new Menu{ MenuID = 9, MenuName = "Pendaftaran", Path = "Merchants/Registration", ParentID = 8, IsParent = false, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+
+                    new Menu{ MenuID = 10, MenuName = "Agen", Path = "", ParentID = null, IsParent = true, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                        new Menu{ MenuID = 11, MenuName = "Pendaftaran", Path = "#", ParentID = 10, IsParent = false, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+
+                    new Menu{ MenuID = 12, MenuName = "Admin", Path = "", ParentID = null, IsParent = true, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                        new Menu{ MenuID = 13, MenuName = "Konfirmasi", Path = "", ParentID = 12, IsParent = true, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                            new Menu{ MenuID = 14, MenuName = "Pembayaran", Path = "Members/Admin", ParentID = 13, IsParent = false, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                            new Menu{ MenuID = 15, MenuName = "Pendaftaran Toko", Path = "Members/Home/MerchantRegistration", ParentID = 13, IsParent = false, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                            new Menu{ MenuID = 16, MenuName = "Pendaftaran Agen", Path = "", ParentID = 13, IsParent = false, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                        new Menu{ MenuID = 17, MenuName = "Perubahan Data", Path = "", ParentID = 12, IsParent = true, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                            new Menu{ MenuID = 18, MenuName = "Data Toko", Path = "", ParentID = 17, IsParent = false, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+
+                    new Menu{ MenuID = 19, MenuName = "Manajamen", Path = "", ParentID = null, IsParent = true, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                        new Menu{ MenuID = 20, MenuName = "Konfirmasi", Path = "", ParentID = 19, IsParent = true, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                            new Menu{ MenuID = 21, MenuName = "Pendaftaran Toko", Path = "#", ParentID = 20, IsParent = false, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+
+                    new Menu{ MenuID = 22, MenuName = "Sistem", Path = "", ParentID = null, IsParent = true, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                        new Menu{ MenuID = 23, MenuName = "Pengaturan Sistem", Path = "#", ParentID = 22, IsParent = false, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                        new Menu{ MenuID = 24, MenuName = "Bantuan", Path = "#", ParentID = 22, IsParent = false, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+
+                        new Menu{ MenuID = 25, MenuName = "Dashboard", Path = "Merchants/Index", ParentID = 8, IsParent = false, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                        new Menu{ MenuID = 25, MenuName = "Profil", Path = "Merchants/Profil/Index", ParentID = 8, IsParent = false, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                        new Menu{ MenuID = 26, MenuName = "Produk", Path = "Merchants/Product/Index", ParentID = 8, IsParent = false, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                        new Menu{ MenuID = 27, MenuName = "Order", Path = "Merchants/Home/CustomerOrder", ParentID = 8, IsParent = false, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                        new Menu{ MenuID = 28, MenuName = "Pengiriman", Path = "Merchants/Home/SendPackage", ParentID = 8, IsParent = false, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
                 }.ForEach(x => context.menus.Add(x));
                 #endregion
 
@@ -182,8 +214,10 @@ namespace Todoku.Models
 
                     #region Status Pendaftaran
                     new StandardCode{StandardCodeID = "SC0009", StandardCodeName = "Status Permintaan", IsParent = true, ParentID = null, CreatedBy = "sysadmin", CreatedDate = DateTime.Now, LastUpdatedBy = null, LastUpdatedDate = null },
-                    new StandardCode{StandardCodeID = "SC0009.001", StandardCodeName = "Request", IsParent = false, ParentID = "SC0009", CreatedBy = "sysadmin", CreatedDate = DateTime.Now, LastUpdatedBy = null, LastUpdatedDate = null },
-                    new StandardCode{StandardCodeID = "SC0009.002", StandardCodeName = "Approved", IsParent = false, ParentID = "SC0009", CreatedBy = "sysadmin", CreatedDate = DateTime.Now, LastUpdatedBy = null, LastUpdatedDate = null },
+                    new StandardCode{StandardCodeID = "SC0009.001", StandardCodeName = "Open", IsParent = false, ParentID = "SC0009", CreatedBy = "sysadmin", CreatedDate = DateTime.Now, LastUpdatedBy = null, LastUpdatedDate = null },
+                    new StandardCode{StandardCodeID = "SC0009.002", StandardCodeName = "Request", IsParent = false, ParentID = "SC0009", CreatedBy = "sysadmin", CreatedDate = DateTime.Now, LastUpdatedBy = null, LastUpdatedDate = null },
+                    new StandardCode{StandardCodeID = "SC0009.003", StandardCodeName = "ConfirmedByAdmin", IsParent = false, ParentID = "SC0009", CreatedBy = "sysadmin", CreatedDate = DateTime.Now, LastUpdatedBy = null, LastUpdatedDate = null },
+                    new StandardCode{StandardCodeID = "SC0009.004", StandardCodeName = "ConfirmedByManagement", IsParent = false, ParentID = "SC0009", CreatedBy = "sysadmin", CreatedDate = DateTime.Now, LastUpdatedBy = null, LastUpdatedDate = null },
                     new StandardCode{StandardCodeID = "SC0009.999", StandardCodeName = "Void", IsParent = false, ParentID = "SC0009", CreatedBy = "sysadmin", CreatedDate = DateTime.Now, LastUpdatedBy = null, LastUpdatedDate = null },
                     #endregion
 

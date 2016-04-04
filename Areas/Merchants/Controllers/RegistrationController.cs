@@ -28,6 +28,7 @@ namespace Todoku.Areas.Merchants.Controllers
             ViewBag.Country = new SelectList(sc.Where(x => x.ParentID == SCConstant.Negara || x.StandardCodeID == ""), "StandardCodeID", "StandardCodeName");
             MerchantRegistration regis = new MerchantRegistration();
             regis.details = new List<MerchantRegistrationDetail>();
+            ViewBag.RegistrationID = 0;
             return View(regis);
         }
 
@@ -41,7 +42,7 @@ namespace Todoku.Areas.Merchants.Controllers
                     entity.RegistrationCode = Method.GetTransactionCode(db, SystemSetting.RegisMerchantCode);
                     entity.AddressCode = String.Format("{0}{1}", SystemSetting.MerchantCode, entity.RegistrationCode.Substring(3, entity.RegistrationCode.Length - 3));
                     entity.address.AddressCode = entity.AddressCode;
-                    entity.RegistrationStatus = RegistrationStatus.Request;
+                    entity.RegistrationStatus = RegistrationStatus.Open;
 
                     String username = Membership.GetUser().UserName;
                     UserProfile up = db.userprofiles.FirstOrDefault(x => x.UserName == username);
@@ -55,6 +56,7 @@ namespace Todoku.Areas.Merchants.Controllers
                     db.SaveChanges();
 
                     entity.RegistrationID = db.merchantRegistrations.Max(item => item.RegistrationID);
+                    ViewBag.RegistrationID = entity.RegistrationID;
                     List<StandardCode> sc = db.standardcodes.Where(x => x.ParentID == SCConstant.Provinsi || x.ParentID == SCConstant.Negara).ToList();
                     sc.Insert(0, new StandardCode { StandardCodeID = "", StandardCodeName = "" });
                     ViewBag.Province = new SelectList(sc.Where(x => x.ParentID == SCConstant.Provinsi || x.StandardCodeID == ""), "StandardCodeID", "StandardCodeName", entity.address.Province);
@@ -138,6 +140,19 @@ namespace Todoku.Areas.Merchants.Controllers
                 ViewBag.Country = new SelectList(sc.Where(x => x.ParentID == SCConstant.Negara || x.StandardCodeID == ""), "StandardCodeID", "StandardCodeName");
             }
             return View("Index", entity);
+        }
+
+        [HttpPost]
+        public ActionResult SubmitRegistration(int RegistrationID) 
+        {
+            BusinessLayer db = new BusinessLayer();
+            MerchantRegistration mr = db.merchantRegistrations.Find(RegistrationID);
+            mr.RegistrationStatus = RegistrationStatus.Request;
+            mr.LastUpdatedBy = Membership.GetUser().UserName;
+            mr.LastUpdatedDate = DateTime.Now;
+            db.Entry(mr).State = EntityState.Modified;
+            db.SaveChanges();
+            return RedirectToAction("Index");
         }
     }
 }

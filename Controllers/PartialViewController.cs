@@ -103,5 +103,13 @@ namespace Todoku.Controllers
             }
             return PartialView();
         }
+
+        [ChildActionOnly]
+        public ActionResult Menu(String MenuArea = "")
+        {
+            BusinessLayer db = new BusinessLayer();
+            List<Menu> menus = db.menus.Where(x => x.ParentID == null).ToList();
+            return PartialView(menus);
+        }
     }
 }

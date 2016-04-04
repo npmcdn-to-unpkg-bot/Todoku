@@ -185,12 +185,12 @@ namespace Todoku.Models
         public String Province { get; set; }
 
         [DataType(DataType.EmailAddress)]
-        [Display(Name = "Email 1")]
+        [Display(Name = "Email")]
         [RegularExpression(@"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}", ErrorMessage = "Email is is not valid.")]
         public string Email { get; set; }
 
         [DataType(DataType.EmailAddress)]
-        [Display(Name = "Email 2")]
+        [Display(Name = "Alternative Email")]
         [RegularExpression(@"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}", ErrorMessage = "Email is is not valid.")]
         public string Email2 { get; set; }
 
@@ -329,18 +329,24 @@ namespace Todoku.Models
         }
     }
 
-    public class Menu 
+    public class Menu
     {
         [Key]
         public Int32 MenuID { get; set; }
         public String MenuName { get; set; }
         public String Path { get; set; }
         public Int32? ParentID { get; set; }
+        public Boolean IsParent { get; set; }
+        public bool IsActive { get; set; }
+        public String CreatedBy { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public String LastUpdatedBy { get; set; }
+        public DateTime? LastUpdatedDate { get; set; }
 
         [ForeignKey("ParentID")]
         public Menu parent { get; set; }
 
-        public List<Menu> childs { get; set; }
+        public virtual List<Menu> childs { get; set; }
     }
 
     public class Merchant

@@ -3,9 +3,25 @@
     ViewBag.Title = "Todoku";
 }
 
+<script type="text/javascript">
+    $(function () {
+        if ($('#RegistrationID').val() == "" || $('#RegistrationID').val() == "0") {
+            $('#li-tabs-info').hide();
+        } else {
+            $('#li-tabs-info').show();
+        }
+    });
+</script>
+
 <h2>Pendaftaran</h2>
 
-<div>
+<div class="tabs" id="MerchantRegis-tab">
+    <ul>
+        <li><a href="#tabs-data">Data Toko</a></li>
+        <li><a id="li-tabs-info" href="#tabs-info" style="display:none;">Info Produk</a></li>
+    </ul>
+
+    <div id="tabs-data">
     @using (Html.BeginForm("Register", "Registration"))
     {
         @Html.ValidationSummary(true, "Registration was unsuccessful. Please correct the errors and try again.")
@@ -30,6 +46,14 @@
                 </div>
 
                 <div class="editor-label">
+                    @Html.LabelFor(m => m.address.ZipCode)
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(m => m.address.ZipCode, "ZipCode")
+                    @Html.ValidationMessageFor(m => m.address.ZipCode)
+                </div>
+
+                <div class="editor-label">
                     @Html.LabelFor(m => m.address.Province)
                 </div>
                 <div class="editor-field">
@@ -51,14 +75,6 @@
                 <div class="editor-field">
                     @Html.EditorFor(m => m.address.Address)
                     @Html.ValidationMessageFor(m => m.address.Address)
-                </div>
-
-                <div class="editor-label">
-                    @Html.LabelFor(m => m.address.ZipCode)
-                </div>
-                <div class="editor-field">
-                    @Html.EditorFor(m => m.address.ZipCode)
-                    @Html.ValidationMessageFor(m => m.address.ZipCode)
                 </div>
 
                 <div class="editor-label">
@@ -110,72 +126,76 @@
                 </div>
 
                 <p>
-                    <input type="submit" value="Next" />
+                    <input type="submit" value="Save" />
                 </p>
             </fieldset>        
         </div>
     }
-</div>
+</div>    
+    
+    <div id="tabs-info">
+        <fieldset>
+            <legend>Info Produk</legend>
+            @using (Html.BeginForm("UploadFile", "Registration", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            { 
+                <div class="editor-label">
+                    @Html.Label("Range Harga")
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(m => m.StartPrice, "Price") s/d 
+                    @Html.EditorFor(m => m.EndPrice, "Price")
+                </div>
 
-<div>
-    <fieldset>
-        <legend>Info Produk</legend>
-        @using (Html.BeginForm("UploadFile", "Registration", FormMethod.Post, new { enctype = "multipart/form-data" }))
-        { 
-            <div class="editor-label">
-                @Html.Label("Range Harga")
-            </div>
-            <div class="editor-field">
-                @Html.EditorFor(m => m.StartPrice, "Price") s/d 
-                @Html.EditorFor(m => m.EndPrice, "Price")
-            </div>
+                <div>
+                    <fieldset>
+                        <legend>Upload</legend>
+                        <div>
+                            @Html.HiddenFor(m => m.RegistrationID)
 
-            <div>
-                <fieldset>
-                    <legend>Upload</legend>
-                    <div>
-                        @Html.HiddenFor(m => m.RegistrationID)
-
-                        <div class="editor-label">@Html.Label("Nama")</div>
-                        <div class="editor-field">@Html.TextBox("ProductName")</div>
+                            <div class="editor-label">@Html.Label("Nama")</div>
+                            <div class="editor-field">@Html.TextBox("ProductName")</div>
                                 
-                        <div class="editor-label">@Html.Label("Deskripsi")</div>
-                        <div class="editor-field">@Html.TextArea("ProductDescription")</div>
+                            <div class="editor-label">@Html.Label("Deskripsi")</div>
+                            <div class="editor-field">@Html.TextArea("ProductDescription")</div>
                                 
-                        <div class="editor-field">
-                            <label for="file">File :</label>
-                            <input type="file" name="file" id="file" />
+                            <div class="editor-field">
+                                <label for="file">File :</label>
+                                <input type="file" name="file" id="file" />
+                            </div>
+                            <p><input type="submit" value="Upload" /></p>
                         </div>
-                        <p><input type="submit" value="Upload" /></p>
-                    </div>
-                </fieldset>
-            </div>
-        }
-        <table class="grdView">
-            <colgroup>
-                <col width="270px" />
-                <col />
-                <col width="220px" />
-            </colgroup>
-            <thead>
-                <tr>
-                    <td>Nama Produk</td>
-                    <td>Deskripsi</td>
-                    <td>Sampel</td>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model.details)
-                { 
+                    </fieldset>
+                </div>
+            }
+            <table class="grdView">
+                <colgroup>
+                    <col width="270px" />
+                    <col />
+                    <col width="220px" />
+                </colgroup>
+                <thead>
                     <tr>
-                        <td>@item.ProductName</td>
-                        <td>@item.Description</td>
-                        <td><img src='@Url.Content(@item.ImgLink)' alt="Sampel Produk" style="max-height:100px; max-width:100px;" /></td>
+                        <td>Nama Produk</td>
+                        <td>Deskripsi</td>
+                        <td>Sampel</td>
                     </tr>
-                }
-            </tbody>
-        </table>
-
-        <p><input type="button" value="Submit" /></p>
-    </fieldset>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.details)
+                    { 
+                        <tr>
+                            <td>@item.ProductName</td>
+                            <td>@item.Description</td>
+                            <td><img src='@Url.Content(@item.ImgLink)' alt="Sampel Produk" style="max-height:100px; max-width:100px;" /></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            @using (Html.BeginForm("SubmitRegistration", "Registration", FormMethod.Post))
+            { 
+                @Html.Hidden("RegistrationID")
+                <p><input type="submit" value="Submit" /></p>
+            }            
+        </fieldset>
+    </div>
 </div>

@@ -96,20 +96,18 @@ namespace Todoku.Areas.Members.Controllers
             ViewBag.PartialView = "LeftPanel";
             ViewBag.filterExpression = "Member";
             BusinessLayer db = new BusinessLayer();
-            List<Merchant> merchants = db.merchants.Where(x => x.RegistrationStatus == RegistrationStatus.Request).ToList();
+            List<MerchantRegistration> merchants = db.merchantRegistrations.Where(x => x.RegistrationStatus == RegistrationStatus.Request).ToList();
             return View(merchants);
         }
 
         [HttpPost]
-        public JsonResult MerchantConfirmation(Merchant entity)
+        public JsonResult MerchantConfirmation(MerchantRegistration entity)
         {
             try
             {
                 BusinessLayer db = new BusinessLayer();
-                Merchant obj = db.merchants.FirstOrDefault(x => x.MerchantID == entity.MerchantID);
-                obj.IsActive = true;
-                obj.JoinDate = DateTime.Now;
-                obj.RegistrationStatus = RegistrationStatus.Approved;
+                MerchantRegistration obj = db.merchantRegistrations.FirstOrDefault(x => x.RegistrationID == entity.RegistrationID);
+                obj.RegistrationStatus = RegistrationStatus.ConfirmedByAdmin;
                 db.Entry(obj).State = EntityState.Modified;
                 db.SaveChanges();
 

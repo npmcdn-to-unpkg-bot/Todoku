@@ -16,6 +16,10 @@
         $(this).tabs();
     });
 
+    $("#menu").menu({
+        items: "> :not(.ui-widget-header)"
+    });
+
     $('.txtNumber').number(true, 2, ',', '.');
 
     $('body').on('click', '.btnSearchZipCode', function () {
@@ -25,10 +29,15 @@
                 var id = $('#hdnSelectedZipCode').val();
                 GetListObject(url, 'GetZipCodeList', "ZipID = " + id, null, null, function (result) {
                     $('#ZipCode').val(result[0].ZipNumber);
+                    $('#address_ZipCode').val(result[0].ZipNumber);
                     $('#Province').val(result[0].Province);
+                    $('#address_Province').val(result[0].Province);
                     $('#City').val(result[0].Regency);
+                    $('#address_City').val(result[0].Regency);
                     var text = $('#Address').val() + " Kel. " + result[0].SubDistrict + " Kec. " + result[0].District;
                     $('#Address').val(text);
+                    text = $('#address_Address').val() + " Kel. " + result[0].SubDistrict + " Kec. " + result[0].District;
+                    $('#address_Address').val(text);
                 });
                 $('#hdnSelectedZipCode').val("");
                 $(this).dialog("close");
