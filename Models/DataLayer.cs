@@ -334,6 +334,7 @@ namespace Todoku.Models
         [Key]
         public Int32 MenuID { get; set; }
         public String MenuName { get; set; }
+        public String MenuArea { get; set; }
         public String Path { get; set; }
         public Int32? ParentID { get; set; }
         public Boolean IsParent { get; set; }
@@ -346,7 +347,24 @@ namespace Todoku.Models
         [ForeignKey("ParentID")]
         public Menu parent { get; set; }
 
+        [ForeignKey("MenuArea")]
+        public virtual StandardCode scmenuarea { get; set; }
+
         public virtual List<Menu> childs { get; set; }
+    }
+
+    public class MenuInUserRole 
+    {
+        [Key]
+        [Column(Order=1)]
+        public String UserRole { get; set; }
+        [Key]
+        [Column(Order = 2)]
+        public Int32 MenuID { get; set; }
+        public String CreatedBy { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public String LastUpdatedBy { get; set; }
+        public DateTime? LastUpdatedDate { get; set; }
     }
 
     public class Merchant
@@ -405,8 +423,10 @@ namespace Todoku.Models
         [Display(Name = "Pemilik")]
         public Int32 OwnerID { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0:c}")]
         public Decimal StartPrice { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0:c}")]
         public Decimal EndPrice { get; set; }
 
         [Display(Name = "Tgl. Registrasi")]

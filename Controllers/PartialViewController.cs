@@ -104,11 +104,18 @@ namespace Todoku.Controllers
             return PartialView();
         }
 
+        //[Authorize]
         [ChildActionOnly]
         public ActionResult Menu(String MenuArea = "")
         {
             BusinessLayer db = new BusinessLayer();
-            List<Menu> menus = db.menus.Where(x => x.ParentID == null).ToList();
+            String username = Membership.GetUser().UserName;
+            String[] uRoles = Roles.GetRolesForUser(username);
+
+            List<MenuInUserRole> miur = db.menuinuserrole.Where(x => uRoles.Contains(x.UserRole)).ToList();
+
+            List<Menu> menus = db.menus.Where(x => x.IsActive == true).ToList().Where(x => miur.Select(s => s.MenuID).Contains(x.MenuID)).ToList();
+            
             return PartialView(menus);
         }
     }

@@ -39,24 +39,51 @@ namespace Todoku.Areas.Merchants.Controllers
                 if (ModelState.IsValid) 
                 {
                     BusinessLayer db = new BusinessLayer();
-                    entity.RegistrationCode = Method.GetTransactionCode(db, SystemSetting.RegisMerchantCode);
-                    entity.AddressCode = String.Format("{0}{1}", SystemSetting.MerchantCode, entity.RegistrationCode.Substring(3, entity.RegistrationCode.Length - 3));
-                    entity.address.AddressCode = entity.AddressCode;
-                    entity.RegistrationStatus = RegistrationStatus.Open;
+                    if (TempData.Peek("RegistrationID") == null)
+                    {
+                        entity.RegistrationCode = Method.GetTransactionCode(db, SystemSetting.RegisMerchantCode);
+                        entity.AddressCode = String.Format("{0}{1}", SystemSetting.MerchantCode, entity.RegistrationCode.Substring(3, entity.RegistrationCode.Length - 3));
+                        entity.address.AddressCode = entity.AddressCode;
+                        entity.RegistrationStatus = RegistrationStatus.Open;
 
-                    String username = Membership.GetUser().UserName;
-                    UserProfile up = db.userprofiles.FirstOrDefault(x => x.UserName == username);
-                    entity.userprofile = up;
-                    entity.RegistrationDate = DateTime.Now;
+                        String username = Membership.GetUser().UserName;
+                        UserProfile up = db.userprofiles.FirstOrDefault(x => x.UserName == username);
+                        entity.userprofile = up;
+                        entity.RegistrationDate = DateTime.Now;
 
-                    entity.CreatedBy = username;
-                    entity.CreatedDate = DateTime.Now;
+                        entity.CreatedBy = username;
+                        entity.CreatedDate = DateTime.Now;
 
-                    db.merchantRegistrations.Add(entity);
-                    db.SaveChanges();
+                        db.merchantRegistrations.Add(entity);
+                        db.SaveChanges();
 
-                    entity.RegistrationID = db.merchantRegistrations.Max(item => item.RegistrationID);
-                    ViewBag.RegistrationID = entity.RegistrationID;
+                        entity.RegistrationID = db.merchantRegistrations.Max(item => item.RegistrationID);
+                    }
+                    else 
+                    {
+                        MerchantRegistration temp = db.merchantRegistrations.Find(Convert.ToInt32(TempData.Peek("RegistrationID")));
+                        entity.RegistrationID = Convert.ToInt32(TempData["RegistrationID"]);
+                        temp.MerchantName = entity.MerchantName;
+                        temp.address.Address = entity.address.Address;
+                        temp.address.ZipCode = entity.address.ZipCode;
+                        temp.address.Province = entity.address.Province;
+                        temp.address.Country = entity.address.Country;
+                        temp.address.City = entity.address.City;
+                        temp.address.Email = entity.address.Email;
+                        temp.address.Email2 = entity.address.Email2;
+                        temp.address.FaxNo = entity.address.FaxNo;
+                        temp.address.Handphone = entity.address.Handphone;
+                        temp.address.Phone = entity.address.Phone;
+                        temp.Description = entity.Description;
+                        temp.LastUpdatedBy = Membership.GetUser().UserName;
+                        temp.LastUpdatedDate = DateTime.Now;
+
+                        db.Entry(temp).State = EntityState.Modified;
+                        db.SaveChanges();
+                    }
+
+                    TempData["RegistrationID"] = entity.RegistrationID;
+                    
                     List<StandardCode> sc = db.standardcodes.Where(x => x.ParentID == SCConstant.Provinsi || x.ParentID == SCConstant.Negara).ToList();
                     sc.Insert(0, new StandardCode { StandardCodeID = "", StandardCodeName = "" });
                     ViewBag.Province = new SelectList(sc.Where(x => x.ParentID == SCConstant.Provinsi || x.StandardCodeID == ""), "StandardCodeID", "StandardCodeName", entity.address.Province);
@@ -83,6 +110,7 @@ namespace Todoku.Areas.Merchants.Controllers
             String errMessage = "";
             try
             {
+                product.RegistrationID = Convert.ToInt32(TempData.Peek("RegistrationID"));
                 MerchantRegistration mr = db.merchantRegistrations.Find(product.RegistrationID);
                 if (mr.StartPrice != product.StartPrice || mr.EndPrice != product.EndPrice) 
                 {
@@ -119,8 +147,6 @@ namespace Todoku.Areas.Merchants.Controllers
                 Status = false;
                 errMessage = ex.Message;
             }
-            ViewBag.PartialView = "LeftPanel";
-            ViewBag.filterExpression = "Merchant";
 
             MerchantRegistration entity = db.merchantRegistrations.Include("details").FirstOrDefault(x => x.RegistrationID == product.RegistrationID);
             if (entity != null)
@@ -146,7 +172,7 @@ namespace Todoku.Areas.Merchants.Controllers
         public ActionResult SubmitRegistration(int RegistrationID) 
         {
             BusinessLayer db = new BusinessLayer();
-            MerchantRegistration mr = db.merchantRegistrations.Find(RegistrationID);
+            MerchantRegistration mr = db.merchantRegistrations.Find(Convert.ToInt32(TempData["RegistrationID"]));
             mr.RegistrationStatus = RegistrationStatus.Request;
             mr.LastUpdatedBy = Membership.GetUser().UserName;
             mr.LastUpdatedDate = DateTime.Now;

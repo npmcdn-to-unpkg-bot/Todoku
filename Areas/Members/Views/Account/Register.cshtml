@@ -69,79 +69,9 @@
                     @Html.ValidationMessageFor(m => m.PasswordAnswer)
                 </div>
             </fieldset>
-        </div>
-        
-        <div style="display:none">
-            <fieldset>
-                <legend>Personal Information</legend>
-                
-                <div class="editor-label">
-                    @Html.LabelFor(m => m.userprofile.Fullname)
-                </div>
-                <div class="editor-field">
-                    @Html.EditorFor(m => m.userprofile.Fullname)
-                    @Html.ValidationMessageFor(m => m.userprofile.Fullname)
-                </div>
-
-                <div class="editor-label">
-                    @Html.LabelFor(m => m.userprofile.DateOfBirth)
-                </div>
-                <div class="editor-field">
-                    @Html.TextBoxFor(m => m.userprofile.DateOfBirth, new { @class = "datepicker" })
-                    @Html.ValidationMessageFor(m => m.userprofile.DateOfBirth)
-                </div>
-
-                <div class="editor-label">
-                    @Html.LabelFor(m => m.userprofile.Gender)
-                </div>
-                <div class="editor-field">
-                    @Html.DropDownList("userprofile.Gender", (SelectList)ViewBag.Gender)
-                    @Html.ValidationMessageFor(m => m.userprofile.Gender)
-                </div>
-
-                <div class="editor-label">
-                    @Html.LabelFor(m => m.userprofile.address.Country)
-                </div>
-                <div class="editor-field">
-                    @Html.DropDownList("userprofile.address.Country", (SelectList)ViewBag.Country)
-                    @Html.ValidationMessageFor(m => m.userprofile.address.Country)
-                </div>
-
-                <div class="editor-label">
-                    @Html.LabelFor(m => m.userprofile.address.Province)
-                </div>
-                <div class="editor-field">
-                    @Html.DropDownList("userprofile.address.Province", (SelectList)ViewBag.Province)
-                    @Html.ValidationMessageFor(m => m.userprofile.address.Province)
-                </div>
-
-                <div class="editor-label">
-                    @Html.LabelFor(m => m.userprofile.address.City)
-                </div>
-                <div class="editor-field">
-                    @Html.EditorFor(m => m.userprofile.address.City)
-                    @Html.ValidationMessageFor(m => m.userprofile.address.City)
-                </div>
-
-                <div class="editor-label">
-                    @Html.LabelFor(m => m.userprofile.address.Address)
-                </div>
-                <div class="editor-field">
-                    @Html.EditorFor(m => m.userprofile.address.Address)
-                    @Html.ValidationMessageFor(m => m.userprofile.address.Address)
-                </div>
-
-                <div class="editor-label">
-                    @Html.LabelFor(m => m.userprofile.address.Phone)
-                </div>
-                <div class="editor-field">
-                    @Html.EditorFor(m => m.userprofile.address.Phone)
-                    @Html.ValidationMessageFor(m => m.userprofile.address.Phone)
-                </div>
-                <p>
-                    <input type="submit" value="Register" />
-                </p>
-            </fieldset>
+            <p>
+                <input type="submit" value="Register" />
+            </p>
         </div>
     }
 </div>

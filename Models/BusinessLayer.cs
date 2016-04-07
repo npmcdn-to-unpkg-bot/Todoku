@@ -15,6 +15,7 @@ namespace Todoku.Models
         public DbSet<Bank> banks { get; set; }
         public DbSet<Product> products { get; set; }
         public DbSet<Menu> menus { get; set; }
+        public DbSet<MenuInUserRole> menuinuserrole { get; set; }
         public DbSet<UserProfile> userprofiles { get; set; }
         public DbSet<StandardCode> standardcodes { get; set; }
         public DbSet<Cart> carts { get; set; }

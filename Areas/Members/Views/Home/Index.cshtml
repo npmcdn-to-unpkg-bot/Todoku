@@ -62,15 +62,23 @@
                         @Html.LabelFor(m => m.address.Country)
                     </div>
                     <div class="editor-field">
-                        @Html.DropDownList("Country")
+                        @Html.DropDownList("address.Country", (SelectList)ViewBag.Country)
                         @Html.ValidationMessageFor(m => m.address.Country)
+                    </div>
+
+                    <div class="editor-label">
+                        @Html.LabelFor(m => m.address.ZipCode)
+                    </div>
+                    <div class="editor-field">
+                        @Html.EditorFor(m => m.address.ZipCode,"ZipCode")
+                        @Html.ValidationMessageFor(m => m.address.ZipCode)
                     </div>
 
                     <div class="editor-label">
                         @Html.LabelFor(m => m.address.Province)
                     </div>
                     <div class="editor-field">
-                        @Html.DropDownList("Province")
+                        @Html.DropDownList("address.Province", (SelectList)ViewBag.Province)
                         @Html.ValidationMessageFor(m => m.address.Province)
                     </div>
 
@@ -91,11 +99,35 @@
                     </div>
 
                     <div class="editor-label">
+                        @Html.LabelFor(m => m.address.Email)
+                    </div>
+                    <div class="editor-field">
+                        @Html.EditorFor(m => m.address.Email)
+                        @Html.ValidationMessageFor(m => m.address.Email)
+                    </div>
+
+                    <div class="editor-label">
+                        @Html.LabelFor(m => m.address.Email2)
+                    </div>
+                    <div class="editor-field">
+                        @Html.EditorFor(m => m.address.Email2)
+                        @Html.ValidationMessageFor(m => m.address.Email2)
+                    </div>
+
+                    <div class="editor-label">
                         @Html.LabelFor(m => m.address.Phone)
                     </div>
                     <div class="editor-field">
                         @Html.EditorFor(m => m.address.Phone)
                         @Html.ValidationMessageFor(m => m.address.Phone)
+                    </div>
+
+                    <div class="editor-label">
+                        @Html.LabelFor(m => m.address.Handphone)
+                    </div>
+                    <div class="editor-field">
+                        @Html.EditorFor(m => m.address.Handphone)
+                        @Html.ValidationMessageFor(m => m.address.Handphone)
                     </div>
                     <p>
                         <input type="submit" value="simpan" />

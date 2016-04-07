@@ -51,24 +51,25 @@ namespace Todoku.Areas.Members.Controllers
                     
                     if (createStatus == MembershipCreateStatus.Success)
                     {
-                        Roles.AddUserToRole(model.UserName, "Member");
+                        Roles.AddUserToRole(model.UserName, UserRole.Member);
                         UserProfile up = new UserProfile();
                         try
                         {
                             BusinessLayer db = new BusinessLayer();
-                            up.Fullname = model.userprofile.Fullname;
+                            up.Fullname = null;
                             up.UserName = model.UserName;
-                            up.Gender = model.userprofile.Gender;
-                            up.DateOfBirth = model.userprofile.DateOfBirth;
+                            up.Gender = Gender.Laki_Laki;
+                            up.DateOfBirth = DateTime.Now;
+
                             up.address = new Addresses();
                             String Code = String.Format("{0}{1}{2}{3}", SystemSetting.MemberCode, DateTime.Now.Year, DateTime.Now.Month.ToString("00"), DateTime.Now.Day.ToString("00"));
                             int count = db.addresses.Where(x => x.AddressCode.Contains(Code)).Count() + 1;
                             up.AddressCode = up.address.AddressCode = String.Format("{0}{1}",Code, count.ToString("00000"));
-                            up.address.Phone = model.userprofile.address.Phone;
-                            up.address.Address = model.userprofile.address.Address;
-                            up.address.City = model.userprofile.address.City;
-                            up.address.Province = model.userprofile.address.Province;
-                            up.address.Country = model.userprofile.address.Country;
+                            up.address.Phone = null;
+                            up.address.Address = null;
+                            up.address.City = null;
+                            up.address.Province = null;
+                            up.address.Country = null;
                             db.userprofiles.Add(up);
                             db.SaveChanges();
                         }
@@ -179,17 +180,7 @@ namespace Todoku.Areas.Members.Controllers
                     if (user != null && !user.IsLockedOut && Membership.ValidateUser(model.UserName, model.Password))
                     {
                         FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
-                        if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/")
-                            && !returnUrl.StartsWith("//") && !returnUrl.StartsWith("/\\"))
-                        {
-                            //return Redirect(returnUrl);
-                            return MigrateCarts(model.UserName, Redirect(returnUrl));
-                        }
-                        else
-                        {
-                            //return RedirectToAction("Index", "Home", new { area = "" });
-                            return MigrateCarts(model.UserName, RedirectToAction("Index", "Home", new { area = "" }));
-                        }
+                        return MigrateCarts(model.UserName, RedirectToAction("Index", "Home", new { area = "" }));
                     }
                     else
                     {

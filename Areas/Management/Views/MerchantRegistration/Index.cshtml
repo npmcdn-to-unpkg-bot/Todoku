@@ -1,0 +1,57 @@
+﻿@model IEnumerable<Todoku.Models.MerchantRegistration>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Konfirmasi Pendaftaran</h2>
+
+<table class="grdView">
+    <colgroup>
+        <col width="120px" />
+        <col width="220px" />
+        <col width="220px" />
+        <col width="120px" />
+        <col />
+        <col width="150px" />
+    </colgroup>
+    <thead>
+        <tr>
+            <td>MerchantName</td>
+            <td>Pemilik</td>
+            <td>Alamat</td>
+            <td>Harga</td>
+            <td>Deskripsi</td>
+            <td></td>
+        </tr>
+    </thead>
+
+@foreach (var item in Model) {
+    <tr valign="top">
+        <td>
+            @Html.DisplayFor(modelItem => item.MerchantName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.userprofile.Fullname)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.address.Address)
+        </td>
+        <td>@Html.DisplayFor(modelItem => item.StartPrice) s/d @Html.DisplayFor(modelItem => item.EndPrice)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        <td align="center">
+            @using (Html.BeginForm("Confirm", "MerchantRegistration"))
+            {
+                @Html.Hidden("id", @item.RegistrationID)
+                <input type="submit" value="Confirm" />
+            }
+            @Html.ActionLink("Details", "Details", new { id = item.RegistrationID }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.RegistrationID })
+        </td>
+    </tr>
+}
+
+</table>

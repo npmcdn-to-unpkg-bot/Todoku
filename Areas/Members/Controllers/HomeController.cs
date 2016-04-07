@@ -18,8 +18,6 @@ namespace Todoku.Areas.Members.Controllers
         [Authorize]
         public ActionResult Index()
         {
-            ViewBag.PartialView = "LeftPanel";
-            ViewBag.filterExpression = "Member";
             String UserID = Membership.GetUser().UserName;
             UserProfile userprofile = db.userprofiles.Include("shippings").FirstOrDefault(x => x.UserName == UserID);
             List<StandardCode> sc = db.standardcodes.Where(x => x.ParentID == SCConstant.Jenis_Kelamin ||
@@ -27,6 +25,7 @@ namespace Todoku.Areas.Members.Controllers
                 x.ParentID == SCConstant.Negara ||
                 x.ParentID == SCConstant.Panggilan
                 ).ToList();
+
             ViewBag.Gender = new SelectList(sc.Where(x => x.ParentID == SCConstant.Jenis_Kelamin), "StandardCodeID", "StandardCodeName", userprofile.Gender);
             ViewBag.Province = new SelectList(sc.Where(x => x.ParentID == SCConstant.Provinsi), "StandardCodeID", "StandardCodeName", userprofile.address.Province);
             ViewBag.Country = new SelectList(sc.Where(x => x.ParentID == SCConstant.Negara), "StandardCodeID", "StandardCodeName", userprofile.address.Country);
@@ -51,6 +50,10 @@ namespace Todoku.Areas.Members.Controllers
                     entity.address.Province = userprofile.address.Province;
                     entity.address.City = userprofile.address.City;
                     entity.address.Address = userprofile.address.Address;
+                    entity.address.ZipCode = userprofile.address.ZipCode;
+                    entity.address.Email = userprofile.address.Email;
+                    entity.address.Email2 = userprofile.address.Email2;
+                    entity.address.Handphone = userprofile.address.Handphone;
                     entity.address.Phone = userprofile.address.Phone;
                     db.Entry(entity).State = EntityState.Modified;
                     db.SaveChanges();
@@ -93,8 +96,6 @@ namespace Todoku.Areas.Members.Controllers
         
         public ActionResult MerchantRegistration()
         {
-            ViewBag.PartialView = "LeftPanel";
-            ViewBag.filterExpression = "Member";
             BusinessLayer db = new BusinessLayer();
             List<MerchantRegistration> merchants = db.merchantRegistrations.Where(x => x.RegistrationStatus == RegistrationStatus.Request).ToList();
             return View(merchants);

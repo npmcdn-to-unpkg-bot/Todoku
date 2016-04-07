@@ -22,17 +22,49 @@
     @foreach (var item in Model) 
     { 
         <div style="border:1px solid black; margin-bottom:3px;">
-            <table>
-                <tr>
+            <table width="100%">
+                <colgroup>
+                    <col width="120px" />
+                    <col width="3px" />
+                    <col />
+                </colgroup>
+                <tr class="ui-widget-header" style="height:30px;">
                     <td colspan="3">
                         @Html.HiddenFor(x => item.RegistrationID, new { @class = "hdnMerchantID" })
                         @Html.DisplayFor(x => item.MerchantName)
+                        <span class="ui-icon ui-icon-triangle-1-s" style="float:right;"></span>
                     </td>
                 </tr>
                 <tr>
                     <td>Pemilik</td>
                     <td>:</td>
                     <td>@Html.DisplayFor(x => item.userprofile.Fullname)</td>
+                </tr>
+                <tr>
+                    <td>Kota</td>
+                    <td>:</td>
+                    <td>@Html.DisplayFor(x => item.address.City)</td>
+                </tr>
+                <tr>
+                    <td>Alamat</td>
+                    <td>:</td>
+                    <td>@Html.DisplayFor(x => item.address.Address)</td>
+                </tr>
+                <tr>
+                    <td>Range Harga</td>
+                    <td>:</td>
+                    <td>@Html.DisplayFor(x => item.StartPrice) - @Html.DisplayFor(x => item.EndPrice)</td>
+                </tr>
+                <tr>
+                    <td colspan="3">Sample Produk</td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        @foreach (var img in item.details) 
+                        { 
+                            <img src='@Url.Content(@img.ImgLink)' alt="Sampel Produk" style="max-height:100px; max-width:100px;" />
+                        }
+                    </td>
                 </tr>
                 <tr>
                     <td colspan="3"><input type="button" class="btnConfirm" value="Confirm" /></td>

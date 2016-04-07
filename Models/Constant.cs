@@ -98,6 +98,16 @@ namespace Todoku.Models
         public const String Delivery = "SC0011.003";
         public const String Void = "SC0011.999";
     }
+
+    public class UserRole 
+    {
+        public const String Guest = "Guest";
+        public const String Admin = "Administrator";
+        public const String MerchantOwner = "MerchantOwner";
+        public const String Member = "Member";
+        public const String Agen = "Agen";
+        public const String SystemAdministrator = "SystemAdministrator";
+    }
     #endregion
 
     public class SCConstant

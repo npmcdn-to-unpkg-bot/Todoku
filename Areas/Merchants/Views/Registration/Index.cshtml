@@ -5,7 +5,7 @@
 
 <script type="text/javascript">
     $(function () {
-        if ($('#RegistrationID').val() == "" || $('#RegistrationID').val() == "0") {
+        if ('@TempData.Peek("RegistrationID")' == "") {
             $('#li-tabs-info').hide();
         } else {
             $('#li-tabs-info').show();
@@ -28,7 +28,7 @@
         <div>
             <fieldset>
                 <legend>Registrasi</legend>
-
+                @Html.Hidden("RegistrationID")
                 <div class="editor-label">
                     @Html.LabelFor(m => m.MerchantName)
                 </div>
@@ -130,8 +130,8 @@
                 </p>
             </fieldset>        
         </div>
-    }
-</div>    
+        }
+    </div>    
     
     <div id="tabs-info">
         <fieldset>
@@ -150,8 +150,6 @@
                     <fieldset>
                         <legend>Upload</legend>
                         <div>
-                            @Html.HiddenFor(m => m.RegistrationID)
-
                             <div class="editor-label">@Html.Label("Nama")</div>
                             <div class="editor-field">@Html.TextBox("ProductName")</div>
                                 
@@ -193,7 +191,7 @@
             </table>
             @using (Html.BeginForm("SubmitRegistration", "Registration", FormMethod.Post))
             { 
-                @Html.Hidden("RegistrationID")
+                @Html.Hidden("RegistrationID",TempData.Peek("RegistrationID"))
                 <p><input type="submit" value="Submit" /></p>
             }            
         </fieldset>

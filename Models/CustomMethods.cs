@@ -198,22 +198,23 @@ namespace System.Web.Mvc
                     writer.AddAttribute("style", temp);
                 }
                 writer.RenderBeginTag("ul");
-                foreach (Todoku.Models.Menu obj in menus)
+                foreach (Todoku.Models.Menu obj in menus.Where(x => x.ParentID == null))
                 {
-                    writer.Write(MenuItem(obj, 1));
+                    writer.Write(MenuItem(menus, obj, 1));
                 }
                 writer.RenderEndTag();//ul
             }
             return new MvcHtmlString(stringWriter.ToString());
         }
 
-        public static String MenuItem(Todoku.Models.Menu menu, Int32 Level) 
+        public static String MenuItem(List<Todoku.Models.Menu> menus, Todoku.Models.Menu menu, Int32 Level) 
         {
             StringWriter stringWriter = new StringWriter();
 
             using (HtmlTextWriter writer = new HtmlTextWriter(stringWriter))
             {
-                if (menu.childs != null && menu.childs.Count() > 0)
+                List<Todoku.Models.Menu> childs = menus.Where(x => x.ParentID == menu.MenuID).ToList();
+                if (childs.Count() > 0)
                 {
                     if (menu.parent == null)
                     {
@@ -222,9 +223,9 @@ namespace System.Web.Mvc
                         writer.Write(menu.MenuName);
                         writer.RenderEndTag();//li
                         Int32 temp = ++Level;
-                        foreach (Todoku.Models.Menu child in menu.childs)
+                        foreach (Todoku.Models.Menu child in childs)
                         {
-                            writer.Write(MenuItem(child, temp));
+                            writer.Write(MenuItem(menus, child, temp));
                         }
                     }
                     else 
@@ -235,7 +236,7 @@ namespace System.Web.Mvc
                         Int32 temp = ++Level;
                         foreach (Todoku.Models.Menu child in menu.childs)
                         {
-                            writer.Write(MenuItem(child, temp));
+                            writer.Write(MenuItem(menus, child, temp));
                         }
                         writer.RenderEndTag();//ul
                         writer.RenderEndTag();//li
