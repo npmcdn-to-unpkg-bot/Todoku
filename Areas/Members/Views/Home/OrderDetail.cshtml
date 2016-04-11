@@ -4,6 +4,41 @@
     ViewBag.Title = "Index";
 }
 
+<script type="text/javascript">
+    $(function () {
+        $('body').on('click', '.btnSearchAddress', function () {
+            var url = window.location.origin + "/Todoku/Ajax/GetListObject/";
+            var filterExpression = 'UserProfileID = @Model.CustomerID';
+            GetListObject(url, 'GetShippingAddressList', filterExpression, null, null, function (result) {
+                var data = { lstAddress: result };
+                var buttons = {
+                    "Pilih": function () {
+                        var id = $('#hdnSelectedValue').val();
+                        GetListObject(url, 'GetShippingAddressList', "ShippingID = " + id, null, null, function (result) {
+                            $('#Address').val(
+                                "Provinsi : " + result[0].ScProvince.StandardCodeName + "\r\n" +
+                                "Kota : " + result[0].City + "\r\n" +
+                                "Alamat : " + result[0].Address + "\r\n" +
+                                "Kode Pos : " + result[0].ZipCode
+                                );
+                        });
+                        $('#hdnSelectedValue').val("");
+                        $(this).dialog("close");
+                    },
+                    "Batal": function () { $('#hdnSelectedValue').val(""); $(this).dialog("close"); }
+                }
+                OpenDialog({
+                    DialogTitle: "Alamat Pengiriman",
+                    DialogID: "AddressDialog",
+                    Data: data,
+                    Template: "AddressTemplate",
+                    buttons: buttons
+                });
+            });
+        });
+    });
+</script>
+
 <h2>Konfirmasi Pemesanan</h2>
 
 <div class="editor-label">
@@ -40,7 +75,15 @@
         @Html.Label("Alamat Pengiriman")
     </div>
     <div class="editor-field">
-        @Html.EditorFor(model => Model.Address)
+        @Html.EditorFor(model => Model.Address)<br/>
+        <input type="button" class="btnSearchAddress" value="Search" />
+    </div>
+    
+    <div class="editor-label">
+        @Html.Label("Ongkos Kirim")
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => Model.AgentID)<input type="button" id="btnSearch" value="Search" />
     </div>
     
     <div class="editor-label">

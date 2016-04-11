@@ -33,6 +33,42 @@ namespace Todoku.Models
         #endregion
 
         #region Ajax
+        #region Shipping Address GetShippingAddressList
+        public List<ShippingAddresses> GetShippingAddressList(String filterExpression)
+        {
+            return this.ShippingAddresses.Where(filterExpression).ToList().Select(x => new ShippingAddresses
+            {
+                ShippingID = x.ShippingID,
+                AddressName = x.AddressName,
+                Address = x.Address,
+                Phone = x.Phone,
+                Handphone = x.Handphone,
+                Email = x.Email,
+                Email2 = x.Email2,
+                ZipCode = x.ZipCode,
+                City = x.City,
+                ScProvince = x.ScProvince
+            }).ToList();
+        }
+
+        public List<ShippingAddresses> GetShippingAddressList(String filterExpression, String OrderBy)
+        {
+            IQueryable<ShippingAddresses> temp = this.ShippingAddresses.Where(filterExpression);
+            if (OrderBy != null && OrderBy != "")
+            {
+                temp = temp.OrderBy(OrderBy);
+            }
+            return temp.ToList();
+        }
+
+        public IQueryable GetShippingAddressList(String filterExpression = "", String GroupBy = "", String OrderBy = "")
+        {
+            if (filterExpression == "") filterExpression = "1 = 1";
+            if (OrderBy == "") OrderBy = GroupBy + "ASC";
+            return this.ShippingAddresses.Where(filterExpression).GroupBy(GroupBy, GroupBy).Select(String.Format("new (Key as {0})", GroupBy));
+        }
+        #endregion
+
         #region ZipCode
         public List<ZipCode> GetZipCodeList(String filterExpression) 
         {

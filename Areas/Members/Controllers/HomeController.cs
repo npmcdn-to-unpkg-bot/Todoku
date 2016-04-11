@@ -70,8 +70,6 @@ namespace Todoku.Areas.Members.Controllers
 
         public ActionResult OrderConfirmation()
         {
-            ViewBag.PartialView = "LeftPanel";
-            ViewBag.filterExpression = "Member";
             BusinessLayer db = new BusinessLayer();
             String username = Membership.GetUser().UserName;
             UserProfile cust = db.userprofiles.FirstOrDefault(x => x.UserName == username);
@@ -122,8 +120,6 @@ namespace Todoku.Areas.Members.Controllers
 
         public ActionResult OrderDetail(Int32 ID) 
         {
-            ViewBag.PartialView = "LeftPanel";
-            ViewBag.filterExpression = "Member";
             BusinessLayer db = new BusinessLayer();
             String UserName = Membership.GetUser().UserName;
             UserProfile up = db.userprofiles.FirstOrDefault(x => x.UserName == UserName);
@@ -170,8 +166,8 @@ namespace Todoku.Areas.Members.Controllers
             BusinessLayer db = new BusinessLayer();
             ShippingAddresses shipping = db.ShippingAddresses.Find(id);
             List<StandardCode> sc = db.standardcodes.Where(x => x.ParentID == SCConstant.Provinsi || x.ParentID == SCConstant.Negara).ToList();
-            ViewBag.Province = new SelectList(sc.Where(x => x.ParentID == SCConstant.Provinsi), "StandardCodeID", "StandardCodeName");
-            ViewBag.Country = new SelectList(sc.Where(x => x.ParentID == SCConstant.Negara), "StandardCodeID", "StandardCodeName");
+            ViewBag.Province = new SelectList(sc.Where(x => x.ParentID == SCConstant.Provinsi), "StandardCodeID", "StandardCodeName", shipping.Province);
+            ViewBag.Country = new SelectList(sc.Where(x => x.ParentID == SCConstant.Negara), "StandardCodeID", "StandardCodeName", shipping.Country);
             return View(shipping);
         }
 
@@ -181,9 +177,20 @@ namespace Todoku.Areas.Members.Controllers
             try
             {
                 BusinessLayer db = new BusinessLayer();
-                entity.LastUpdatedBy = Membership.GetUser().UserName;
-                entity.LastUpdatedDate = DateTime.Now;
-                db.Entry(entity).State = EntityState.Modified;
+                ShippingAddresses obj = db.ShippingAddresses.Find(entity.ShippingID);
+                obj.AddressName = entity.AddressName;
+                obj.ZipCode = entity.ZipCode;
+                obj.Country = entity.Country;
+                obj.Province = entity.Province;
+                obj.City = entity.City;
+                obj.Address = entity.Address;
+                obj.Email = entity.Email;
+                obj.Email2 = entity.Email2;
+                obj.Phone = entity.Phone;
+                obj.Handphone = entity.Handphone;
+                obj.LastUpdatedBy = Membership.GetUser().UserName;
+                obj.LastUpdatedDate = DateTime.Now;
+                db.Entry(obj).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }

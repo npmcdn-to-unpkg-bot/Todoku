@@ -17,7 +17,7 @@
 </head>
 
 <script id="ZipCodeTemplate" type="text/x-jquery-tmpl">
-    <input type="hidden" id="hdnSelectedZipCode" value=""/>
+    <input type="hidden" id="hdnSelectedValue" value=""/>
     <table>
         <tr>
             <td>Provinsi</td>
@@ -79,6 +79,36 @@
     </div>
 </script>
 
+<script id="AddressTemplate" type="text/x-jquery-tmpl">
+    <input type="hidden" id="hdnSelectedValue" value=""/>
+    <div style="overflow-y:auto; height:275px;">
+        <table class="grdView SelectMode">
+            <thead>
+                <tr>
+                    <td>Nama</td>
+                    <td>Alamat</td>
+                </tr>
+            </thead>
+            <tbody>
+                {{each lstAddress}}
+                    <tr>
+                        <td>
+                            <input type="hidden" class="keyField" value="${ShippingID}" />
+                            ${AddressName}
+                        </td>
+                        <td>
+                            Provinsi : ${ScProvince.StandardCodeName}<br/>
+                            Kota : ${City}<br/>
+                            Kode Pos : ${ZipCode}<br/>
+                            Alamat : ${Address}
+                        </td>
+                    </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+</script>
+
 <body>
     <div id="wrapper">
 		<div id="WebsiteHeader">
@@ -114,5 +144,6 @@
 </html>
 
 <div id="ZipCodeDialog" />
+<div id="AddressDialog" />
 
 

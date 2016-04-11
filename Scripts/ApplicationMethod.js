@@ -26,7 +26,7 @@
         var url = window.location.origin + "/Todoku/Ajax/GetListObject/";
         var buttons = {
             "Pilih": function () {
-                var id = $('#hdnSelectedZipCode').val();
+                var id = $('#hdnSelectedValue').val();
                 GetListObject(url, 'GetZipCodeList', "ZipID = " + id, null, null, function (result) {
                     $('#ZipCode').val(result[0].ZipNumber);
                     $('#address_ZipCode').val(result[0].ZipNumber);
@@ -39,10 +39,10 @@
                     text = $('#address_Address').val() + " Kel. " + result[0].SubDistrict + " Kec. " + result[0].District;
                     $('#address_Address').val(text);
                 });
-                $('#hdnSelectedZipCode').val("");
+                $('#hdnSelectedValue').val("");
                 $(this).dialog("close");
             },
-            "Batal": function () { $('#hdnSelectedZipCode').val(""); $(this).dialog("close"); }
+            "Batal": function () { $('#hdnSelectedValue').val(""); $(this).dialog("close"); }
         }
         var provinceVal = "SC0002.006";
         GetListObject(url, 'GetStandardCodeList', 'ParentID == "SC0002"', "", "StandardCodeName ASC", function (result) {
@@ -132,7 +132,7 @@
         $('table.SelectMode tr').removeClass("selected");
         $(this).addClass("selected");
         var id = $(this).find('.keyField').val();
-        $('#hdnSelectedZipCode').val(id);
+        $('#hdnSelectedValue').val(id);
     });
 })
 

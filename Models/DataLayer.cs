@@ -151,6 +151,9 @@ namespace Todoku.Models
 
         [ForeignKey("UserProfileID")]
         public virtual UserProfile userprofile { get; set; }
+
+        [ForeignKey("Province")]
+        public virtual StandardCode ScProvince { get; set; }
     }
 
     public class Addresses
@@ -569,7 +572,23 @@ namespace Todoku.Models
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:C}")]
         [Display(Name = "Total Transaksi")]
         public Decimal TotalAmount { get; set; }
-        
+
+        [DataType(DataType.Currency)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:C}")]
+        [Display(Name = "Ongkos Kirim")]
+        public Decimal ShippingCharges { get; set; }
+
+        [DataType(DataType.Currency)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:C}")]
+        [Display(Name = "Biaya Asuransi")]
+        public Decimal InsuranceCharges { get; set; }
+
+        [DataType(DataType.Currency)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:C}")]
+        [Display(Name = "Total Keseluruhan")]
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        public Decimal LineAmount { get; private set; }
+
         public String OrderStatus { get; set; }
 
         public String DeliveryStatus { get; set; }
