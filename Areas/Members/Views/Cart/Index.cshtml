@@ -27,7 +27,10 @@
             @Html.HiddenFor(model => item.CartID, new { @class = "keyField" })
             <div>@Html.DisplayFor(model => item.product.ProductName)</div>
             <div>Harga : @Html.DisplayFor(x => item.product.detail.Price)</div>
-            @{String vatamount = (item.product.detail.Price * item.product.detail.VATAmount / 100).ToString("C");}
+            @{
+                Decimal vat = (item.product.detail.Price * item.product.detail.VATAmount / 100);
+                String vatamount = vat.ToString("C");
+              }
             <div>Pajak : @Html.DisplayFor(x => @vatamount)</div>
             <div>Jumlah @Html.DisplayFor(model => item.Quantity) pcs</div>
             <div>Total @Html.DisplayFor(model => item.LineAmount)</div>
@@ -35,7 +38,7 @@
         </div>
     }
     <p>
-        Total Belanjaan : @Model.Sum(x => x.LineAmount).ToString("C")
+        Total Belanjaan : @Model.Sum(x => (x.product.detail.Price * (100 + x.product.detail.VATAmount) / 100)).ToString("C")
     </p>
     if (Model.Count() > 0)
     { 

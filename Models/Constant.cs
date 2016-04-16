@@ -55,6 +55,7 @@ namespace Todoku.Models
     public class TransactionNoPrefix 
     { 
         public const String Purchase_Order = "PO";
+        public const String Purchase_Receive = "PR";
     }
 
     public class RegistrationStatus 
@@ -108,6 +109,15 @@ namespace Todoku.Models
         public const String Agen = "Agen";
         public const String SystemAdministrator = "SystemAdministrator";
     }
+
+    public class ReceiveStatus 
+    {
+        public const String Open = "SC0015.001";
+        public const String PayedByCustomer = "SC0015.002";
+        public const String ConfirmedByAdmin = "SC0015.003";
+        public const String Closed = "SC0015.004";
+        public const String Void = "SC0015.999";
+    }
     #endregion
 
     public class SCConstant
@@ -124,6 +134,7 @@ namespace Todoku.Models
         public const String Kategori_Produk = "SC0010";
         public const String Status_Pengiriman = "SC0011";
         public const String Panggilan = "SC0012";
+        public const String Status_Penerimaan = "SC0013";
     }
 
     #region System Setting

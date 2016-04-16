@@ -28,16 +28,17 @@
             "Pilih": function () {
                 var id = $('#hdnSelectedValue').val();
                 GetListObject(url, 'GetZipCodeList', "ZipID = " + id, null, null, function (result) {
-                    $('#ZipCode').val(result[0].ZipNumber);
-                    $('#address_ZipCode').val(result[0].ZipNumber);
-                    $('#Province').val(result[0].Province);
-                    $('#address_Province').val(result[0].Province);
-                    $('#City').val(result[0].Regency);
-                    $('#address_City').val(result[0].Regency);
-                    var text = $('#Address').val() + " Kel. " + result[0].SubDistrict + " Kec. " + result[0].District;
-                    $('#Address').val(text);
-                    text = $('#address_Address').val() + " Kel. " + result[0].SubDistrict + " Kec. " + result[0].District;
-                    $('#address_Address').val(text);
+                    $('#ZipCode').val(result[0].ZipNumber).trigger("change");
+                    $('#Province').val(result[0].Province).trigger("change");
+                    $('#City').val(result[0].Regency).trigger("change");
+                    //                    var text = $('#Address').val() + " Kel. " + result[0].SubDistrict + " Kec. " + result[0].District;
+                    //                    $('#Address').val(text).trigger("change");
+
+                    $('#address_ZipCode').val(result[0].ZipNumber).trigger("change");
+                    $('#address_Province').val(result[0].Province).trigger("change");
+                    $('#address_City').val(result[0].Regency).trigger("change");
+                    //                    text = $('#address_Address').val() + " Kel. " + result[0].SubDistrict + " Kec. " + result[0].District;
+                    //                    $('#address_Address').val(text).trigger("change");
                 });
                 $('#hdnSelectedValue').val("");
                 $(this).dialog("close");
@@ -234,6 +235,19 @@ function OnSaveData(url, data, func) {
         error: function (XMLHttpRequest, textStatus, errorThrown) {
             console.log("XMLHttpRequest=" + XMLHttpRequest.responseText + "\ntextStatus=" + textStatus + "\nerrorThrown=" + errorThrown);
             alert(XMLHttpRequest.responseText);
+        }
+    });
+}
+
+function AjaxFunction(url, data, type, funcHandle) {
+    $.ajax({
+        type: type,
+        url: url,
+        dataType: "json",
+        data : data,
+        success: funcHandle,
+        error: function (result) {
+            alert(result);
         }
     });
 }

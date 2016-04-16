@@ -11,13 +11,12 @@ namespace Todoku.Areas.Members.Controllers
 {
     public class HomeController : Controller
     {
-        BusinessLayer db = new BusinessLayer();
-
         //
         // GET: /User/
         [Authorize]
         public ActionResult Index()
         {
+            BusinessLayer db = new BusinessLayer();
             String UserID = Membership.GetUser().UserName;
             UserProfile userprofile = db.userprofiles.Include("shippings").FirstOrDefault(x => x.UserName == UserID);
             List<StandardCode> sc = db.standardcodes.Where(x => x.ParentID == SCConstant.Jenis_Kelamin ||
@@ -25,17 +24,27 @@ namespace Todoku.Areas.Members.Controllers
                 x.ParentID == SCConstant.Negara ||
                 x.ParentID == SCConstant.Panggilan
                 ).ToList();
-
-            ViewBag.Gender = new SelectList(sc.Where(x => x.ParentID == SCConstant.Jenis_Kelamin), "StandardCodeID", "StandardCodeName", userprofile.Gender);
-            ViewBag.Province = new SelectList(sc.Where(x => x.ParentID == SCConstant.Provinsi), "StandardCodeID", "StandardCodeName", userprofile.address.Province);
-            ViewBag.Country = new SelectList(sc.Where(x => x.ParentID == SCConstant.Negara), "StandardCodeID", "StandardCodeName", userprofile.address.Country);
-            ViewBag.Prefix = new SelectList(sc.Where(x => x.ParentID == SCConstant.Panggilan), "StandardCodeID", "StandardCodeName", userprofile.Prefix);
+            if (userprofile != null)
+            {
+                ViewBag.Gender = new SelectList(sc.Where(x => x.ParentID == SCConstant.Jenis_Kelamin), "StandardCodeID", "StandardCodeName", userprofile.Gender);
+                ViewBag.Province = new SelectList(sc.Where(x => x.ParentID == SCConstant.Provinsi), "StandardCodeID", "StandardCodeName", userprofile.address.Province);
+                ViewBag.Country = new SelectList(sc.Where(x => x.ParentID == SCConstant.Negara), "StandardCodeID", "StandardCodeName", userprofile.address.Country);
+                ViewBag.Prefix = new SelectList(sc.Where(x => x.ParentID == SCConstant.Panggilan), "StandardCodeID", "StandardCodeName", userprofile.Prefix);
+            }
+            else {
+                ViewBag.Gender = new SelectList(sc.Where(x => x.ParentID == SCConstant.Jenis_Kelamin), "StandardCodeID", "StandardCodeName");
+                ViewBag.Province = new SelectList(sc.Where(x => x.ParentID == SCConstant.Provinsi), "StandardCodeID", "StandardCodeName");
+                ViewBag.Country = new SelectList(sc.Where(x => x.ParentID == SCConstant.Negara), "StandardCodeID", "StandardCodeName");
+                ViewBag.Prefix = new SelectList(sc.Where(x => x.ParentID == SCConstant.Panggilan), "StandardCodeID", "StandardCodeName");
+            }
+            
             return View(userprofile);
         }
 
         [HttpPost]
         public ActionResult Edit(UserProfile userprofile)
         {
+            BusinessLayer db = new BusinessLayer();
             try
             {
                 if (ModelState.IsValid)
@@ -84,8 +93,7 @@ namespace Todoku.Areas.Members.Controllers
 
         public ActionResult PaymentConfirmation() 
         {
-            ViewBag.PartialView = "LeftPanel";
-            ViewBag.filterExpression = "Member";
+            BusinessLayer db = new BusinessLayer(); 
             String UserName = Membership.GetUser().UserName;
             UserProfile up = db.userprofiles.FirstOrDefault(x => x.UserName == UserName);
             List<PurchaseOrderHd> pohds = db.purchaseorderhds.Where(x => x.CustomerID == up.UserProfileID && x.OrderStatus == OrderStatus.Order).ToList();
@@ -117,7 +125,7 @@ namespace Todoku.Areas.Members.Controllers
                 return Json(new { ok = false, message = ex.Message });
             }
         }
-
+        
         public ActionResult OrderDetail(Int32 ID) 
         {
             BusinessLayer db = new BusinessLayer();
@@ -127,15 +135,21 @@ namespace Todoku.Areas.Members.Controllers
             List<StandardCode> lst = db.standardcodes.Where(x => x.ParentID == SCConstant.Cara_Pembayaran).ToList();
             ViewBag.Banks = db.banks.ToList();
             ViewBag.PaymentMethod = new SelectList(lst, "StandardCodeID", "StandardCodeName");
+            ViewBag.TotalWeight = pohd.orderdetails.Sum(x => x.cart.product.detail.Weight);
+
             pohd.Address = up.address.Address;
             return View(pohd);
         }
 
         public ActionResult AddShippingAddress() 
         {
+            BusinessLayer db = new BusinessLayer();
             List<StandardCode> sc = db.standardcodes.Where(x => x.ParentID == SCConstant.Provinsi || x.ParentID == SCConstant.Negara).ToList();
             ViewBag.Province = new SelectList(sc.Where(x => x.ParentID == SCConstant.Provinsi), "StandardCodeID", "StandardCodeName");
             ViewBag.Country = new SelectList(sc.Where(x => x.ParentID == SCConstant.Negara), "StandardCodeID", "StandardCodeName");
+            Dictionary<String, String> DictProvince = new Dictionary<String, String>();
+            foreach (StandardCode s in sc.Where(x => x.ParentID == SCConstant.Provinsi)) DictProvince.Add(s.StandardCodeName, s.Alias);
+            ViewBag.provinces = Json(DictProvince);
             return View();
         }
 
@@ -168,21 +182,26 @@ namespace Todoku.Areas.Members.Controllers
             List<StandardCode> sc = db.standardcodes.Where(x => x.ParentID == SCConstant.Provinsi || x.ParentID == SCConstant.Negara).ToList();
             ViewBag.Province = new SelectList(sc.Where(x => x.ParentID == SCConstant.Provinsi), "StandardCodeID", "StandardCodeName", shipping.Province);
             ViewBag.Country = new SelectList(sc.Where(x => x.ParentID == SCConstant.Negara), "StandardCodeID", "StandardCodeName", shipping.Country);
+            Dictionary<String, String> DictProvince = new Dictionary<String, String>();
+            foreach (StandardCode s in sc.Where(x => x.ParentID == SCConstant.Provinsi)) DictProvince.Add(s.StandardCodeName, s.Alias);
+            ViewBag.provinces = Json(DictProvince);
             return View(shipping);
         }
 
         [HttpPost]
         public ActionResult EditShippingAddress(ShippingAddresses entity) 
         {
+            BusinessLayer db = new BusinessLayer();
             try
             {
-                BusinessLayer db = new BusinessLayer();
                 ShippingAddresses obj = db.ShippingAddresses.Find(entity.ShippingID);
                 obj.AddressName = entity.AddressName;
                 obj.ZipCode = entity.ZipCode;
                 obj.Country = entity.Country;
                 obj.Province = entity.Province;
+                obj.RajaOngkir_Province_ID = entity.RajaOngkir_Province_ID;
                 obj.City = entity.City;
+                obj.RajaOngkir_City_ID = entity.RajaOngkir_City_ID;
                 obj.Address = entity.Address;
                 obj.Email = entity.Email;
                 obj.Email2 = entity.Email2;

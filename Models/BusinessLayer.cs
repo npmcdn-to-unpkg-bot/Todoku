@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Data.Entity;
 using System.Linq.Dynamic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Todoku.Models
 {
@@ -21,6 +22,8 @@ namespace Todoku.Models
         public DbSet<Cart> carts { get; set; }
         public DbSet<PurchaseOrderHd> purchaseorderhds { get; set; }
         public DbSet<PurchaseOrderDt> purchaseorderdts { get; set; }
+        public DbSet<PurchaseReceiveHd> purchasereceivehds { get; set; }
+        public DbSet<PurchaseReceiveDt> purchasereceivedts { get; set; }
         public DbSet<Merchant> merchants { get; set; }
         public DbSet<MerchantRegistration> merchantRegistrations { get; set; }
         public DbSet<MerchantRegistrationDetail> merchantRegistrationDetails { get; set; }
@@ -47,7 +50,9 @@ namespace Todoku.Models
                 Email2 = x.Email2,
                 ZipCode = x.ZipCode,
                 City = x.City,
-                ScProvince = x.ScProvince
+                RajaOngkir_City_ID = x.RajaOngkir_City_ID,
+                ScProvince = x.ScProvince,
+                RajaOngkir_Province_ID = x.RajaOngkir_Province_ID
             }).ToList();
         }
 
@@ -114,7 +119,6 @@ namespace Todoku.Models
         #endregion
         #endregion
 
-
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<CustomerOrder>()
@@ -122,7 +126,6 @@ namespace Todoku.Models
                         .WithMany()
                         .HasForeignKey(m => m.OrderID)
                         .WillCascadeOnDelete(false);
-
             modelBuilder.Entity<ItemDeliveryHd>()
                         .HasRequired(m => m.customer)
                         .WithMany()
@@ -144,6 +147,13 @@ namespace Todoku.Models
                         .HasForeignKey(m => m.ProductID)
                         .WillCascadeOnDelete(false);
             modelBuilder.Entity<ItemDeliveryHd>()
+                        .HasRequired(m => m.merchant)
+                        .WithMany()
+                        .HasForeignKey(m => m.MerchantID)
+                        .WillCascadeOnDelete(false);
+            modelBuilder.Entity<PurchaseOrderHd>().Property(t => t.LineAmount)
+                        .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Computed);
+            modelBuilder.Entity<PurchaseOrderHd>()
                         .HasRequired(m => m.merchant)
                         .WithMany()
                         .HasForeignKey(m => m.MerchantID)

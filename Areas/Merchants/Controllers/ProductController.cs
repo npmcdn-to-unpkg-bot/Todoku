@@ -212,6 +212,7 @@ namespace Todoku.Areas.Merchants.Controllers
 
                         entity.detail = new ProductsDetails();
                         entity.detail.Quantity = product.detail.Quantity;
+                        entity.detail.Weight = product.detail.Weight;
                         entity.detail.Price = Convert.ToDecimal(product.detail.Price);
                         entity.detail.DiscountInPercentage = product.detail.DiscountInPercentage;
                         entity.detail.DiscountInPercentage2 = product.detail.DiscountInPercentage2;

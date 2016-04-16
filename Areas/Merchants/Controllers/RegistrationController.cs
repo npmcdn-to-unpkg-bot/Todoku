@@ -20,8 +20,6 @@ namespace Todoku.Areas.Merchants.Controllers
         public ActionResult Index()
         {
             BusinessLayer db = new BusinessLayer();
-            ViewBag.PartialView = "LeftPanel";
-            ViewBag.filterExpression = "Merchant";
             List<StandardCode> sc = db.standardcodes.Where(x => x.ParentID == SCConstant.Provinsi || x.ParentID == SCConstant.Negara).ToList();
             sc.Insert(0, new StandardCode { StandardCodeID = "", StandardCodeName = "" });
             ViewBag.Province = new SelectList(sc.Where(x => x.ParentID == SCConstant.Provinsi || x.StandardCodeID == ""), "StandardCodeID", "StandardCodeName");
@@ -29,6 +27,9 @@ namespace Todoku.Areas.Merchants.Controllers
             MerchantRegistration regis = new MerchantRegistration();
             regis.details = new List<MerchantRegistrationDetail>();
             ViewBag.RegistrationID = 0;
+            Dictionary<String, String> DictProvince = new Dictionary<String, String>();
+            foreach (StandardCode s in sc.Where(x => x.ParentID == SCConstant.Provinsi)) DictProvince.Add(s.StandardCodeName, s.Alias);
+            ViewBag.provinces = Json(DictProvince);
             return View(regis);
         }
 
@@ -67,8 +68,10 @@ namespace Todoku.Areas.Merchants.Controllers
                         temp.address.Address = entity.address.Address;
                         temp.address.ZipCode = entity.address.ZipCode;
                         temp.address.Province = entity.address.Province;
+                        temp.address.RajaOngkir_Province_ID = entity.address.RajaOngkir_Province_ID;
                         temp.address.Country = entity.address.Country;
                         temp.address.City = entity.address.City;
+                        temp.address.RajaOngkir_City_ID = entity.address.RajaOngkir_City_ID;
                         temp.address.Email = entity.address.Email;
                         temp.address.Email2 = entity.address.Email2;
                         temp.address.FaxNo = entity.address.FaxNo;
@@ -88,6 +91,10 @@ namespace Todoku.Areas.Merchants.Controllers
                     sc.Insert(0, new StandardCode { StandardCodeID = "", StandardCodeName = "" });
                     ViewBag.Province = new SelectList(sc.Where(x => x.ParentID == SCConstant.Provinsi || x.StandardCodeID == ""), "StandardCodeID", "StandardCodeName", entity.address.Province);
                     ViewBag.Country = new SelectList(sc.Where(x => x.ParentID == SCConstant.Negara || x.StandardCodeID == ""), "StandardCodeID", "StandardCodeName", entity.address.Country);
+                    Dictionary<String, String> DictProvince = new Dictionary<String, String>();
+                    foreach (StandardCode s in sc.Where(x => x.ParentID == SCConstant.Provinsi)) DictProvince.Add(s.StandardCodeName, s.Alias);
+                    ViewBag.provinces = Json(DictProvince);
+
                     entity.details = db.merchantRegistrationDetails.Where(x => x.RegistrationID == entity.RegistrationID).ToList();
                 }
                 
@@ -149,10 +156,10 @@ namespace Todoku.Areas.Merchants.Controllers
             }
 
             MerchantRegistration entity = db.merchantRegistrations.Include("details").FirstOrDefault(x => x.RegistrationID == product.RegistrationID);
+            List<StandardCode> sc = db.standardcodes.Where(x => x.ParentID == SCConstant.Provinsi || x.ParentID == SCConstant.Negara).ToList();
+            sc.Insert(0, new StandardCode { StandardCodeID = "", StandardCodeName = "" });
             if (entity != null)
             {
-                List<StandardCode> sc = db.standardcodes.Where(x => x.ParentID == SCConstant.Provinsi || x.ParentID == SCConstant.Negara).ToList();
-                sc.Insert(0, new StandardCode { StandardCodeID = "", StandardCodeName = "" });
                 ViewBag.Province = new SelectList(sc.Where(x => x.ParentID == SCConstant.Provinsi || x.StandardCodeID == ""), "StandardCodeID", "StandardCodeName", entity.address.Province);
                 ViewBag.Country = new SelectList(sc.Where(x => x.ParentID == SCConstant.Negara || x.StandardCodeID == ""), "StandardCodeID", "StandardCodeName", entity.address.Country);
             }
@@ -160,11 +167,14 @@ namespace Todoku.Areas.Merchants.Controllers
             {
                 entity = new MerchantRegistration();
                 entity.details = new List<MerchantRegistrationDetail>();
-                List<StandardCode> sc = db.standardcodes.Where(x => x.ParentID == SCConstant.Provinsi || x.ParentID == SCConstant.Negara).ToList();
-                sc.Insert(0, new StandardCode { StandardCodeID = "", StandardCodeName = "" });
                 ViewBag.Province = new SelectList(sc.Where(x => x.ParentID == SCConstant.Provinsi || x.StandardCodeID == ""), "StandardCodeID", "StandardCodeName");
                 ViewBag.Country = new SelectList(sc.Where(x => x.ParentID == SCConstant.Negara || x.StandardCodeID == ""), "StandardCodeID", "StandardCodeName");
             }
+            Dictionary<String, String> DictProvince = new Dictionary<String, String>();
+            foreach (StandardCode s in sc.Where(x => x.ParentID == SCConstant.Provinsi)) DictProvince.Add(s.StandardCodeName, s.Alias);
+            ViewBag.provinces = Json(DictProvince);
+
+            entity.details = db.merchantRegistrationDetails.Where(x => x.RegistrationID == entity.RegistrationID).ToList();
             return View("Index", entity);
         }
 

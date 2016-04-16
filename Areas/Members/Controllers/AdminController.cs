@@ -29,50 +29,50 @@ namespace Todoku.Areas.Members.Controllers
             {
                 BusinessLayer db = new BusinessLayer();
                 
-                PurchaseOrderHd pohd = db.purchaseorderhds.FirstOrDefault(x => x.OrderID == entity.OrderID);
-                if (pohd.TransferAmount >= (pohd.TotalAmount - pohd.RefundAmount) && entity.AgentID != null)
-                {
-                    pohd.AgentID = entity.AgentID;
-                    pohd.OrderStatus = OrderStatus.Dibayar;
-                    db.Entry(pohd).State = EntityState.Modified;
+                //PurchaseOrderHd pohd = db.purchaseorderhds.FirstOrDefault(x => x.OrderID == entity.OrderID);
+                //if (pohd.TransferAmount >= (pohd.TotalAmount - pohd.RefundAmount) && entity.AgentID != null)
+                //{
+                //    pohd.AgentID = entity.AgentID;
+                //    pohd.OrderStatus = OrderStatus.Dibayar;
+                //    db.Entry(pohd).State = EntityState.Modified;
 
-                    foreach (PurchaseOrderDt podt in pohd.orderdetails)
-                    {
-                        if (podt.OrderStatus != OrderStatus.Void)
-                        {
-                            podt.OrderStatus = OrderStatus.Dibayar;
-                            podt.cart.ItemStatus = ItemStatus.Payed;
-                        }
-                        db.Entry(podt).State = EntityState.Modified;
-                    }
+                //    foreach (PurchaseOrderDt podt in pohd.orderdetails)
+                //    {
+                //        if (podt.OrderStatus != OrderStatus.Void)
+                //        {
+                //            podt.OrderStatus = OrderStatus.Dibayar;
+                //            podt.cart.ItemStatus = ItemStatus.Payed;
+                //        }
+                //        db.Entry(podt).State = EntityState.Modified;
+                //    }
 
-                    List<CustomerOrder> cos = db.customerOrder.Where(x => x.OrderID == entity.OrderID).ToList();
-                    foreach (CustomerOrder co in cos)
-                    {
-                        if (co.RequestStatus != RequestStatus.Void)
-                            co.RequestStatus = RequestStatus.ConfirmedByAdmin;
-                        db.Entry(co).State = EntityState.Modified;
-                    }
-                }
-                else 
-                {
-                    pohd.OrderStatus = OrderStatus.Refund;
-                    db.Entry(pohd).State = EntityState.Modified;
+                //    List<CustomerOrder> cos = db.customerOrder.Where(x => x.OrderID == entity.OrderID).ToList();
+                //    foreach (CustomerOrder co in cos)
+                //    {
+                //        if (co.RequestStatus != RequestStatus.Void)
+                //            co.RequestStatus = RequestStatus.ConfirmedByAdmin;
+                //        db.Entry(co).State = EntityState.Modified;
+                //    }
+                //}
+                //else 
+                //{
+                //    pohd.OrderStatus = OrderStatus.Refund;
+                //    db.Entry(pohd).State = EntityState.Modified;
 
-                    foreach (PurchaseOrderDt podt in pohd.orderdetails)
-                    {
-                        podt.OrderStatus = OrderStatus.Void;
-                        db.Entry(podt).State = EntityState.Modified;
-                    }
+                //    foreach (PurchaseOrderDt podt in pohd.orderdetails)
+                //    {
+                //        podt.OrderStatus = OrderStatus.Void;
+                //        db.Entry(podt).State = EntityState.Modified;
+                //    }
 
-                    List<CustomerOrder> cos = db.customerOrder.Where(x => x.OrderID == entity.OrderID).ToList();
-                    foreach (CustomerOrder co in cos)
-                    {
-                        co.RequestStatus = RequestStatus.Void;
-                        db.Entry(co).State = EntityState.Modified;
-                    }
-                }
-                db.SaveChanges();
+                //    List<CustomerOrder> cos = db.customerOrder.Where(x => x.OrderID == entity.OrderID).ToList();
+                //    foreach (CustomerOrder co in cos)
+                //    {
+                //        co.RequestStatus = RequestStatus.Void;
+                //        db.Entry(co).State = EntityState.Modified;
+                //    }
+                //}
+                //db.SaveChanges();
                 return Json(new { ok = true, message = "Success" });
             }
             catch (Exception ex)

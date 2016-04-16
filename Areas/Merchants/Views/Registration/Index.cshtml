@@ -4,13 +4,49 @@
 }
 
 <script type="text/javascript">
+    var provinces = [];
+    var cities = [];
+
     $(function () {
+        var lstAlias = (@Html.Raw(Json.Encode(ViewBag.provinces)))["Data"];
         if ('@TempData.Peek("RegistrationID")' == "") {
             $('#li-tabs-info').hide();
         } else {
             $('#li-tabs-info').show();
         }
+        var url = "http://localhost:8081/rajaongkir/province/";
+        AjaxFunction(url, null, "GET", function (result) {
+            provinces = result['rajaongkir'].results;
+        });
+
+        url = "http://localhost:8081/rajaongkir/city/id=&province=";
+        AjaxFunction(url, null, "GET", function (result) {
+            cities = result['rajaongkir'].results;
+        });
+
+        $("#address_Province").change(function () {
+            var province = $(this).find('option:selected').text();
+            for (var i = 0; i < provinces.length; i++) {
+                var alias = lstAlias[province];
+                if (alias == null) alias = "null";
+                if (provinces[i].province.toLowerCase().indexOf(province.toLowerCase()) != -1 || provinces[i].province.toLowerCase().indexOf(alias.toLowerCase()) != -1) {
+                    $('#address_RajaOngkir_Province_ID').val(provinces[i].province_id);
+                    break;
+                }
+            }
+        });
+
+        $('#address_City').change(function () {
+            var city = $(this).val();
+            for (var i = 0; i < cities.length; i++) {
+                if (cities[i].city_name.toLowerCase().indexOf(city.toLowerCase()) != -1) {
+                    $('#address_RajaOngkir_City_ID').val(cities[i].city_id);
+                    break;
+                }
+            }
+        });
     });
+
 </script>
 
 <h2>Pendaftaran</h2>
@@ -58,6 +94,7 @@
                 </div>
                 <div class="editor-field">
                     @Html.DropDownList("address.Province", (SelectList) ViewBag.Province)
+                    @Html.HiddenFor(model => model.address.RajaOngkir_Province_ID)
                     @Html.ValidationMessageFor(m => m.address.Province)
                 </div>
 
@@ -66,6 +103,7 @@
                 </div>
                 <div class="editor-field">
                     @Html.EditorFor(m => m.address.City)
+                    @Html.HiddenFor(model => model.address.RajaOngkir_City_ID)
                     @Html.ValidationMessageFor(m => m.address.City)
                 </div>
 

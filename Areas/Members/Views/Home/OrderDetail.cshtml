@@ -15,12 +15,7 @@
                     "Pilih": function () {
                         var id = $('#hdnSelectedValue').val();
                         GetListObject(url, 'GetShippingAddressList', "ShippingID = " + id, null, null, function (result) {
-                            $('#Address').val(
-                                "Provinsi : " + result[0].ScProvince.StandardCodeName + "\r\n" +
-                                "Kota : " + result[0].City + "\r\n" +
-                                "Alamat : " + result[0].Address + "\r\n" +
-                                "Kode Pos : " + result[0].ZipCode
-                                );
+                            SetAddress(result);
                         });
                         $('#hdnSelectedValue').val("");
                         $(this).dialog("close");
@@ -36,7 +31,73 @@
                 });
             });
         });
+
+        $('body').on('change', '.ShippingService', function () {
+            $('#hdnShippingSelectedValue').val($(this).val());
+            $('#ShippingCharges').val($(this).val().split('|')[1]);
+        });
+
+        $('.txtNumber').number(true, 0, ',', '.');
     });
+
+    function SetAddress(result) {
+        var url = "http://localhost:8081/rajaongkir/cost/";
+
+        $('#Address').val(
+                            "Provinsi : " + result[0].ScProvince.StandardCodeName + "\r\n" +
+                            "Kota : " + result[0].City + "\r\n" +
+                            "Alamat : " + result[0].Address + "\r\n" +
+                            "Kode Pos : " + result[0].ZipCode
+                            );
+        $('#hdnShippingProvince').val(result[0].RajaOngkir_Province_ID);
+        $('#hdnShippingCity').val(result[0].RajaOngkir_City_ID);
+
+        var data = { origin: $('#hdnStoreAddress').val(), destination: $('#hdnShippingCity').val(), weight: $('#hdnTotalWeight').val(), courier: 'jne' };
+        AjaxFunction(url, data, "POST", function (result) {
+            console.log(result);
+            $('#lstShipping').html('');
+            $('#ShippingTemplate').tmpl(result).appendTo('#lstShipping');
+        });
+    }
+</script>
+
+<script id="ShippingTemplate" type="text/x-jquery-tmpl">
+    <input type="hidden" value="" id="hdnShippingSelectedValue"/>
+    <div>
+        {{each rajaongkir.results}}
+            <div><h3>${name}</h3>
+                {{each costs}}
+                    <table>
+                        <colgroup>
+                            <col width="3px" />
+                            <col width="70px" />
+                            <col width="3px" />
+                            <col width="50px"/>
+                            <col />
+                        </colgroup>
+                        <tr>
+                            <td><input type="radio" class="ShippingService" name="ShippingService" value="${description} (${service})|${cost[0].value}"></td>
+                            <td colspan="4"><b>${description} (${service})</b></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Harga</td>
+                            <td>:</td>
+                            <td class="txtNumber">${cost[0].value}</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Waktu</td>
+                            <td>:</td>
+                            <td>${cost[0].etd} hari</td>
+                            <td></td>
+                        </tr>
+                    </table>
+                {{/each}}
+            </div>
+        {{/each}}
+    </div>
 </script>
 
 <h2>Konfirmasi Pemesanan</h2>
@@ -51,7 +112,7 @@
 @foreach (var item in Model.orderdetails)
 { 
     <div style="width:100%; border:1px solid black; margin-bottom:5px;">
-        <img alt="Image not found" style="max-height:75px; max-width:75px;" src="@Url.Content(@item.cart.product.ImgLink)" onError="this.src='@Url.Content("~/Uploads/Todoku/Produk/Default/img_not_found.jpg")'"/>
+        <img alt="Image not found" style="max-height:75px; max-width:75px;" src="@Url.Content(@item.cart.product.ImgLink)"/>
         <div>@Html.DisplayFor(model => item.cart.product.ProductName)</div>
         <div>Harga : @Html.DisplayFor(x => item.cart.product.detail.Price)</div>
         <div>Jumlah @Html.DisplayFor(model => item.cart.Quantity) pcs</div>
@@ -64,6 +125,9 @@
 @using (Html.BeginForm("Confirmation", "PurchaseOrder"))
 { 
     @Html.HiddenFor(model => model.OrderNo);
+    <input type="hidden" id="hdnTotalWeight" value="@ViewBag.TotalWeight"/>
+    <input type="hidden" id="hdnStoreAddress" value="@Model.merchant.address.RajaOngkir_City_ID"/>
+    @Html.HiddenFor(model => Model.ShippingCharges);
     <div class="editor-label">
         @Html.LabelFor(model => Model.AgentID)
     </div>
@@ -75,16 +139,16 @@
         @Html.Label("Alamat Pengiriman")
     </div>
     <div class="editor-field">
-        @Html.EditorFor(model => Model.Address)<br/>
+        <input type="hidden" id="hdnShippingProvince" value="" />
+        <input type="hidden" id="hdnShippingCity" value="" />
+        @Html.TextAreaFor(model => model.Address, new { @readonly = "readonly" })<br/>
         <input type="button" class="btnSearchAddress" value="Search" />
     </div>
     
     <div class="editor-label">
-        @Html.Label("Ongkos Kirim")
+        @Html.Label("Pengiriman")
     </div>
-    <div class="editor-field">
-        @Html.EditorFor(model => Model.AgentID)<input type="button" id="btnSearch" value="Search" />
-    </div>
+    <div id="lstShipping"></div>
     
     <div class="editor-label">
         @Html.LabelFor(model => model.PaymentMehod)
@@ -100,9 +164,10 @@
             @foreach (var item in (List<Todoku.Models.Bank>)ViewBag.Banks)
             {
                 <tr>
-                    <td>@Html.RadioButtonFor(model => Model.BankID, item.BankID, item.BankID == 1 ? new { @checked = true } : null)</td>
+                    <td>@Html.RadioButtonFor(model => item.BankID, item.BankID, item.BankID == 1 ? new { @checked = true } : null)</td>
                     <td>
-                        <img src="" class="@item.ImgLink" alt="" onError="this.src='@Url.Content("~/Content/Image/Product/img_not_found.jpg")'" />
+                        @*<img src="" class="@item.ImgLink" alt="" onError="this.src='@Url.Content("~/Content/Image/Product/img_not_found.jpg")'" />*@
+                        <img src="" class="@item.ImgLink" alt="" onError="" />
                         @item.BankName
                     </td>
                     <td>@item.AccountName</td>

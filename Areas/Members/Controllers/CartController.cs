@@ -120,42 +120,50 @@ namespace Todoku.Areas.Members.Controllers
                     UserProfile up = db.userprofiles.FirstOrDefault(x => x.UserName == UserName);
                     List<Cart> carts = db.carts.Where(x => x.UserName == UserName && x.ItemStatus == ItemStatus.Requested).ToList();
 
-                    PurchaseOrderHd pohd = new PurchaseOrderHd();
-                    pohd.CustomerID = up.UserProfileID;
-                    pohd.AgentID = null;
-                    pohd.TotalAmount = carts.Sum(x => x.LineAmount);
-                    pohd.CreatedDate = DateTime.Now;
-                    String DateTransaction = String.Format("{0}{1}{2}", DateTime.Now.Year, DateTime.Now.Month.ToString("00"), DateTime.Now.Day.ToString("00"));
-                    Int32 count = db.purchaseorderhds.Where(x => x.OrderNo.Contains(DateTransaction)).Count() + 1;
-                    pohd.OrderNo = String.Format("{0}/{1}/{2}", TransactionNoPrefix.Purchase_Order, DateTransaction, count.ToString("000000"));
-                    pohd.PaymentMehod = PaymentMethod.TRANSFER;
-                    pohd.ValidUntil = DateTime.Now.AddDays(SystemSetting.ValidUntil);
-                    pohd.OrderStatus = OrderStatus.Open;
-                    pohd.CreatedBy = Membership.GetUser().UserName;
-                    pohd.CreatedDate = DateTime.Now;
-                    db.purchaseorderhds.Add(pohd);
-
-                    foreach (Cart cart in carts)
+                    List<Int32> lstMerchantID = carts.GroupBy(x => x.product.merchant.MerchantID).Select(x => x.Key).ToList();
+                    foreach (Int32 merchantID in lstMerchantID)
                     {
-                        PurchaseOrderDt podt = new PurchaseOrderDt();
-                        podt.order = pohd;
-                        podt.CartID = cart.CartID;
-                        db.purchaseorderdts.Add(podt);
-                        cart.ItemStatus = ItemStatus.Ordered;
-                        db.Entry(cart).State = EntityState.Modified;
+                        PurchaseOrderHd pohd = new PurchaseOrderHd();
+                        pohd.CustomerID = up.UserProfileID;
+                        pohd.AgentID = null;
+                        pohd.TotalAmount = carts.Where(x => x.product.MerchantID == merchantID).Sum(x => x.LineAmount);
+                        pohd.MerchantID = merchantID;
+                        pohd.ShippingCharges = 0;
+                        pohd.InsuranceCharges = 0;
+                        pohd.CreatedDate = DateTime.Now;
+                        String DateTransaction = String.Format("{0}{1}{2}", DateTime.Now.Year, DateTime.Now.Month.ToString("00"), DateTime.Now.Day.ToString("00"));
+                        Int32 count = db.purchaseorderhds.Where(x => x.OrderNo.Contains(DateTransaction)).Count() + 1;
+                        pohd.OrderNo = String.Format("{0}/{1}/{2}", TransactionNoPrefix.Purchase_Order, DateTransaction, count.ToString("000000"));
+                        pohd.PaymentMehod = PaymentMethod.TRANSFER;
+                        pohd.ValidUntil = DateTime.Now.AddDays(SystemSetting.ValidUntil);
+                        pohd.OrderStatus = OrderStatus.Open;
+                        pohd.CreatedBy = Membership.GetUser().UserName;
+                        pohd.CreatedDate = DateTime.Now;
+                        db.purchaseorderhds.Add(pohd);
 
-                        CustomerOrder co = new CustomerOrder();
-                        co.MerchantID = cart.product.MerchantID;
-                        co.pohd = pohd;
-                        co.ProductID = cart.ProductID;
-                        co.Quantity = cart.Quantity;
-                        co.RequestStatus = RequestStatus.Booked;
-                        co.CustomerID = up.UserProfileID;
-                        db.customerOrder.Add(co);
+                        foreach (Cart cart in carts.Where(x => x.product.MerchantID == merchantID))
+                        {
+                            PurchaseOrderDt podt = new PurchaseOrderDt();
+                            podt.order = pohd;
+                            podt.CartID = cart.CartID;
+                            db.purchaseorderdts.Add(podt);
+                            cart.ItemStatus = ItemStatus.Ordered;
+                            db.Entry(cart).State = EntityState.Modified;
+
+                            CustomerOrder co = new CustomerOrder();
+                            co.MerchantID = cart.product.MerchantID;
+                            co.pohd = pohd;
+                            co.ProductID = cart.ProductID;
+                            co.Quantity = cart.Quantity;
+                            co.RequestStatus = RequestStatus.Booked;
+                            co.CustomerID = up.UserProfileID;
+                            db.customerOrder.Add(co);
+                        }
                     }
-
+                    
                     db.SaveChanges();
-                    return RedirectToAction("Index", "PurchaseOrder", new { OrderNo = pohd.OrderNo });
+                    //return RedirectToAction("Index", "PurchaseOrder", new { OrderNo = pohd.OrderNo });
+                    return RedirectToAction("Index", "PurchaseOrder");
                 }
                 #endregion
                 return RedirectToAction("Index", "PurchaseOrder");

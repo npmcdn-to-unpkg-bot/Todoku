@@ -130,27 +130,27 @@ namespace Todoku.Areas.Merchants.Controllers
             try
             {
                 BusinessLayer db = new BusinessLayer();
-                CustomerOrder co = db.customerOrder.FirstOrDefault(x =>
-                    x.OrderID == entity.OrderID &&
-                    x.MerchantID == entity.MerchantID &&
-                    x.CustomerID == entity.CustomerID &&
-                    x.ProductID == entity.ProductID
-                    );
-                co.RequestStatus = RequestStatus.Void;
+                //CustomerOrder co = db.customerOrder.FirstOrDefault(x =>
+                //    x.OrderID == entity.OrderID &&
+                //    x.MerchantID == entity.MerchantID &&
+                //    x.CustomerID == entity.CustomerID &&
+                //    x.ProductID == entity.ProductID
+                //    );
+                //co.RequestStatus = RequestStatus.Void;
                 
-                PurchaseOrderDt podt = co.pohd.orderdetails.FirstOrDefault(x => x.OrderID == co.OrderID && x.cart.ProductID == co.ProductID);
-                podt.OrderStatus = OrderStatus.Void;
-                if (co.pohd.TotalAmount >= co.pohd.TransferAmount)
-                {
-                    co.pohd.RefundAmount += podt.cart.LineAmount;
-                }
+                //PurchaseOrderDt podt = co.pohd.orderdetails.FirstOrDefault(x => x.OrderID == co.OrderID && x.cart.ProductID == co.ProductID);
+                //podt.OrderStatus = OrderStatus.Void;
+                //if (co.pohd.TotalAmount >= co.pohd.TransferAmount)
+                //{
+                //    co.pohd.RefundAmount += podt.cart.LineAmount;
+                //}
 
-                if (co.pohd.TransferAmount - co.pohd.RefundAmount == 0) 
-                {
-                    co.pohd.DeliveryStatus = DeliveryStatus.Void;
-                }
-                db.Entry(co).State = EntityState.Modified;
-                db.SaveChanges();
+                //if (co.pohd.TransferAmount - co.pohd.RefundAmount == 0) 
+                //{
+                //    co.pohd.DeliveryStatus = DeliveryStatus.Void;
+                //}
+                //db.Entry(co).State = EntityState.Modified;
+                //db.SaveChanges();
                 return Json(new { ok = true, Status = "Success" });
             }
             catch (Exception ex) 

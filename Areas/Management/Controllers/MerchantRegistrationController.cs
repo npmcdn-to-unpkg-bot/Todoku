@@ -128,7 +128,11 @@ namespace Todoku.Areas.Management.Controllers
                 db.merchants.Add(merchant);
 
                 UserProfile up = db.userprofiles.Find(mr.OwnerID);
-                Roles.AddUserToRole(up.UserName, UserRole.MerchantOwner);
+                String[] lstRole = Roles.GetRolesForUser(up.UserName);
+                if (!lstRole.Contains(UserRole.MerchantOwner)) 
+                {
+                    Roles.AddUserToRole(up.UserName, UserRole.MerchantOwner);
+                }
 
                 db.SaveChanges();
                 return RedirectToAction("index");
@@ -136,7 +140,7 @@ namespace Todoku.Areas.Management.Controllers
             catch (Exception ex)
             {
                 String errMessage = ex.Message;
-                return View();
+                return RedirectToAction("index");
             }
         }
     }

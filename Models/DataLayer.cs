@@ -13,6 +13,7 @@ namespace Todoku.Models
         [Key]
         public String StandardCodeID { get; set; }
         public String StandardCodeName { get; set; }
+        public String Alias { get; set; }
         public bool IsParent { get; set; }
         public String ParentID { get; set; }
         public String CreatedBy { get; set; }
@@ -122,9 +123,11 @@ namespace Todoku.Models
 
         [Display(Name = "Kota")]
         public String City { get; set; }
+        public Int32 RajaOngkir_City_ID { get; set; }
 
         [Display(Name = "Provinsi")]
         public String Province { get; set; }
+        public Int32 RajaOngkir_Province_ID { get; set; }
 
         [DataType(DataType.EmailAddress)]
         [Display(Name = "Email")]
@@ -183,9 +186,11 @@ namespace Todoku.Models
 
         [Display(Name = "Kota")]
         public String City { get; set; }
+        public Int32 RajaOngkir_City_ID { get; set; }
 
         [Display(Name = "Provinsi")]
         public String Province { get; set; }
+        public Int32 RajaOngkir_Province_ID { get; set; }
 
         [DataType(DataType.EmailAddress)]
         [Display(Name = "Email")]
@@ -231,6 +236,9 @@ namespace Todoku.Models
         [Display(Name = "Stok")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:0.###}")]
         public Int32 Quantity { get; set; }
+
+        [Display(Name = "Berat (gram)")]
+        public Int32 Weight { get; set; }
 
         [DataType(DataType.Currency)]
         [Display(Name = "Harga")]
@@ -411,6 +419,12 @@ namespace Todoku.Models
         public virtual UserProfile userprofile { get; set; }
     }
 
+    //public class MerchantDetail 
+    //{
+    //    public Int32 DetailID { get; set; }
+
+    //}
+
     public class MerchantRegistration
     { 
         [Key]
@@ -538,6 +552,8 @@ namespace Todoku.Models
 
         [DataType(DataType.Currency)]
         [DisplayFormat(DataFormatString = "{0:c}")]
+        //[DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        //public Decimal LineAmount { get {return Quantity * product.detail.LineAmount; } private set {} }
         public Decimal LineAmount { get; set; }
 
         public String ItemStatus { get; set; }
@@ -561,6 +577,9 @@ namespace Todoku.Models
         
         [Display(Name="Agen")]
         public Int32? AgentID { get; set; }
+
+        [Display(Name = "Toko")]
+        public Int32 MerchantID { get; set; }
 
         [DataType(DataType.Date)]
         public DateTime ValidUntil { get; set; }
@@ -587,33 +606,33 @@ namespace Todoku.Models
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:C}")]
         [Display(Name = "Total Keseluruhan")]
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-        public Decimal LineAmount { get; private set; }
+        public Decimal LineAmount { get { return TotalAmount + ShippingCharges + InsuranceCharges; } private set { } }
 
         public String OrderStatus { get; set; }
 
         public String DeliveryStatus { get; set; }
 
-        [Display(Name="Nama Pembayar")]
-        public String PayerName { get; set; }
+        //[Display(Name="Nama Pembayar")]
+        //public String PayerName { get; set; }
 
         [DataType(DataType.MultilineText)]
         [Display(Name = "Alamat")]
         public String Address { get; set; }
 
-        public Int32? BankID { get; set; }
+        //public Int32? BankID { get; set; }
 
-        [Display(Name="Jmlh. Transfer")]
-        [DataType(DataType.Currency)]
-        [DisplayFormat(DataFormatString = "{0:c}")]
-        public Decimal TransferAmount { get; set; }
+        //[Display(Name="Jmlh. Transfer")]
+        //[DataType(DataType.Currency)]
+        //[DisplayFormat(DataFormatString = "{0:c}")]
+        //public Decimal TransferAmount { get; set; }
 
-        [Display(Name = "Jmlh. Refund")]
-        [DataType(DataType.Currency)]
-        [DisplayFormat(DataFormatString = "{0:c}")]
-        public Decimal RefundAmount { get; set; }
+        //[Display(Name = "Jmlh. Refund")]
+        //[DataType(DataType.Currency)]
+        //[DisplayFormat(DataFormatString = "{0:c}")]
+        //public Decimal RefundAmount { get; set; }
 
-        [Display(Name="Rekening")]
-        public String SenderAccountNo { get; set; }
+        //[Display(Name="Rekening")]
+        //public String SenderAccountNo { get; set; }
 
         public String CreatedBy { get; set; }
 
@@ -625,8 +644,8 @@ namespace Todoku.Models
         [DataType(DataType.DateTime)]
         public DateTime? LastUpdatedDate { get; set; }
 
-        [ForeignKey("BankID")]
-        public virtual Bank bank { get; set; }
+        //[ForeignKey("BankID")]
+        //public virtual Bank bank { get; set; }
 
         [ForeignKey("CustomerID")]
         public virtual UserProfile customer { get; set; }
@@ -635,10 +654,13 @@ namespace Todoku.Models
 
         [ForeignKey("AgentID")]
         public virtual UserProfile agent { get; set; }
-    }
 
+        [ForeignKey("MerchantID")]
+        public virtual Merchant merchant { get; set; }
+    }
+    
     public class PurchaseOrderDt
-    { 
+    { //calon mau dirubah strukturnya
         [Key]
         public Int32 OrderDtId { get; set; }
         public Int32 OrderID { get; set; }
@@ -650,6 +672,98 @@ namespace Todoku.Models
         
         [ForeignKey("CartID")]
         public virtual Cart cart { get; set; }
+    }
+
+    public class PurchaseReceiveHd 
+    {
+        [Key]
+        public Int32 ReceiveID { get; set; }
+        
+        public String ReceiveNo { get; set; }
+
+        [DataType(DataType.DateTime)]
+        [Display(Name = "Tanggal Terima")]
+        public DateTime ReceiveDate { get; set; }
+
+        [DataType(DataType.Currency)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:C}")]
+        [Display(Name = "Ongkos Kirim")]
+        public Decimal ShippingCharges { get; set; }
+
+        [DataType(DataType.Currency)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:C}")]
+        [Display(Name = "Biaya Asuransi")]
+        public Decimal InsuranceCharges { get; set; }
+
+        [DataType(DataType.Currency)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:C}")]
+        [Display(Name = "Total Transaksi")]
+        public Decimal TotalAmount { get; set; }
+
+        [Display(Name = "Nama Pembayar")]
+        public String PayerName { get; set; }
+
+        [DataType(DataType.MultilineText)]
+        [Display(Name = "Alamat")]
+        public String Address { get; set; }
+
+        public Int32? BankID { get; set; }
+
+        [DataType(DataType.Currency)]
+        [Display(Name = "Jmlh. Transfer")]
+        [DisplayFormat(DataFormatString = "{0:c}")]
+        public Decimal TransferAmount { get; set; }
+
+        [DataType(DataType.Currency)]
+        [Display(Name = "Jmlh. Refund")]
+        [DisplayFormat(DataFormatString = "{0:c}")]
+        public Decimal RefundAmount { get; set; }
+
+        [Display(Name = "Rekening")]
+        public String SenderAccountNo { get; set; }
+
+        public String ReceiveStatus { get; set; }
+
+        public String CreatedBy { get; set; }
+        
+        [DataType(DataType.DateTime)]
+        public DateTime CreatedDate { get; set; }
+        
+        public String LastUpdatedBy { get; set; }
+        
+        [DataType(DataType.DateTime)]
+        public DateTime? LastUpdatedDate { get; set; }
+
+        [ForeignKey("BankID")]
+        public virtual Bank bank { get; set; }
+    }
+    
+    public class PurchaseReceiveDt 
+    {
+        [Key]
+        public Int32 ReceiveDtID { get; set; }
+        
+        public Int32 ReceiveID { get; set; }
+        
+        public Int32 OrderID { get; set; }
+        
+        public Decimal TotalAmount { get; set; }
+        
+        [DataType(DataType.DateTime)]
+        public String CreatedBy { get; set; }
+
+        public DateTime CreatedDate { get; set; }
+        
+        [DataType(DataType.DateTime)]
+        public String LastUpdatedBy { get; set; }
+        
+        public DateTime? LastUpdatedDate { get; set; }
+
+        [ForeignKey("ReceiveID")]
+        public virtual PurchaseReceiveHd receive { get; set; }
+
+        [ForeignKey("OrderID")]
+        public virtual PurchaseOrderHd order { get; set; }
     }
 
     public class CustomerOrder 
@@ -803,7 +917,6 @@ namespace Todoku.Models
         [ForeignKey("Province")]
         public virtual StandardCode ScProvince { get; set; }
     }
-
     #endregion
 
     #region Custom Class
@@ -815,6 +928,16 @@ namespace Todoku.Models
         public HttpPostedFileBase file { get; set; }
         public Decimal StartPrice { get; set; }
         public Decimal EndPrice { get; set; }
+    }
+
+    public class PurchaseOrderConfirmation 
+    { 
+        public String OrderNo { get; set;}
+        public String PaymentMehod {get; set;}
+        public Int32? AgentID {get;set;}
+        public String Address {get;set;}
+        public Decimal ShippingCharges {get;set;}
+        public Int32 BankID {get;set;}
     }
     #endregion
 }

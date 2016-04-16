@@ -19,7 +19,7 @@
     </ul>
 
     <div id="tabs-profil">        
-        @using (Html.BeginForm("Edit","Home"))
+        @using (Html.BeginForm("Edit", "Home"))
         {
             @Html.ValidationSummary(true, "Profil tidak bisa disimpan")
             <div>
@@ -70,7 +70,7 @@
                         @Html.LabelFor(m => m.address.ZipCode)
                     </div>
                     <div class="editor-field">
-                        @Html.EditorFor(m => m.address.ZipCode,"ZipCode")
+                        @Html.EditorFor(m => m.address.ZipCode, "ZipCode")
                         @Html.ValidationMessageFor(m => m.address.ZipCode)
                     </div>
 
@@ -153,17 +153,20 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.shippings) 
-                { 
-                    <tr>
-                        <td>@item.AddressName</td>
-                        <td>@item.Address</td>
-                        <td align="center">
-                            @Html.ActionLink("Edit", "EditShippingAddress", new { id = item.ShippingID })
-                            @Html.Label(" | ")
-                            @Html.ActionLink("Delete", "DeleteShippingAddress", new { id = item.ShippingID })
-                        </td>
-                    </tr>
+                @if (Model.shippings != null)
+                {
+                    foreach (var item in Model.shippings)
+                    { 
+                        <tr>
+                            <td>@item.AddressName</td>
+                            <td>@item.Address</td>
+                            <td align="center">
+                                @Html.ActionLink("Edit", "EditShippingAddress", new { id = item.ShippingID })
+                                @Html.Label(" | ")
+                                @Html.ActionLink("Delete", "DeleteShippingAddress", new { id = item.ShippingID })
+                            </td>
+                        </tr>
+                    }
                 }
             </tbody>
         </table>

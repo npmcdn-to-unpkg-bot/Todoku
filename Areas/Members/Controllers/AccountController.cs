@@ -223,7 +223,7 @@ namespace Todoku.Areas.Members.Controllers
                     entity.Quantity = cart.Quantity;
                     entity.DiscountAmount = cart.DiscountAmount;
                     entity.DiscountInPercentage = cart.DiscountInPercentage;
-                    entity.LineAmount = cart.LineAmount;
+                    //entity.LineAmount = cart.LineAmount;
                     entity.CreatedDate = cart.CreatedDate;
                     entity.UserName = UserName;
                     entity.ItemStatus = ItemStatus.Requested;

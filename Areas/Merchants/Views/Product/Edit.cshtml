@@ -17,6 +17,7 @@
                         Description: $('#Description').val(), 
                         detail : {
                                 Quantity: $('#detail_Quantity').val(),
+                                Weight : $('#detail_Weight').val(),
                                 Price: $('#detail_Price').val(),
                                 DiscountInPercentage: $('#detail_DiscountInPercentage').val(),
                                 DiscountInPercentage2: $('#detail_DiscountInPercentage2').val(),
@@ -105,6 +106,14 @@
         <div class="editor-field">
             @Html.EditorFor(model => model.detail.Quantity)
             @Html.ValidationMessageFor(model => model.detail.Quantity)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.detail.Weight)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.detail.Weight)
+            @Html.ValidationMessageFor(model => model.detail.Weight)
         </div>
 
         <div class="editor-label">

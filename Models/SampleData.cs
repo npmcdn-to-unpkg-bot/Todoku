@@ -176,7 +176,8 @@ namespace Todoku.Models
                 new List<UserProfile>
                 {
                     new UserProfile { UserProfileID = 1, UserName = "sysadmin", Fullname="System Administrator", AddressCode = String.Format("{0}{1}00001", SystemSetting.MemberCode, DateTime.Now.ToString("yyyyMMdd")), Gender = Gender.Laki_Laki, DateOfBirth = new DateTime(1991,2,23), address = new Addresses { AddressCode = String.Format("{0}{1}00001", SystemSetting.MemberCode, DateTime.Now.ToString("yyyyMMdd")), Phone = "", Address = "", City = "Jakarta", Province = "SC0002.006", Country = "Ind" }},
-                    new UserProfile { UserProfileID = 2, UserName = "agireza", Fullname = "Agi Reza Jasuma S.", AddressCode = String.Format("{0}{1}00002", SystemSetting.MemberCode, DateTime.Now.ToString("yyyyMMdd")), Gender = Gender.Laki_Laki, DateOfBirth = new DateTime(1991,2,23), address = new Addresses { AddressCode = String.Format("{0}{1}00002", SystemSetting.MemberCode, DateTime.Now.ToString("yyyyMMdd")), Phone = "", Address = "", City = "Jakarta", Province = "SC0002.006", Country = "Ind" }}
+                    new UserProfile { UserProfileID = 2, UserName = "agireza", Fullname = "Agi Reza Jasuma S.", AddressCode = String.Format("{0}{1}00002", SystemSetting.MemberCode, DateTime.Now.ToString("yyyyMMdd")), Gender = Gender.Laki_Laki, DateOfBirth = new DateTime(1991,2,23), address = new Addresses { AddressCode = String.Format("{0}{1}00002", SystemSetting.MemberCode, DateTime.Now.ToString("yyyyMMdd")), Phone = "", Address = "", City = "Jakarta", Province = "SC0002.006", Country = "Ind" }},
+                    new UserProfile { UserProfileID = 3, UserName = "ibnu", Fullname = "Ibnu Vito", AddressCode = String.Format("{0}{1}00003", SystemSetting.MemberCode, DateTime.Now.ToString("yyyyMMdd")), Gender = Gender.Laki_Laki, DateOfBirth = new DateTime(1994,2,23), address = new Addresses { AddressCode = String.Format("{0}{1}00003", SystemSetting.MemberCode, DateTime.Now.ToString("yyyyMMdd")), Phone = "", Address = "", City = "Jakarta", Province = "SC0002.006", Country = "Ind" }}
                 }.ForEach(x => context.userprofiles.Add(x));
                 #endregion
 
@@ -191,12 +192,12 @@ namespace Todoku.Models
 
                     #region Provinsi
                     new StandardCode{StandardCodeID = "SC0002", StandardCodeName = "Provinsi", IsParent = true, ParentID = null, CreatedBy = "sysadmin", CreatedDate = DateTime.Now, LastUpdatedBy = null, LastUpdatedDate = null },
-                    new StandardCode{StandardCodeID = "SC0002.001", StandardCodeName = "Aceh", IsParent = false, ParentID = "SC0002", CreatedBy = "sysadmin", CreatedDate = DateTime.Now, LastUpdatedBy = null, LastUpdatedDate = null },
+                    new StandardCode{StandardCodeID = "SC0002.001", StandardCodeName = "Aceh", Alias="Nanggroe Aceh Darussalam (NAD)", IsParent = false, ParentID = "SC0002", CreatedBy = "sysadmin", CreatedDate = DateTime.Now, LastUpdatedBy = null, LastUpdatedDate = null },
                     new StandardCode{StandardCodeID = "SC0002.002", StandardCodeName = "Bali", IsParent = false, ParentID = "SC0002", CreatedBy = "sysadmin", CreatedDate = DateTime.Now, LastUpdatedBy = null, LastUpdatedDate = null },
                     new StandardCode{StandardCodeID = "SC0002.003", StandardCodeName = "Banten", IsParent = false, ParentID = "SC0002", CreatedBy = "sysadmin", CreatedDate = DateTime.Now, LastUpdatedBy = null, LastUpdatedDate = null },
                     new StandardCode{StandardCodeID = "SC0002.004", StandardCodeName = "Bengkulu", IsParent = false, ParentID = "SC0002", CreatedBy = "sysadmin", CreatedDate = DateTime.Now, LastUpdatedBy = null, LastUpdatedDate = null },
                     new StandardCode{StandardCodeID = "SC0002.005", StandardCodeName = "Gorontalo", IsParent = false, ParentID = "SC0002", CreatedBy = "sysadmin", CreatedDate = DateTime.Now, LastUpdatedBy = null, LastUpdatedDate = null },
-                    new StandardCode{StandardCodeID = "SC0002.006", StandardCodeName = "Jakarta", IsParent = false, ParentID = "SC0002", CreatedBy = "sysadmin", CreatedDate = DateTime.Now, LastUpdatedBy = null, LastUpdatedDate = null },
+                    new StandardCode{StandardCodeID = "SC0002.006", StandardCodeName = "Jakarta", Alias="DKI Jakarta", IsParent = false, ParentID = "SC0002", CreatedBy = "sysadmin", CreatedDate = DateTime.Now, LastUpdatedBy = null, LastUpdatedDate = null },
                     new StandardCode{StandardCodeID = "SC0002.007", StandardCodeName = "Jambi", IsParent = false, ParentID = "SC0002", CreatedBy = "sysadmin", CreatedDate = DateTime.Now, LastUpdatedBy = null, LastUpdatedDate = null },
                     new StandardCode{StandardCodeID = "SC0002.008", StandardCodeName = "Jawa Barat", IsParent = false, ParentID = "SC0002", CreatedBy = "sysadmin", CreatedDate = DateTime.Now, LastUpdatedBy = null, LastUpdatedDate = null },
                     new StandardCode{StandardCodeID = "SC0002.009", StandardCodeName = "Jawa Tengah", IsParent = false, ParentID = "SC0002", CreatedBy = "sysadmin", CreatedDate = DateTime.Now, LastUpdatedBy = null, LastUpdatedDate = null },
@@ -206,12 +207,12 @@ namespace Todoku.Models
                     new StandardCode{StandardCodeID = "SC0002.013", StandardCodeName = "Kalimantan Tengah", IsParent = false, ParentID = "SC0002", CreatedBy = "sysadmin", CreatedDate = DateTime.Now, LastUpdatedBy = null, LastUpdatedDate = null },
                     new StandardCode{StandardCodeID = "SC0002.014", StandardCodeName = "Kalimantan Timur", IsParent = false, ParentID = "SC0002", CreatedBy = "sysadmin", CreatedDate = DateTime.Now, LastUpdatedBy = null, LastUpdatedDate = null },
                     new StandardCode{StandardCodeID = "SC0002.015", StandardCodeName = "Kalimantan Utara", IsParent = false, ParentID = "SC0002", CreatedBy = "sysadmin", CreatedDate = DateTime.Now, LastUpdatedBy = null, LastUpdatedDate = null },
-                    new StandardCode{StandardCodeID = "SC0002.016", StandardCodeName = "Kepulauan Bangka Belitung", IsParent = false, ParentID = "SC0002", CreatedBy = "sysadmin", CreatedDate = DateTime.Now, LastUpdatedBy = null, LastUpdatedDate = null },
+                    new StandardCode{StandardCodeID = "SC0002.016", StandardCodeName = "Kepulauan Bangka Belitung", Alias = "Bangka Belitung", IsParent = false, ParentID = "SC0002", CreatedBy = "sysadmin", CreatedDate = DateTime.Now, LastUpdatedBy = null, LastUpdatedDate = null },
                     new StandardCode{StandardCodeID = "SC0002.017", StandardCodeName = "Kepulauan Riau", IsParent = false, ParentID = "SC0002", CreatedBy = "sysadmin", CreatedDate = DateTime.Now, LastUpdatedBy = null, LastUpdatedDate = null },
                     new StandardCode{StandardCodeID = "SC0002.018", StandardCodeName = "Lampung", IsParent = false, ParentID = "SC0002", CreatedBy = "sysadmin", CreatedDate = DateTime.Now, LastUpdatedBy = null, LastUpdatedDate = null },
                     new StandardCode{StandardCodeID = "SC0002.019", StandardCodeName = "Maluku", IsParent = false, ParentID = "SC0002", CreatedBy = "sysadmin", CreatedDate = DateTime.Now, LastUpdatedBy = null, LastUpdatedDate = null },
                     new StandardCode{StandardCodeID = "SC0002.020", StandardCodeName = "Maluku Utara", IsParent = false, ParentID = "SC0002", CreatedBy = "sysadmin", CreatedDate = DateTime.Now, LastUpdatedBy = null, LastUpdatedDate = null },
-                    new StandardCode{StandardCodeID = "SC0002.021", StandardCodeName = "Nusa Tenggara Barat", IsParent = false, ParentID = "SC0002", CreatedBy = "sysadmin", CreatedDate = DateTime.Now, LastUpdatedBy = null, LastUpdatedDate = null },
+                    new StandardCode{StandardCodeID = "SC0002.021", StandardCodeName = "Nusa Tenggara Barat", Alias="Nusa Tenggara Barat (NTB)", IsParent = false, ParentID = "SC0002", CreatedBy = "sysadmin", CreatedDate = DateTime.Now, LastUpdatedBy = null, LastUpdatedDate = null },
                     new StandardCode{StandardCodeID = "SC0002.022", StandardCodeName = "Papua", IsParent = false, ParentID = "SC0002", CreatedBy = "sysadmin", CreatedDate = DateTime.Now, LastUpdatedBy = null, LastUpdatedDate = null },
                     new StandardCode{StandardCodeID = "SC0002.023", StandardCodeName = "Papua Barat", IsParent = false, ParentID = "SC0002", CreatedBy = "sysadmin", CreatedDate = DateTime.Now, LastUpdatedBy = null, LastUpdatedDate = null },
                     new StandardCode{StandardCodeID = "SC0002.024", StandardCodeName = "Riau", IsParent = false, ParentID = "SC0002", CreatedBy = "sysadmin", CreatedDate = DateTime.Now, LastUpdatedBy = null, LastUpdatedDate = null },
@@ -223,8 +224,8 @@ namespace Todoku.Models
                     new StandardCode{StandardCodeID = "SC0002.030", StandardCodeName = "Sumatera Barat", IsParent = false, ParentID = "SC0002", CreatedBy = "sysadmin", CreatedDate = DateTime.Now, LastUpdatedBy = null, LastUpdatedDate = null },
                     new StandardCode{StandardCodeID = "SC0002.031", StandardCodeName = "Sumatera Selatan", IsParent = false, ParentID = "SC0002", CreatedBy = "sysadmin", CreatedDate = DateTime.Now, LastUpdatedBy = null, LastUpdatedDate = null },
                     new StandardCode{StandardCodeID = "SC0002.032", StandardCodeName = "Sumatera Utara", IsParent = false, ParentID = "SC0002", CreatedBy = "sysadmin", CreatedDate = DateTime.Now, LastUpdatedBy = null, LastUpdatedDate = null },
-                    new StandardCode{StandardCodeID = "SC0002.033", StandardCodeName = "Daerah Istimewa Yogyakarta", IsParent = false, ParentID = "SC0002", CreatedBy = "sysadmin", CreatedDate = DateTime.Now, LastUpdatedBy = null, LastUpdatedDate = null },
-                    new StandardCode{StandardCodeID = "SC0002.034", StandardCodeName = "Nusa Tenggara Timur", IsParent = false, ParentID = "SC0002", CreatedBy = "sysadmin", CreatedDate = DateTime.Now, LastUpdatedBy = null, LastUpdatedDate = null },
+                    new StandardCode{StandardCodeID = "SC0002.033", StandardCodeName = "Daerah Istimewa Yogyakarta", Alias="DI Yogyakarta", IsParent = false, ParentID = "SC0002", CreatedBy = "sysadmin", CreatedDate = DateTime.Now, LastUpdatedBy = null, LastUpdatedDate = null },
+                    new StandardCode{StandardCodeID = "SC0002.034", StandardCodeName = "Nusa Tenggara Timur", Alias="Nusa Tenggara Timur (NTT)", IsParent = false, ParentID = "SC0002", CreatedBy = "sysadmin", CreatedDate = DateTime.Now, LastUpdatedBy = null, LastUpdatedDate = null },
                     #endregion
                     
                     #region Negara
@@ -337,6 +338,15 @@ namespace Todoku.Models
                     new StandardCode{StandardCodeID = "SC0014.006", StandardCodeName = "Admin", IsParent = false, ParentID = "SC0014", CreatedBy = "sysadmin", CreatedDate = DateTime.Now, LastUpdatedBy = null, LastUpdatedDate = null },
                     new StandardCode{StandardCodeID = "SC0014.007", StandardCodeName = "Management", IsParent = false, ParentID = "SC0014", CreatedBy = "sysadmin", CreatedDate = DateTime.Now, LastUpdatedBy = null, LastUpdatedDate = null },
                     new StandardCode{StandardCodeID = "SC0014.008", StandardCodeName = "Control Panel", IsParent = false, ParentID = "SC0014", CreatedBy = "sysadmin", CreatedDate = DateTime.Now, LastUpdatedBy = null, LastUpdatedDate = null },
+                    #endregion
+
+                    #region Status Penerimaan
+                    new StandardCode{StandardCodeID = "SC0015", StandardCodeName = "Area Menu", IsParent = true, ParentID = null, CreatedBy = "sysadmin", CreatedDate = DateTime.Now, LastUpdatedBy = null, LastUpdatedDate = null },
+                    new StandardCode{StandardCodeID = "SC0015.001", StandardCodeName = "Open", IsParent = false, ParentID = "SC0015", CreatedBy = "sysadmin", CreatedDate = DateTime.Now, LastUpdatedBy = null, LastUpdatedDate = null },
+                    new StandardCode{StandardCodeID = "SC0015.002", StandardCodeName = "PayedByCustomer", IsParent = false, ParentID = "SC0015", CreatedBy = "sysadmin", CreatedDate = DateTime.Now, LastUpdatedBy = null, LastUpdatedDate = null },
+                    new StandardCode{StandardCodeID = "SC0015.003", StandardCodeName = "ConfirmedByAdmin", IsParent = false, ParentID = "SC0015", CreatedBy = "sysadmin", CreatedDate = DateTime.Now, LastUpdatedBy = null, LastUpdatedDate = null },
+                    new StandardCode{StandardCodeID = "SC0015.004", StandardCodeName = "Closed", IsParent = false, ParentID = "SC0015", CreatedBy = "sysadmin", CreatedDate = DateTime.Now, LastUpdatedBy = null, LastUpdatedDate = null },
+                    new StandardCode{StandardCodeID = "SC0015.999", StandardCodeName = "Void", IsParent = false, ParentID = "SC0015", CreatedBy = "sysadmin", CreatedDate = DateTime.Now, LastUpdatedBy = null, LastUpdatedDate = null },
                     #endregion
 
                 }.ForEach(x => context.standardcodes.Add(x));
