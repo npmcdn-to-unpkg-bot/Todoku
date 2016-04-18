@@ -16,8 +16,8 @@ namespace Todoku.Models
                 #region Bank
                 new List<Bank>
                 {
-                    new Bank { BankID = 1, BankName = "Mandiri", AccountName = "PT. Todoku", AccountNo = "123-456-789-0"},
-                    new Bank { BankID = 2, BankName = "BCA", AccountName = "PT. Todoku", AccountNo = "123-456-789-0"}
+                    new Bank { BankID = 1, BankName = "Mandiri", AccountName = "PT. Todoku", AccountNo = "123-456-789-0", IsDeleted = false, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                    new Bank { BankID = 2, BankName = "BCA", AccountName = "PT. Todoku", AccountNo = "123-456-789-0", IsDeleted = false, CreatedBy = "sysadmin", CreatedDate = DateTime.Now}
                 }.ForEach(x => context.banks.Add(x));
                 #endregion
 
@@ -110,6 +110,7 @@ namespace Todoku.Models
                 }.ForEach(x => context.menus.Add(x));
                 #endregion
 
+                #region Menu In UserRole
                 new List<MenuInUserRole>
                 {
                     #region administrator
@@ -171,13 +172,14 @@ namespace Todoku.Models
                     #endregion
 
                 }.ForEach(x => context.menuinuserrole.Add(x));
+                #endregion
 
                 #region UserProfile
                 new List<UserProfile>
                 {
-                    new UserProfile { UserProfileID = 1, UserName = "sysadmin", Fullname="System Administrator", AddressCode = String.Format("{0}{1}00001", SystemSetting.MemberCode, DateTime.Now.ToString("yyyyMMdd")), Gender = Gender.Laki_Laki, DateOfBirth = new DateTime(1991,2,23), address = new Addresses { AddressCode = String.Format("{0}{1}00001", SystemSetting.MemberCode, DateTime.Now.ToString("yyyyMMdd")), Phone = "", Address = "", City = "Jakarta", Province = "SC0002.006", Country = "Ind" }},
-                    new UserProfile { UserProfileID = 2, UserName = "agireza", Fullname = "Agi Reza Jasuma S.", AddressCode = String.Format("{0}{1}00002", SystemSetting.MemberCode, DateTime.Now.ToString("yyyyMMdd")), Gender = Gender.Laki_Laki, DateOfBirth = new DateTime(1991,2,23), address = new Addresses { AddressCode = String.Format("{0}{1}00002", SystemSetting.MemberCode, DateTime.Now.ToString("yyyyMMdd")), Phone = "", Address = "", City = "Jakarta", Province = "SC0002.006", Country = "Ind" }},
-                    new UserProfile { UserProfileID = 3, UserName = "ibnu", Fullname = "Ibnu Vito", AddressCode = String.Format("{0}{1}00003", SystemSetting.MemberCode, DateTime.Now.ToString("yyyyMMdd")), Gender = Gender.Laki_Laki, DateOfBirth = new DateTime(1994,2,23), address = new Addresses { AddressCode = String.Format("{0}{1}00003", SystemSetting.MemberCode, DateTime.Now.ToString("yyyyMMdd")), Phone = "", Address = "", City = "Jakarta", Province = "SC0002.006", Country = "Ind" }}
+                    new UserProfile { UserProfileID = 1, UserName = "sysadmin", Fullname="System Administrator", AddressCode = String.Format("{0}{1}00001", SystemSetting.MemberCode, DateTime.Now.ToString("yyyyMMdd")), Gender = Gender.Laki_Laki, DateOfBirth = new DateTime(1991,2,23), address = new Addresses { AddressCode = String.Format("{0}{1}00001", SystemSetting.MemberCode, DateTime.Now.ToString("yyyyMMdd")), Phone = "", Address = "", City = "Jakarta", Province = "SC0002.006", Country = "Ind", IsDeleted = false, CreatedBy = "sysadmin", CreatedDate = DateTime.Now  }, IsDeleted = false, CreatedBy = "sysadmin", CreatedDate = DateTime.Now },
+                    new UserProfile { UserProfileID = 2, UserName = "agireza", Fullname = "Agi Reza Jasuma S.", AddressCode = String.Format("{0}{1}00002", SystemSetting.MemberCode, DateTime.Now.ToString("yyyyMMdd")), Gender = Gender.Laki_Laki, DateOfBirth = new DateTime(1991,2,23), address = new Addresses { AddressCode = String.Format("{0}{1}00002", SystemSetting.MemberCode, DateTime.Now.ToString("yyyyMMdd")), Phone = "", Address = "", City = "Jakarta", Province = "SC0002.006", Country = "Ind", IsDeleted = false, CreatedBy = "sysadmin", CreatedDate = DateTime.Now  }, IsDeleted = false, CreatedBy = "sysadmin", CreatedDate = DateTime.Now },
+                    new UserProfile { UserProfileID = 3, UserName = "ibnu", Fullname = "Ibnu Vito", AddressCode = String.Format("{0}{1}00003", SystemSetting.MemberCode, DateTime.Now.ToString("yyyyMMdd")), Gender = Gender.Laki_Laki, DateOfBirth = new DateTime(1994,2,23), address = new Addresses { AddressCode = String.Format("{0}{1}00003", SystemSetting.MemberCode, DateTime.Now.ToString("yyyyMMdd")), Phone = "", Address = "", City = "Jakarta", Province = "SC0002.006", Country = "Ind", IsDeleted = false, CreatedBy = "sysadmin", CreatedDate = DateTime.Now }, IsDeleted = false, CreatedBy = "sysadmin", CreatedDate = DateTime.Now }
                 }.ForEach(x => context.userprofiles.Add(x));
                 #endregion
 
@@ -386,9 +388,9 @@ namespace Todoku.Models
                 #region ZipCode
                 new List<ZipCode>
                 {
-                    new ZipCode { ZipNumber = "10110", Province = "SC0002.006", Regency = "JAKARTA PUSAT", RegencyType = "SC0013.002", District = "GAMBIR", SubDistrict = "GAMBIR", CreatedBy = "sysadmin", CreatedDate = DateTime.Now },
-                    new ZipCode { ZipNumber = "10120", Province = "SC0002.006", Regency = "JAKARTA PUSAT", RegencyType = "SC0013.002", District = "GAMBIR", SubDistrict = "KEBON KELAPA", CreatedBy = "sysadmin", CreatedDate = DateTime.Now },
-                    new ZipCode { ZipNumber = "10130", Province = "SC0002.006", Regency = "JAKARTA PUSAT", RegencyType = "SC0013.002", District = "GAMBIR", SubDistrict = "PETOJO UTARA", CreatedBy = "sysadmin", CreatedDate = DateTime.Now },
+                    new ZipCode { ZipNumber = "10110", Province = "SC0002.006", Regency = "JAKARTA PUSAT", RegencyType = "SC0013.002", District = "GAMBIR", SubDistrict = "GAMBIR", IsDeleted = false, CreatedBy = "sysadmin", CreatedDate = DateTime.Now },
+                    new ZipCode { ZipNumber = "10120", Province = "SC0002.006", Regency = "JAKARTA PUSAT", RegencyType = "SC0013.002", District = "GAMBIR", SubDistrict = "KEBON KELAPA", IsDeleted = false, CreatedBy = "sysadmin", CreatedDate = DateTime.Now },
+                    new ZipCode { ZipNumber = "10130", Province = "SC0002.006", Regency = "JAKARTA PUSAT", RegencyType = "SC0013.002", District = "GAMBIR", SubDistrict = "PETOJO UTARA", IsDeleted = false, CreatedBy = "sysadmin", CreatedDate = DateTime.Now },
                 }.ForEach(x => context.zipcodes.Add(x));
                 #endregion
 

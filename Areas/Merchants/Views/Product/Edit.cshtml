@@ -124,13 +124,13 @@
             @Html.ValidationMessageFor(model => model.detail.Price)
         </div>
 
-        <div class="editor-label">
+        @*<div class="editor-label">
             @Html.LabelFor(model => model.detail.Profit)
         </div>
         <div class="editor-field">
             @Html.TextBoxFor(model => model.detail.Profit, new { @class = "txtPrice txtNumber" })
             @Html.ValidationMessageFor(model => model.detail.Profit)
-        </div>
+        </div>*@
 
         <div class="editor-label">
             @Html.LabelFor(model => model.detail.DiscountInPercentage)
@@ -152,7 +152,7 @@
             @Html.Label("Pajak")
         </div>
         <div class="editor-field">
-            <input type="text" value="0" id="txtVATAmount" class="txtNumber" />
+            <input type="text" value="@(Model.detail.VATAmount * Model.detail.Price / 100)" id="txtVATAmount" class="txtNumber" />
         </div>
 
         <div class="editor-label">

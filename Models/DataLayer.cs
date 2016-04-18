@@ -142,6 +142,8 @@ namespace Todoku.Models
         [Display(Name = "Kode Pos")]
         public String ZipCode { get; set; }
 
+        public Boolean IsDeleted { get; set; }
+
         public String CreatedBy { get; set; }
 
         [DataType(DataType.DateTime)]
@@ -207,6 +209,19 @@ namespace Todoku.Models
 
         [Display(Name = "Kode Pos")]
         public String ZipCode { get; set; }
+
+        public Boolean IsDeleted { get; set; }
+
+        public String CreatedBy { get; set; }
+
+        [DataType(DataType.DateTime)]
+        public DateTime CreatedDate { get; set; }
+
+        public String LastUpdatedBy { get; set; }
+
+        [DataType(DataType.DateTime)]
+        public DateTime? LastUpdatedDate { get; set; }
+
     }
 
     public class Bank
@@ -226,6 +241,19 @@ namespace Todoku.Models
         [Display(Name = "Gambar")]
         [DataType(DataType.ImageUrl)]
         public String ImgLink { get; set; }
+
+        public Boolean IsDeleted { get; set; }
+
+        public String CreatedBy { get; set; }
+
+        [DataType(DataType.DateTime)]
+        public DateTime CreatedDate { get; set; }
+
+        public String LastUpdatedBy { get; set; }
+
+        [DataType(DataType.DateTime)]
+        public DateTime? LastUpdatedDate { get; set; }
+
     }
 
     public class ProductsDetails
@@ -287,6 +315,19 @@ namespace Todoku.Models
         [Display(Name = "Min. Stok")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:0.###}")]
         public Int32 MinimumStock { get; set; }
+
+        public Boolean IsDeleted { get; set; }
+
+        public String CreatedBy { get; set; }
+
+        [DataType(DataType.DateTime)]
+        public DateTime CreatedDate { get; set; }
+
+        public String LastUpdatedBy { get; set; }
+
+        [DataType(DataType.DateTime)]
+        public DateTime? LastUpdatedDate { get; set; }
+
     }
 
     public class Product
@@ -316,6 +357,16 @@ namespace Todoku.Models
         [Display(Name = "Deskripsi")]
         public String Description { get; set; }
 
+        public bool IsDeleted { get; set; }
+
+        public String CreatedBy { get; set; }
+
+        public DateTime CreatedDate { get; set; }
+
+        public String LastUpdatedBy { get; set; }
+
+        public DateTime? LastUpdatedDate { get; set; }
+
         [ForeignKey("MerchantID")]
         public virtual Merchant merchant { get; set; }
 
@@ -324,7 +375,6 @@ namespace Todoku.Models
 
         [ForeignKey("Category")]
         public virtual StandardCode sccategory { get; set; }
-
 
         public String ShortDescription 
         {
@@ -412,6 +462,19 @@ namespace Todoku.Models
 
         public String RegistrationStatus { get; set; }
 
+        public Boolean IsDeleted { get; set; }
+
+        public String CreatedBy { get; set; }
+
+        [DataType(DataType.DateTime)]
+        public DateTime CreatedDate { get; set; }
+
+        public String LastUpdatedBy { get; set; }
+
+        [DataType(DataType.DateTime)]
+        public DateTime? LastUpdatedDate { get; set; }
+
+
         [ForeignKey("AddressCode")]
         public virtual Addresses address { get; set; }
 
@@ -456,6 +519,8 @@ namespace Todoku.Models
         [Display(Name = "Deskripsi")]
         public String Description { get; set; }
 
+        public Boolean IsDeleted { get; set; }
+
         public String CreatedBy { get; set; }
 
         public DateTime CreatedDate { get; set; }
@@ -492,7 +557,9 @@ namespace Todoku.Models
         [DataType(DataType.MultilineText)]
         [Display(Name = "Deskripsi")]
         public String Description { get; set; }
-        
+
+        public Boolean IsDeleted { get; set; }
+
         public String CreatedBy { get; set; }
         
         public DateTime CreatedDate { get; set; }
@@ -527,6 +594,18 @@ namespace Todoku.Models
 
         public String AddressCode { get; set; }
 
+        public Boolean IsDeleted { get; set; }
+
+        public String CreatedBy { get; set; }
+
+        [DataType(DataType.DateTime)]
+        public DateTime CreatedDate { get; set; }
+
+        public String LastUpdatedBy { get; set; }
+
+        [DataType(DataType.DateTime)]
+        public DateTime? LastUpdatedDate { get; set; }
+
         [ForeignKey("AddressCode")]
         public virtual Addresses address { get; set; }
 
@@ -541,7 +620,9 @@ namespace Todoku.Models
         public String UserName { get; set; }
 
         public Int32 ProductID { get; set; }
-        
+
+        public Decimal TotalAmount { get; set; }
+
         [Display(Name="Jumlah")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:0.##}")]
         public Int32 Quantity { get; set; }
@@ -552,10 +633,10 @@ namespace Todoku.Models
 
         [DataType(DataType.Currency)]
         [DisplayFormat(DataFormatString = "{0:c}")]
-        //[DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-        //public Decimal LineAmount { get {return Quantity * product.detail.LineAmount; } private set {} }
-        public Decimal LineAmount { get; set; }
 
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        public Decimal LineAmount { get { return Quantity * TotalAmount; } private set { } }
+        
         public String ItemStatus { get; set; }
         
         [DataType(DataType.DateTime)]
@@ -616,6 +697,8 @@ namespace Todoku.Models
         [Display(Name = "Alamat")]
         public String Address { get; set; }
 
+        public Boolean IsDeleted { get; set; }
+
         public String CreatedBy { get; set; }
 
         [DataType(DataType.DateTime)]
@@ -645,6 +728,18 @@ namespace Todoku.Models
         public Int32 OrderID { get; set; }
         public Int32 CartID { get; set; }
         public String OrderStatus { get; set; }
+
+        public Boolean IsDeleted { get; set; }
+
+        public String CreatedBy { get; set; }
+
+        [DataType(DataType.DateTime)]
+        public DateTime CreatedDate { get; set; }
+
+        public String LastUpdatedBy { get; set; }
+
+        [DataType(DataType.DateTime)]
+        public DateTime? LastUpdatedDate { get; set; }
 
         [ForeignKey("OrderID")]
         public virtual PurchaseOrderHd order { get; set; }
@@ -732,7 +827,9 @@ namespace Todoku.Models
         public Int32 OrderID { get; set; }
         
         public Decimal TotalAmount { get; set; }
-        
+
+        public Boolean IsDeleted { get; set; }
+
         [DataType(DataType.DateTime)]
         public String CreatedBy { get; set; }
 
@@ -801,6 +898,18 @@ namespace Todoku.Models
         [Display(Name = "Total")]
         [DisplayFormat(ApplyFormatInEditMode=true, DataFormatString="{0:c}")]
         public Decimal LineAmount { get; set; }
+
+        public Boolean IsDeleted { get; set; }
+
+        public String CreatedBy { get; set; }
+
+        [DataType(DataType.DateTime)]
+        public DateTime CreatedDate { get; set; }
+
+        public String LastUpdatedBy { get; set; }
+
+        [DataType(DataType.DateTime)]
+        public DateTime? LastUpdatedDate { get; set; }
     }
 
     public class ItemDeliveryHd
@@ -863,6 +972,18 @@ namespace Todoku.Models
         [Display(Name="Jumlah")]
         public Int32 Quantity { get; set; }
 
+        public Boolean IsDeleted { get; set; }
+
+        public String CreatedBy { get; set; }
+
+        [DataType(DataType.DateTime)]
+        public DateTime CreatedDate { get; set; }
+
+        public String LastUpdatedBy { get; set; }
+
+        [DataType(DataType.DateTime)]
+        public DateTime? LastUpdatedDate { get; set; }
+
         [ForeignKey("DeliveryID")]
         public virtual ItemDeliveryHd itemdeliveryhd { get; set; }
 
@@ -886,6 +1007,8 @@ namespace Todoku.Models
         public String Regency { get; set; }
 
         public String Province { get; set; }
+
+        public Boolean IsDeleted { get; set; }
 
         public String CreatedBy { get; set; }
 

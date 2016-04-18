@@ -51,9 +51,10 @@ namespace Todoku.Areas.Members.Controllers
                             entity = new Cart();
                             entity.ProductID = cart.ProductID;
                             entity.Quantity = cart.Quantity;
+                            entity.TotalAmount = cart.product.detail.LineAmount;
                             entity.DiscountAmount = product.detail.DiscountAmount + product.detail.DiscountAmount2 + product.detail.DiscountAmount3;
                             entity.DiscountInPercentage = product.detail.DiscountInPercentage;
-                            entity.LineAmount = cart.Quantity * product.detail.LineAmount;
+                            //entity.LineAmount = cart.Quantity * product.detail.LineAmount;
                             entity.CreatedDate = DateTime.Now;
                             entity.UserName = UserName;
                             entity.ItemStatus = ItemStatus.Requested;
@@ -62,7 +63,7 @@ namespace Todoku.Areas.Members.Controllers
                         else
                         {
                             entity.Quantity += cart.Quantity;
-                            entity.LineAmount = entity.Quantity * product.detail.LineAmount;
+                            //entity.LineAmount = entity.Quantity * product.detail.LineAmount;
                             db.Entry(entity).State = EntityState.Modified;
                         }
                         db.SaveChanges();
@@ -83,7 +84,8 @@ namespace Todoku.Areas.Members.Controllers
                             entity.product.detail = new ProductsDetails();
                             entity.product.detail.LineAmount = product.detail.LineAmount;
                             entity.Quantity = cart.Quantity;
-                            entity.LineAmount = cart.Quantity * product.detail.Price;
+                            entity.TotalAmount = product.detail.LineAmount;
+                            //entity.LineAmount = cart.Quantity * product.detail.Price;
                             entity.CreatedDate = DateTime.Now;
                             entity.UserName = UserName;
                             entity.ItemStatus = ItemStatus.Requested;
@@ -93,7 +95,7 @@ namespace Todoku.Areas.Members.Controllers
                         else
                         {
                             entity.Quantity += cart.Quantity;
-                            entity.LineAmount = entity.Quantity * product.detail.Price;
+                            //entity.LineAmount = entity.Quantity * product.detail.Price;
                         }
                         AppSession.SetCartUsingCookie(this.HttpContext, carts);
                     }
