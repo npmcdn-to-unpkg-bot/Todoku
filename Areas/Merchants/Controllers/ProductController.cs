@@ -19,8 +19,6 @@ namespace Todoku.Areas.Merchants.Controllers
         public ActionResult Index()
         {
             Int32 MerchantID = Convert.ToInt32(TempData.Peek("MerchantID"));
-            ViewBag.PartialView = "LeftPanel";
-            ViewBag.filterExpression = "Merchant_Detail";
             BusinessLayer db = new BusinessLayer();
             List<Product> products = db.products.Where(x => x.MerchantID == MerchantID).ToList();
             return View(products);
