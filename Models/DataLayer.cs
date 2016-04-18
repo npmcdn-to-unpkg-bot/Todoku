@@ -612,27 +612,9 @@ namespace Todoku.Models
 
         public String DeliveryStatus { get; set; }
 
-        //[Display(Name="Nama Pembayar")]
-        //public String PayerName { get; set; }
-
         [DataType(DataType.MultilineText)]
         [Display(Name = "Alamat")]
         public String Address { get; set; }
-
-        //public Int32? BankID { get; set; }
-
-        //[Display(Name="Jmlh. Transfer")]
-        //[DataType(DataType.Currency)]
-        //[DisplayFormat(DataFormatString = "{0:c}")]
-        //public Decimal TransferAmount { get; set; }
-
-        //[Display(Name = "Jmlh. Refund")]
-        //[DataType(DataType.Currency)]
-        //[DisplayFormat(DataFormatString = "{0:c}")]
-        //public Decimal RefundAmount { get; set; }
-
-        //[Display(Name="Rekening")]
-        //public String SenderAccountNo { get; set; }
 
         public String CreatedBy { get; set; }
 
@@ -643,9 +625,6 @@ namespace Todoku.Models
         
         [DataType(DataType.DateTime)]
         public DateTime? LastUpdatedDate { get; set; }
-
-        //[ForeignKey("BankID")]
-        //public virtual Bank bank { get; set; }
 
         [ForeignKey("CustomerID")]
         public virtual UserProfile customer { get; set; }
@@ -679,11 +658,14 @@ namespace Todoku.Models
         [Key]
         public Int32 ReceiveID { get; set; }
         
+        [Display(Name="No. Penerimaan")]
         public String ReceiveNo { get; set; }
 
         [DataType(DataType.DateTime)]
         [Display(Name = "Tanggal Terima")]
         public DateTime ReceiveDate { get; set; }
+        
+        public Int32 CustomerID { get; set; }
 
         [DataType(DataType.Currency)]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:C}")]
@@ -736,6 +718,8 @@ namespace Todoku.Models
 
         [ForeignKey("BankID")]
         public virtual Bank bank { get; set; }
+
+        public virtual List<PurchaseReceiveDt> detail { get; set; }
     }
     
     public class PurchaseReceiveDt 
@@ -938,6 +922,13 @@ namespace Todoku.Models
         public String Address {get;set;}
         public Decimal ShippingCharges {get;set;}
         public Int32 BankID {get;set;}
+    }
+
+    public class PaymentConfirmation 
+    {
+        public Int32 ReceiveID { get; set; }
+        public List<PurchaseOrderHd> lstAgentID { get; set; }
+        //public Dictionary<String, String> lstAgentID { get; set; }
     }
     #endregion
 }

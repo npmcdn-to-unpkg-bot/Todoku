@@ -1,4 +1,4 @@
-﻿@model List<Todoku.Models.PurchaseOrderHd>
+﻿@model List<Todoku.Models.PurchaseReceiveHd>
 
 @{
     ViewBag.Title = "Todoku";
@@ -7,16 +7,30 @@
 <script type="text/javascript">
     $('body').on('click', ".btnConfirm", function () {
         $data = $(this).closest("div");
-        var data = { OrderID : $data.find(".keyField").val(), AgentID: $data.find("#item_AgentID").val() };
-        OnSaveData('@Url.Content("~/Admin/PaymentConfirm")', data, function () {
+        var arr = new Array();
+        var count = 0;
+        $('.AgentID').each(function () {
+            var d = { OrderID: $('.OrderID').eq(count).val(), AgentID: $(this).val() };
+            arr.push(d);
+            count++;
+        });
+        var data = { ReceiveID: $data.find(".keyField").val(), lstAgentID: arr };
+        OnSaveData('@Url.Content("~/Members/Admin/PaymentConfirm")', data, function () {
             window.location.href = '@Url.Content("~/Members/Admin/")';
         });
     });
 
     $('body').on('click', ".btnVoid", function () {
         $data = $(this).closest("div");
-        var data = { OrderID: $data.find(".keyField").val()};
-        OnSaveData('@Url.Content("~/Admin/PaymentVoid")', data, function () {
+        var arr = new Array();
+        var count = 0;
+        $('.AgentID').each(function () {
+            var d = { OrderID: $('.OrderID').eq(count).val()};
+            arr.push(d);
+            count++;
+        });
+        var data = { ReceiveID: $data.find(".keyField").val(), lstAgentID: arr };
+        OnSaveData('@Url.Content("~/Members/Admin/PaymentVoid")', data, function () {
             window.location.href = '@Url.Content("~/Members/Admin/")';
         });
     });
@@ -28,12 +42,12 @@
 @foreach (var item in Model)
 { 
     <div style="border:1px solid black; margin-bottom:3px;">
-        @Html.HiddenFor(model => item.OrderID, new { @class="keyField" })        
+        @Html.HiddenFor(model => item.ReceiveID, new { @class = "keyField" })        
         <table>
             <tr>
-                <td>@Html.LabelFor(model => item.OrderNo)</td>
+                <td>@Html.LabelFor(model => item.ReceiveNo)</td>
                 <td>:</td>
-                <td>@Html.DisplayFor(model => item.OrderNo)</td>
+                <td>@Html.DisplayFor(model => item.ReceiveNo)</td>
             </tr>
             <tr>
                 <td>@Html.LabelFor(model => item.PayerName)</td>
@@ -65,21 +79,25 @@
                 <td>:</td>
                 <td>@Html.DisplayFor(model => item.RefundAmount)</td>
             </tr>
-            <tr>
-                <td>@Html.LabelFor(model => item.AgentID)</td>
-                <td>:</td>
-                <td>
-                    @if (@item.AgentID == null)
-                    {
-                        @Html.EditorFor(model => item.AgentID);
-                        @Html.Button("Search", new {Name = "name", Value = "value" });
-                    }
-                    else 
-                    {
-                        @Html.DisplayFor(model => item.AgentID);
-                    }
-                </td>
-            </tr>
+            @foreach (var detail in item.detail)
+            { 
+                <tr>
+                    <td>@Html.LabelFor(model => detail.order.AgentID) (@Html.DisplayFor(model => detail.order.OrderNo))</td>
+                    <td>:</td>
+                    <td>
+                        @if (detail.order.AgentID == null)
+                        {
+                            @Html.HiddenFor(model => detail.order.OrderID, new { @class = "OrderID" });
+                            <input type="text" value="@detail.order.AgentID" name="detail.order.AgentID" class="AgentID" />
+                            @Html.Button("Search", new { Name = "name", Value = "value" });
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(model => detail.order.AgentID);
+                        }
+                    </td>
+                </tr>
+            }
         </table>
         <p><input type="button" value="Konfirmasi" class="btnConfirm" /> @*<input type="button" value="Batal" class="btnVoid" />*@</p>
     </div>

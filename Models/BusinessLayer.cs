@@ -5,6 +5,7 @@ using System.Web;
 using System.Data.Entity;
 using System.Linq.Dynamic;
 using System.ComponentModel.DataAnnotations;
+using System.Web.Security;
 
 namespace Todoku.Models
 {
@@ -117,6 +118,13 @@ namespace Todoku.Models
             return temp.ToList();
         }
         #endregion
+        #endregion
+
+        #region Custom
+        public Int32 GetUserProfileID(){
+            String Username = Membership.GetUser().UserName;
+            return this.userprofiles.FirstOrDefault(x => x.UserName == Username).UserProfileID;
+        }
         #endregion
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

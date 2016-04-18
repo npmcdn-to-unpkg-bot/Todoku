@@ -46,6 +46,7 @@ namespace Todoku.Areas.Members.Controllers
                 String DateTransaction = String.Format("{0}{1}{2}", DateTime.Now.Year, DateTime.Now.Month.ToString("00"), DateTime.Now.Day.ToString("00"));
                 Int32 count = db.purchasereceivehds.Where(x => x.ReceiveNo.Contains(DateTransaction)).Count() + 1;
                 prhd.ReceiveNo = String.Format("{0}/{1}/{2}", TransactionNoPrefix.Purchase_Receive, DateTransaction, count.ToString("000000"));
+                prhd.CustomerID = db.GetUserProfileID();
                 prhd.ReceiveDate = DateTime.Now;
                 prhd.Address = entity.Address;
                 prhd.BankID = entity.BankID;
@@ -75,20 +76,20 @@ namespace Todoku.Areas.Members.Controllers
             
         }
 
-        public JsonResult Confirm(PurchaseOrderHd entity)
+        public JsonResult Confirm(PurchaseReceiveHd entity)
         {
             try
             {
                 BusinessLayer db = new BusinessLayer();
-                //PurchaseOrderHd obj = db.purchaseorderhds.FirstOrDefault(x => x.OrderNo == entity.OrderNo);
-                //obj.PayerName = entity.PayerName;
-                //obj.SenderAccountNo = entity.SenderAccountNo;
-                //obj.TransferAmount = entity.TransferAmount;
-                //if (obj.TransferAmount < obj.TotalAmount)
-                //    obj.RefundAmount = obj.TransferAmount;
-                //obj.OrderStatus = OrderStatus.Konfimasi;
-                //db.Entry(obj).State = EntityState.Modified;
-                //db.SaveChanges();
+                PurchaseReceiveHd obj = db.purchasereceivehds.FirstOrDefault(x => x.ReceiveNo == entity.ReceiveNo);
+                obj.PayerName = entity.PayerName;
+                obj.SenderAccountNo = entity.SenderAccountNo;
+                obj.TransferAmount = entity.TransferAmount;
+                if (obj.TransferAmount < obj.TotalAmount)
+                    obj.RefundAmount = obj.TransferAmount;
+                obj.ReceiveStatus = ReceiveStatus.PayedByCustomer;
+                db.Entry(obj).State = EntityState.Modified;
+                db.SaveChanges();
                 return Json(new { ok = true, message = "Success" });
             }
             catch (Exception ex)
@@ -97,20 +98,20 @@ namespace Todoku.Areas.Members.Controllers
             }
         }
 
-        public JsonResult ConfirmWithAjax(PurchaseOrderHd entity)
+        public JsonResult ConfirmWithAjax(PurchaseReceiveHd entity)
         {
             try
             {
                 BusinessLayer db = new BusinessLayer();
-                //PurchaseOrderHd obj = db.purchaseorderhds.FirstOrDefault(x => x.OrderNo == entity.OrderNo);
-                //obj.PayerName = entity.PayerName;
-                //obj.SenderAccountNo = entity.SenderAccountNo;
-                //obj.TransferAmount = entity.TransferAmount;
-                //if (obj.TransferAmount < obj.TotalAmount)
-                //    obj.RefundAmount = obj.TransferAmount;
-                //obj.OrderStatus = OrderStatus.Konfimasi;
-                //db.Entry(obj).State = EntityState.Modified;
-                //db.SaveChanges();
+                PurchaseReceiveHd obj = db.purchasereceivehds.FirstOrDefault(x => x.ReceiveNo == entity.ReceiveNo);
+                obj.PayerName = entity.PayerName;
+                obj.SenderAccountNo = entity.SenderAccountNo;
+                obj.TransferAmount = entity.TransferAmount;
+                if (obj.TransferAmount < obj.TotalAmount)
+                    obj.RefundAmount = obj.TransferAmount;
+                obj.ReceiveStatus = ReceiveStatus.PayedByCustomer;
+                db.Entry(obj).State = EntityState.Modified;
+                db.SaveChanges();
                 return Json(new { ok = true, message = "Success" });
             }
             catch (Exception ex)

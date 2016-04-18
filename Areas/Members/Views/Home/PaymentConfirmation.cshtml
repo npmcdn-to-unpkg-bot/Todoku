@@ -1,4 +1,4 @@
-﻿@model List<Todoku.Models.PurchaseOrderHd>
+﻿@model List<Todoku.Models.PurchaseReceiveHd>
 @{
     ViewBag.Title = "Todoku";
 }
@@ -6,7 +6,7 @@
     $(function () {
         $('body').on('click', "input[type='button']", function () {
             $div = $(this).closest('div');
-            var data = { OrderNo: $div.find('.keyField').val(), PayerName: $div.find('#item_PayerName').val(), SenderAccountNo: $div.find('#item_SenderAccountNo').val(), TransferAmount: $div.find('.txtNumber').val() }
+            var data = { ReceiveNo: $div.find('.keyField').val(), PayerName: $div.find('#item_PayerName').val(), SenderAccountNo: $div.find('#item_SenderAccountNo').val(), TransferAmount: $div.find('.txtNumber').val() }
             OnSaveData('@Url.Content("~/PurchaseOrder/ConfirmWithAjax")', data, function (result) {
                 window.location.href = '@Url.Content("~/Members/Home/PaymentConfirmation")';
             });
@@ -17,12 +17,12 @@
 @foreach (var item in Model)
 { 
     <div style="border:1px solid black; margin-bottom:3px;">
-        @Html.HiddenFor(model => item.OrderNo, new { @class="keyField" })        
+        @Html.HiddenFor(model => item.ReceiveNo, new { @class="keyField" })        
         <table>
             <tr>
-                <td>@Html.LabelFor(model => item.OrderNo)</td>
+                <td>@Html.LabelFor(model => item.ReceiveNo)</td>
                 <td>:</td>
-                <td>@Html.DisplayFor(model => item.OrderNo)</td>
+                <td>@Html.DisplayFor(model => item.ReceiveNo)</td>
             </tr>
             <tr>
                 <td>@Html.LabelFor(model => item.PayerName)</td>

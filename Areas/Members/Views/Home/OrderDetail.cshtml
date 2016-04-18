@@ -164,7 +164,9 @@
             @foreach (var item in (List<Todoku.Models.Bank>)ViewBag.Banks)
             {
                 <tr>
-                    <td>@Html.RadioButtonFor(model => item.BankID, item.BankID, item.BankID == 1 ? new { @checked = true } : null)</td>
+                    <td>
+                        @Html.RadioButtonFor(model => new Todoku.Models.PurchaseOrderConfirmation().BankID, item.BankID, item.BankID == 1 ? new { @checked = true } : null)
+                    </td>
                     <td>
                         @*<img src="" class="@item.ImgLink" alt="" onError="this.src='@Url.Content("~/Content/Image/Product/img_not_found.jpg")'" />*@
                         <img src="" class="@item.ImgLink" alt="" onError="" />

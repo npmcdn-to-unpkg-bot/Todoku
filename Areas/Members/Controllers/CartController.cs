@@ -115,6 +115,7 @@ namespace Todoku.Areas.Members.Controllers
                 BusinessLayer db = new BusinessLayer();
                 String UserName = Membership.GetUser().UserName;
                 String[] roles = Roles.GetRolesForUser(Membership.GetUser().UserName);
+                String OrderNo = "";
                 if (roles.Any(x => x.ToLower().Contains("member")))
                 {
                     UserProfile up = db.userprofiles.FirstOrDefault(x => x.UserName == UserName);
@@ -134,6 +135,7 @@ namespace Todoku.Areas.Members.Controllers
                         String DateTransaction = String.Format("{0}{1}{2}", DateTime.Now.Year, DateTime.Now.Month.ToString("00"), DateTime.Now.Day.ToString("00"));
                         Int32 count = db.purchaseorderhds.Where(x => x.OrderNo.Contains(DateTransaction)).Count() + 1;
                         pohd.OrderNo = String.Format("{0}/{1}/{2}", TransactionNoPrefix.Purchase_Order, DateTransaction, count.ToString("000000"));
+                        if(OrderNo == "")OrderNo = pohd.OrderNo;
                         pohd.PaymentMehod = PaymentMethod.TRANSFER;
                         pohd.ValidUntil = DateTime.Now.AddDays(SystemSetting.ValidUntil);
                         pohd.OrderStatus = OrderStatus.Open;
@@ -162,8 +164,8 @@ namespace Todoku.Areas.Members.Controllers
                     }
                     
                     db.SaveChanges();
-                    //return RedirectToAction("Index", "PurchaseOrder", new { OrderNo = pohd.OrderNo });
-                    return RedirectToAction("Index", "PurchaseOrder");
+                    return RedirectToAction("Index", "PurchaseOrder", new { OrderNo = OrderNo });
+                    //return RedirectToAction("Index", "PurchaseOrder");
                 }
                 #endregion
                 return RedirectToAction("Index", "PurchaseOrder");

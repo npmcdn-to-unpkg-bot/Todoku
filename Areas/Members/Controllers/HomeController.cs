@@ -96,8 +96,8 @@ namespace Todoku.Areas.Members.Controllers
             BusinessLayer db = new BusinessLayer(); 
             String UserName = Membership.GetUser().UserName;
             UserProfile up = db.userprofiles.FirstOrDefault(x => x.UserName == UserName);
-            List<PurchaseOrderHd> pohds = db.purchaseorderhds.Where(x => x.CustomerID == up.UserProfileID && x.OrderStatus == OrderStatus.Order).ToList();
-            return View(pohds);
+            List<PurchaseReceiveHd> prhd = db.purchasereceivehds.Where(x => x.CustomerID == up.UserProfileID && x.ReceiveStatus == ReceiveStatus.Open).ToList();
+            return View(prhd);
         }
         
         public ActionResult MerchantRegistration()
