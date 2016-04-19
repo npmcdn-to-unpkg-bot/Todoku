@@ -40,5 +40,5 @@ Thumbs.db
 
 # Directory #
 bin/**
-upload/**
+uploads/**
 obj/**

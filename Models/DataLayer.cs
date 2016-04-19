@@ -302,10 +302,13 @@ namespace Todoku.Models
         [DisplayFormat(DataFormatString = "{0:c}")]
         public Decimal DiscountAmount3 { get; set; }
 
+        [Display(Name = "Pajak (%)")]
+        public Int32 VATPercentage { get; set; }
+
         [DataType(DataType.Currency)]
         [Display(Name = "Pajak")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:c}")]
-        public Int32 VATAmount { get; set; }
+        public Decimal VATAmount { get; set; }
 
         [DataType(DataType.Currency)]
         [Display(Name = "Total")]
@@ -352,6 +355,10 @@ namespace Todoku.Models
         [DataType(DataType.ImageUrl)]
         [Display(Name = "Link")]
         public String ImgLink { get; set; }
+
+        [DataType(DataType.MultilineText)]
+        [Display(Name = "Spesifikasi")]
+        public String Spesification { get; set; }
 
         [DataType(DataType.MultilineText)]
         [Display(Name = "Deskripsi")]
@@ -459,8 +466,6 @@ namespace Todoku.Models
         [Display(Name = "Tgl. Bergabung")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd MMM yyyy}")]
         public DateTime JoinDate { get; set; }
-
-        public String RegistrationStatus { get; set; }
 
         public Boolean IsDeleted { get; set; }
 

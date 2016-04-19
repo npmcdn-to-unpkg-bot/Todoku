@@ -27,7 +27,7 @@
                         };
             OnSaveData('@Url.Content("~/Merchants/Product/Edit")', data, function (result) {
                 if (result.ok) { 
-                    window.location.href = "@Url.Content("~/Merchants/Product")";
+                    window.location.href = '@Url.Content("~/Merchants/Product")';
                 }
             });
         });
@@ -51,7 +51,7 @@
         var price = parseFloat($('.txtPrice').val());
         var discount1 = parseFloat($('#detail_DiscountInPercentage').val());
         var discount2 = parseFloat($('#detail_DiscountInPercentage2').val());
-        var vatAmount = parseInt("@(Todoku.Models.SystemSetting.VATAmount)");
+        var vatAmount = parseInt("@(Todoku.Models.SystemSetting.VATPercentage)");
         var totalAmount = price * (1 - ((discount1 + discount2) / 100) + (discount1 * discount2) / 10000);
         $('#txtVATAmount').val(totalAmount * vatAmount / 100);
         $('#detail_LineAmount').val(parseFloat(totalAmount * (1 + vatAmount / 100)).toFixed(0));
@@ -152,7 +152,7 @@
             @Html.Label("Pajak")
         </div>
         <div class="editor-field">
-            <input type="text" value="@(Model.detail.VATAmount * Model.detail.Price / 100)" id="txtVATAmount" class="txtNumber" />
+            <input type="text" value="@Model.detail.VATAmount" id="txtVATAmount" class="txtNumber" />
         </div>
 
         <div class="editor-label">

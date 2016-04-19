@@ -141,7 +141,7 @@ namespace Todoku.Models
     public class SystemSetting 
     {
         public const Int32 ValidUntil = 3;
-        public const Int32 VATAmount = 10;
+        public const Int32 VATPercentage = 10;
         public const String Default_Upload_Path = @"~\Uploads\";
         public const String Default_Upload_Registration = @"~\Uploads\Registration\";
         public const String Default_URL = @"http://localhost/Todoku/";

@@ -47,7 +47,7 @@
                         <td>@item.ProductName</td>
                         <td>@item.sccategory.StandardCodeName</td>
                         <td>@item.ShortDescription</td>
-                        <td align="right">@Html.DisplayFor(model => item.detail.Price)</td>
+                        <td align="right">@Html.DisplayFor(model => item.detail.LineAmount)</td>
                         <td align="center">
                         @Html.ActionLink("Edit", "Edit", "Product", new { id = @item.ProductID }, null) | 
                         @Html.ActionLink("Detail", "Detail", "Product", new { id = @item.ProductID }, null) | 

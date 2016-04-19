@@ -125,6 +125,9 @@ namespace Todoku.Areas.Management.Controllers
                 merchant.Description = mr.Description;
                 merchant.JoinDate = DateTime.Now;
                 merchant.OwnerID = mr.OwnerID;
+                merchant.IsDeleted = false;
+                merchant.CreatedBy = Membership.GetUser().UserName;
+                merchant.CreatedDate = DateTime.Now;
                 db.merchants.Add(merchant);
 
                 UserProfile up = db.userprofiles.Find(mr.OwnerID);

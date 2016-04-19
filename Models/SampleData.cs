@@ -21,12 +21,28 @@ namespace Todoku.Models
                 }.ForEach(x => context.banks.Add(x));
                 #endregion
 
+                #region MerchantsRegistration
+                new List<MerchantRegistration>
+                {
+                    new MerchantRegistration { RegistrationCode = String.Format("{0}/{1}/0001", SystemSetting.RegisMerchantCode, DateTime.Now.ToString("yyyyMMdd")), 
+                        MerchantName = "Ace Hardware", 
+                        AddressCode = String.Format("{0}{1}{2}", SystemSetting.MerchantCode, DateTime.Now.ToString("yyyyMMdd"), "0001"), 
+                        OwnerID = 2, StartPrice = 10000, EndPrice = 100000000, RegistrationDate = DateTime.Now, RegistrationStatus = RegistrationStatus.ConfirmedByManagement, 
+                        Description = "Ace Hardware sell home appliance", IsDeleted = false, CreatedBy = "sysadmin", CreatedDate = DateTime.Now,
+                        address = new Addresses {AddressCode = String.Format("{0}{1}{2}", SystemSetting.MerchantCode, DateTime.Now.ToString("yyyyMMdd"), "0001"),
+                        Province = "SC0002.006", RajaOngkir_Province_ID = 6, City = "JAKARTA PUSAT", RajaOngkir_City_ID = 152, Email = "ace.hardware@yahoo.com", Address = "Jln. xxx", CreatedBy = "sysadmin", CreatedDate = DateTime.Now, Handphone = "0812345679", Country = "SC0003.001", IsDeleted = false, ZipCode = "10110" }},
+                    new MerchantRegistration { RegistrationCode = String.Format("{0}/{1}/0002", SystemSetting.RegisMerchantCode, DateTime.Now.ToString("yyyyMMdd")), MerchantName = "Electronic City", AddressCode = String.Format("{0}{1}{2}", SystemSetting.MerchantCode, DateTime.Now.ToString("yyyyMMdd"), "0002"), OwnerID = 2, StartPrice = 10000, EndPrice = 100000000, RegistrationDate = DateTime.Now, RegistrationStatus = RegistrationStatus.Request, Description = "Electronic City sell all type of electronic such as Television, Printer, Laptop, Air Conditioner, etc.", IsDeleted = false, CreatedBy = "sysadmin", CreatedDate = DateTime.Now,
+                        address = new Addresses {AddressCode = String.Format("{0}{1}{2}", SystemSetting.MerchantCode, DateTime.Now.ToString("yyyyMMdd"), "0002"),
+                        Province = "SC0002.006", RajaOngkir_Province_ID = 6, City = "JAKARTA PUSAT", RajaOngkir_City_ID = 152, Email = "electronic.city@yahoo.com", Address = "Jln. xxx", CreatedBy = "sysadmin", CreatedDate = DateTime.Now, Handphone = "0812345679", Country = "SC0003.001", IsDeleted = false, ZipCode = "10110" }},
+                }.ForEach(x => context.merchantRegistrations.Add(x));
+                #endregion
+
                 #region Merchants
-                //new List<Merchant>
-                //{
-                //    new Merchant { MerchantID = 1, MerchantCode = "TDM000001", MerchantName = "GS Shop", IsActive = true, OwnerID = 1, JoinDate = DateTime.Now },
-                //    new Merchant { MerchantID = 2, MerchantCode = "TDM000002", MerchantName = "Electronic City", IsActive = true, OwnerID = 1, JoinDate = DateTime.Now },
-                //}.ForEach(x => context.merchants.Add(x));
+                new List<Merchant>
+                {
+                    new Merchant { MerchantCode = String.Format("{0}/{1}/0001", SystemSetting.RegisMerchantCode, DateTime.Now.ToString("yyyyMMdd")), MerchantName = "Ace Hardware", IsActive = true, OwnerID = 2, JoinDate = DateTime.Now, AddressCode = String.Format("{0}{1}{2}", SystemSetting.MerchantCode, DateTime.Now.ToString("yyyyMMdd"), "0001"), Description = "Ace Hardware sell home appliance", IsDeleted = false, CreatedBy = "sysadmin", CreatedDate = DateTime.Now },
+                    //new Merchant { MerchantCode = "TDM000002", MerchantName = "Electronic City", IsActive = true, OwnerID = 1, JoinDate = DateTime.Now },
+                }.ForEach(x => context.merchants.Add(x));
                 #endregion
 
                 #region ProductsDetails

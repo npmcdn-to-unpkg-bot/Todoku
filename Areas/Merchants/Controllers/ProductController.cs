@@ -8,6 +8,7 @@ using Ionic.Zip;
 using Todoku.Models;
 using System.Data;
 using System.Data.OleDb;
+using System.Web.Security;
 
 namespace Todoku.Areas.Merchants.Controllers
 {
@@ -90,6 +91,9 @@ namespace Todoku.Areas.Merchants.Controllers
                                             var Profit = dr[5];
                                             var discount1 = dr[6];
                                             var discount2 = dr[7];
+                                            var weight = dr[10];
+                                            var stock = dr[11];
+                                            var description = dr[12];
 
                                             prd.ProductCode = Code.ToString();
                                             prd.ProductName = Name.ToString();
@@ -102,16 +106,26 @@ namespace Todoku.Areas.Merchants.Controllers
 
                                             prd.ImgLink = String.Format(@"~\Uploads\{0}\Produk\{1}\Produk.jpg", merchant.MerchantCode, prd.ProductCode);
 
-                                            prd.Description = "";
-                                            prd.detail = detail;
+                                            prd.Description = description.ToString();
+                                            prd.IsDeleted = false;
+                                            prd.CreatedBy = Membership.GetUser().UserName;
+                                            prd.CreatedDate = DateTime.Now;
 
+                                            prd.detail = detail;
                                             detail.Quantity = 0;
                                             detail.Price = Convert.ToDecimal(Price);
                                             detail.DiscountAmount = Convert.ToInt32(discount1);
                                             detail.DiscountAmount2 = Convert.ToInt32(discount2);
                                             detail.DiscountAmount3 = 0;
-                                            detail.VATAmount = SystemSetting.VATAmount;
-                                            detail.LineAmount = (detail.Price * (1 - ((detail.DiscountInPercentage + detail.DiscountInPercentage2) / 100) + (detail.DiscountInPercentage * detail.DiscountInPercentage2 / 10000))) * (100 + SystemSetting.VATAmount) / 100;
+                                            detail.Weight = Convert.ToInt32(weight);
+                                            detail.Quantity = Convert.ToInt32(stock);
+                                            detail.VATPercentage = SystemSetting.VATPercentage;
+                                            Decimal total = (detail.Price * (1 - ((detail.DiscountInPercentage + detail.DiscountInPercentage2) / 100) + (detail.DiscountInPercentage * detail.DiscountInPercentage2 / 10000)));
+                                            detail.VATAmount = (total * SystemSetting.VATPercentage / 100);
+                                            detail.LineAmount = total * (100 + SystemSetting.VATPercentage) / 100;
+                                            detail.IsDeleted = false;
+                                            detail.CreatedBy = Membership.GetUser().UserName;
+                                            detail.CreatedDate = DateTime.Now;
 
                                             db.products.Add(prd);
                                         }
@@ -168,8 +182,10 @@ namespace Todoku.Areas.Merchants.Controllers
                 entity.detail.DiscountInPercentage = product.detail.DiscountInPercentage;
                 entity.detail.DiscountInPercentage2 = product.detail.DiscountInPercentage2;
                 entity.detail.DiscountInPercentage3 = product.detail.DiscountInPercentage3;
-                entity.detail.VATAmount = SystemSetting.VATAmount;
-                entity.detail.LineAmount = (product.detail.Price * (1 - (((Decimal)entity.detail.DiscountInPercentage + entity.detail.DiscountInPercentage2) / 100) + ((Decimal)entity.detail.DiscountInPercentage * entity.detail.DiscountInPercentage2 / 10000)));
+                entity.detail.VATPercentage = SystemSetting.VATPercentage;
+                Decimal total = (product.detail.Price * (1 - (((Decimal)entity.detail.DiscountInPercentage + entity.detail.DiscountInPercentage2) / 100) + ((Decimal)entity.detail.DiscountInPercentage * entity.detail.DiscountInPercentage2 / 10000)));
+                entity.detail.VATAmount = total * SystemSetting.VATPercentage / 100;
+                entity.detail.LineAmount = total * (100 + SystemSetting.VATPercentage) / 100;
 
                 db.products.Add(entity);
                 db.SaveChanges();
@@ -207,17 +223,34 @@ namespace Todoku.Areas.Merchants.Controllers
                         Merchant merchant = db.merchants.Find(entity.MerchantID);
                         entity.ImgLink = String.Format(@"~\Uploads\{0}\Produk\{1}\Produk.jpg", merchant.MerchantCode, entity.ProductCode);
                         entity.Description = product.Description;
-
-                        entity.detail = new ProductsDetails();
-                        entity.detail.Quantity = product.detail.Quantity;
-                        entity.detail.Weight = product.detail.Weight;
-                        entity.detail.Price = Convert.ToDecimal(product.detail.Price);
-                        entity.detail.DiscountInPercentage = product.detail.DiscountInPercentage;
-                        entity.detail.DiscountInPercentage2 = product.detail.DiscountInPercentage2;
-                        entity.detail.DiscountInPercentage3 = product.detail.DiscountInPercentage3;
-                        entity.detail.VATAmount = SystemSetting.VATAmount;
-                        entity.detail.LineAmount = (product.detail.Price * (1 - (((Decimal)entity.detail.DiscountInPercentage + entity.detail.DiscountInPercentage2) / 100) + ((Decimal)entity.detail.DiscountInPercentage * entity.detail.DiscountInPercentage2 / 10000)));
-
+                        entity.LastUpdatedBy = Membership.GetUser().UserName;
+                        entity.LastUpdatedDate = DateTime.Now;
+                        if (entity.detail == null)
+                        {
+                            entity.detail = new ProductsDetails();
+                            entity.detail.Quantity = product.detail.Quantity;
+                            entity.detail.Weight = product.detail.Weight;
+                            entity.detail.Price = Convert.ToDecimal(product.detail.Price);
+                            entity.detail.DiscountInPercentage = product.detail.DiscountInPercentage;
+                            entity.detail.DiscountInPercentage2 = product.detail.DiscountInPercentage2;
+                            entity.detail.DiscountInPercentage3 = product.detail.DiscountInPercentage3;
+                            Decimal total = (product.detail.Price * (1 - (((Decimal)entity.detail.DiscountInPercentage + entity.detail.DiscountInPercentage2) / 100) + ((Decimal)entity.detail.DiscountInPercentage * entity.detail.DiscountInPercentage2 / 10000)));
+                            entity.detail.VATAmount = total * SystemSetting.VATPercentage / 100;
+                            entity.detail.LineAmount = total * (100 + SystemSetting.VATPercentage) / 100;
+                        }
+                        else 
+                        {
+                            entity.detail.Quantity = product.detail.Quantity;
+                            entity.detail.Weight = product.detail.Weight;
+                            entity.detail.Price = Convert.ToDecimal(product.detail.Price);
+                            entity.detail.DiscountInPercentage = product.detail.DiscountInPercentage;
+                            entity.detail.DiscountInPercentage2 = product.detail.DiscountInPercentage2;
+                            entity.detail.DiscountInPercentage3 = product.detail.DiscountInPercentage3;
+                            Decimal total = (product.detail.Price * (1 - (((Decimal)entity.detail.DiscountInPercentage + entity.detail.DiscountInPercentage2) / 100) + ((Decimal)entity.detail.DiscountInPercentage * entity.detail.DiscountInPercentage2 / 10000)));
+                            entity.detail.VATAmount = total * SystemSetting.VATPercentage / 100;
+                            entity.detail.LineAmount = total * (100 + SystemSetting.VATPercentage) / 100;
+                        }
+                        
                         db.Entry(entity).State = EntityState.Modified;
                         db.SaveChanges();
                         return Json(new { ok = true, status = "Success" });

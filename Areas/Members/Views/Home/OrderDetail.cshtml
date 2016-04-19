@@ -54,7 +54,6 @@
 
         var data = { origin: $('#hdnStoreAddress').val(), destination: $('#hdnShippingCity').val(), weight: $('#hdnTotalWeight').val(), courier: 'jne' };
         AjaxFunction(url, data, "POST", function (result) {
-            console.log(result);
             $('#lstShipping').html('');
             $('#ShippingTemplate').tmpl(result).appendTo('#lstShipping');
         });
