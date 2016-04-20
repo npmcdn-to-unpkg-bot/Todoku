@@ -4,29 +4,27 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Todoku.Models;
+using System.Web.Security;
 
 namespace Todoku.Areas.Merchants.Controllers
 {
-    public class ProfilController : Controller
+    public class CustomerOrderController : Controller
     {
         //
-        // GET: /Merchants/Profil/
+        // GET: /Merchants/CustomerOrder/
 
         public ActionResult Index(Int32 MerchantID)
         {
             BusinessLayer db = new BusinessLayer();
-            ViewBag.PartialView = "LeftPanel";
-            ViewBag.filterExpression = "Merchant_Detail";
-            Merchant entity = db.merchants.Find(MerchantID);
-            List<StandardCode> sc = db.standardcodes.Where(x => x.ParentID == SCConstant.Provinsi || x.ParentID == SCConstant.Negara).ToList();
-            sc.Insert(0, new StandardCode { StandardCodeID = "", StandardCodeName = "" });
-            ViewBag.Province = new SelectList(sc.Where(x => x.ParentID == SCConstant.Provinsi || x.StandardCodeID == ""), "StandardCodeID", "StandardCodeName", entity.address.Province);
-            ViewBag.Country = new SelectList(sc.Where(x => x.ParentID == SCConstant.Negara || x.StandardCodeID == ""), "StandardCodeID", "StandardCodeName", entity.address.Country);
-            return PartialView(entity);
+            String OwnerID = Membership.GetUser().ProviderUserKey.ToString();
+            List<CustomerOrder> cos = db.customerOrder
+                .Where(x => x.MerchantID == MerchantID && (x.RequestStatus == RequestStatus.Booked || x.RequestStatus == RequestStatus.ConfirmedByAdmin))
+                .ToList();
+            return PartialView(cos);
         }
 
         //
-        // GET: /Merchants/Profil/Details/5
+        // GET: /Merchants/CustomerOrder/Details/5
 
         public ActionResult Details(int id)
         {
@@ -34,7 +32,7 @@ namespace Todoku.Areas.Merchants.Controllers
         }
 
         //
-        // GET: /Merchants/Profil/Create
+        // GET: /Merchants/CustomerOrder/Create
 
         public ActionResult Create()
         {
@@ -42,7 +40,7 @@ namespace Todoku.Areas.Merchants.Controllers
         } 
 
         //
-        // POST: /Merchants/Profil/Create
+        // POST: /Merchants/CustomerOrder/Create
 
         [HttpPost]
         public ActionResult Create(FormCollection collection)
@@ -60,7 +58,7 @@ namespace Todoku.Areas.Merchants.Controllers
         }
         
         //
-        // GET: /Merchants/Profil/Edit/5
+        // GET: /Merchants/CustomerOrder/Edit/5
  
         public ActionResult Edit(int id)
         {
@@ -68,7 +66,7 @@ namespace Todoku.Areas.Merchants.Controllers
         }
 
         //
-        // POST: /Merchants/Profil/Edit/5
+        // POST: /Merchants/CustomerOrder/Edit/5
 
         [HttpPost]
         public ActionResult Edit(int id, FormCollection collection)
@@ -86,7 +84,7 @@ namespace Todoku.Areas.Merchants.Controllers
         }
 
         //
-        // GET: /Merchants/Profil/Delete/5
+        // GET: /Merchants/CustomerOrder/Delete/5
  
         public ActionResult Delete(int id)
         {
@@ -94,7 +92,7 @@ namespace Todoku.Areas.Merchants.Controllers
         }
 
         //
-        // POST: /Merchants/Profil/Delete/5
+        // POST: /Merchants/CustomerOrder/Delete/5
 
         [HttpPost]
         public ActionResult Delete(int id, FormCollection collection)

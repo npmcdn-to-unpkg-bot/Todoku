@@ -5,28 +5,26 @@
 }
 <script type="text/javascript">
     $(function () {
-        //CalculateTotal();
-
         $('#btnSave').click(function () {
             var data = {
-                        ProductID: $('#ProductID').val(),
-                        ProductCode: $('#ProductCode').val(),
-                        ProductName: $('#ProductName').val(),
-                        Category: $('#Category').val(),
-                        ImgLink: $('#ImgLink').val(),
-                        Description: $('#Description').val(), 
-                        detail : {
-                                Quantity: $('#detail_Quantity').val(),
-                                Weight : $('#detail_Weight').val(),
-                                Price: $('#detail_Price').val(),
-                                DiscountInPercentage: $('#detail_DiscountInPercentage').val(),
-                                DiscountInPercentage2: $('#detail_DiscountInPercentage2').val(),
-                                DiscountInPercentage3: 0,
-                                LineAmount: $('#detail_LineAmount').val()
-                                }
-                        };
+                ProductID: $('#ProductID').val(),
+                ProductCode: $('#ProductCode').val(),
+                ProductName: $('#ProductName').val(),
+                Category: $('#Category').val(),
+                ImgLink: $('#ImgLink').val(),
+                Description: $('#Description').val(),
+                detail: {
+                    Quantity: $('#detail_Quantity').val(),
+                    Weight: $('#detail_Weight').val(),
+                    Price: $('#detail_Price').val(),
+                    DiscountInPercentage: $('#detail_DiscountInPercentage').val(),
+                    DiscountInPercentage2: $('#detail_DiscountInPercentage2').val(),
+                    DiscountInPercentage3: 0,
+                    LineAmount: $('#detail_LineAmount').val()
+                }
+            };
             OnSaveData('@Url.Content("~/Merchants/Product/Edit")', data, function (result) {
-                if (result.ok) { 
+                if (result.ok) {
                     window.location.href = '@Url.Content("~/Merchants/Product")';
                 }
             });
@@ -44,9 +42,10 @@
             CalculateTotal();
         });
 
+        $("#tabs").tabs();
+        $("#sub-tabs").tabs();
     });
     
-
     function CalculateTotal() {
         var price = parseFloat($('.txtPrice').val());
         var discount1 = parseFloat($('#detail_DiscountInPercentage').val());
@@ -59,129 +58,156 @@
 </script>
 <h2>Tambah Produk</h2>
 
-@using (Html.BeginForm())
-{
-    @Html.ValidationSummary(true)
+<div id="tabs">
+  <ul>
+    <li><a href="#tabs-1">Info Produk</a></li>
+    <li><a href="#tabs-2">Deskripsi</a></li>
+    <li><a href="#tabs-3">Lain-Lain</a></li>
+  </ul>
+  <div id="tabs-1">
+    @using (Html.BeginForm())
+    {
+        @Html.ValidationSummary(true)
     
-    <fieldset>
-        <legend>Product</legend>
-        @Html.HiddenFor(model => model.ProductID)
+        <fieldset>
+            <legend>Product</legend>
+            @Html.HiddenFor(model => model.ProductID)
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.ProductCode)
-        </div>
-        <div class="editor-field">
-            @Html.DisplayFor(model => model.ProductCode)
-        </div>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.ProductCode)
+            </div>
+            <div class="editor-field">
+                @Html.DisplayFor(model => model.ProductCode)
+            </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.ProductName)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.ProductName)
-            @Html.ValidationMessageFor(model => model.ProductName)
-        </div>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.ProductName)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.ProductName)
+                @Html.ValidationMessageFor(model => model.ProductName)
+            </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Category)
-        </div>
-        <div class="editor-field">
-            @Html.DropDownList("Category")
-            @Html.ValidationMessageFor(model => model.Category)
-        </div>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Category)
+            </div>
+            <div class="editor-field">
+                @Html.DropDownList("Category")
+                @Html.ValidationMessageFor(model => model.Category)
+            </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Description)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Description)
-            @Html.ValidationMessageFor(model => model.Description)
-        </div>
-    </fieldset>
-    <fieldset>
-        <legend>Detail</legend>
-        <div class="editor-label">
-            @Html.LabelFor(model => model.detail.Quantity)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.detail.Quantity)
-            @Html.ValidationMessageFor(model => model.detail.Quantity)
-        </div>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.ShortDescription)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.ShortDescription)
+                @Html.ValidationMessageFor(model => model.ShortDescription)
+            </div>
+            
+        </fieldset>
+        <fieldset>
+            <legend>Detail</legend>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.detail.Quantity)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.detail.Quantity)
+                @Html.ValidationMessageFor(model => model.detail.Quantity)
+            </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.detail.Weight)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.detail.Weight)
-            @Html.ValidationMessageFor(model => model.detail.Weight)
-        </div>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.detail.Weight)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.detail.Weight)
+                @Html.ValidationMessageFor(model => model.detail.Weight)
+            </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.detail.Price)
-        </div>
-        <div class="editor-field">
-            @Html.TextBoxFor(model => model.detail.Price, new { @class = "txtPrice txtNumber" })
-            @Html.ValidationMessageFor(model => model.detail.Price)
-        </div>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.detail.Price)
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.detail.Price, new { @class = "txtPrice txtNumber" })
+                @Html.ValidationMessageFor(model => model.detail.Price)
+            </div>
 
-        @*<div class="editor-label">
-            @Html.LabelFor(model => model.detail.Profit)
-        </div>
-        <div class="editor-field">
-            @Html.TextBoxFor(model => model.detail.Profit, new { @class = "txtPrice txtNumber" })
-            @Html.ValidationMessageFor(model => model.detail.Profit)
-        </div>*@
+            <div class="editor-label">
+                @Html.LabelFor(model => model.detail.DiscountInPercentage)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.detail.DiscountInPercentage)
+                @Html.ValidationMessageFor(model => model.detail.DiscountInPercentage)
+            </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.detail.DiscountInPercentage)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.detail.DiscountInPercentage)
-            @Html.ValidationMessageFor(model => model.detail.DiscountInPercentage)
-        </div>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.detail.DiscountInPercentage2)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.detail.DiscountInPercentage2)
+                @Html.ValidationMessageFor(model => model.detail.DiscountInPercentage2)
+            </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.detail.DiscountInPercentage2)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.detail.DiscountInPercentage2)
-            @Html.ValidationMessageFor(model => model.detail.DiscountInPercentage2)
-        </div>
+            <div class="editor-label">
+                @Html.Label("Pajak")
+            </div>
+            <div class="editor-field">
+                <input type="text" value="@Model.detail.VATAmount" id="txtVATAmount" class="txtNumber" />
+            </div>
 
-        <div class="editor-label">
-            @Html.Label("Pajak")
-        </div>
-        <div class="editor-field">
-            <input type="text" value="@Model.detail.VATAmount" id="txtVATAmount" class="txtNumber" />
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.detail.LineAmount)
-        </div>
-        <div class="editor-field">
-            @Html.TextBoxFor(model => model.detail.LineAmount, new { @class = "txtPrice txtNumber" })
-            @Html.ValidationMessageFor(model => model.detail.LineAmount)
-        </div>
-    </fieldset>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.detail.LineAmount)
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.detail.LineAmount, new { @class = "txtPrice txtNumber" })
+                @Html.ValidationMessageFor(model => model.detail.LineAmount)
+            </div>
+        </fieldset>
     
-    <p>
-        <input type="button" value="Save" id="btnSave" />
-    </p>
-}
-@using (Html.BeginForm("UploadFile", "Product", FormMethod.Post, new { enctype = "multipart/form-data" }))
-{
-    <fieldset>
-        <legend>Lain - Lain</legend>
-        <div class="editor-label">
-            @Html.LabelFor(model => model.ImgLink)
+        <p>
+            <input type="button" value="Save" id="btnSave" />
+        </p>
+    }
+  </div>
+  <div id="tabs-2">
+    <div id="sub-tabs">
+        <ul>
+            <li><a href="#sub-tabs-1">Deskripsi</a></li>
+            <li><a href="#sub-tabs-2">Spesifikasi</a></li>
+        </ul>
+        <div id="sub-tabs-1">
+            @using(Html.BeginForm("SaveDescription","Product", FormMethod.Post))
+            {
+                @Html.HiddenFor(model => Model.ProductID)
+                <textarea id="txtDescription" class="RichEditor" name="Description" rows="2" cols="2">@Model.Description</textarea>
+                <input type="submit" value="Save" />
+            }
         </div>
-        <input type="hidden" value="@Model.ProductID" name="hdnProductID" />
-        <input type="file" name="file" id="file" />
-        <input type="submit" value="Upload" />
-    </fieldset>
-}
-
+        <div id="sub-tabs-2">
+            @using (Html.BeginForm("SaveSpesification", "Product", FormMethod.Post))
+            {
+                @Html.HiddenFor(model => Model.ProductID)
+                <textarea id="txtSpesification" class="RichEditor" name="Spesification" rows="2" cols="2">@Model.Spesification</textarea>
+                <input type="submit" value="Save" />
+            }
+        </div>
+    </div>
+  </div>
+  <div id="tabs-3">
+    @using (Html.BeginForm("UploadFile", "Product", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <fieldset>
+            <legend>Lain - Lain</legend>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.ImgLink)
+            </div>
+            <input type="hidden" value="@Model.ProductID" name="hdnProductID" />
+            <input type="file" name="file" id="file" />
+            <input type="submit" value="Upload" />
+        </fieldset>
+    }
+  </div>
+</div>
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    <a href="/Todoku/Merchants/Detail/@Model.MerchantID">Back to List</a>
 </div>

@@ -114,7 +114,7 @@ namespace Todoku.Controllers
 
             List<MenuInUserRole> miur = db.menuinuserrole.Where(x => uRoles.Contains(x.UserRole)).ToList();
 
-            List<Menu> menus = db.menus.Where(x => x.IsActive == true).ToList().Where(x => miur.Select(s => s.MenuID).Contains(x.MenuID)).ToList();
+            List<Menu> menus = db.menus.Where(x => x.IsActive == true && x.IsChildMenu == false).ToList().Where(x => miur.Select(s => s.MenuID).Contains(x.MenuID)).ToList();
             
             return PartialView(menus);
         }

@@ -1,0 +1,77 @@
+﻿@model List<Todoku.Models.CustomerOrder>
+@{
+    ViewBag.Title = "Todoku";
+}
+
+<script type="text/javascript">
+    $(function () {
+        $('table').on('click', ".btnProcess", function () {
+            $tr = $(this).closest('tr');
+            var data = { OrderID: $tr.find(".hdnOrderID").val(),
+                MerchantID: $tr.find(".hdnMerchantID").val(),
+                CustomerID: $tr.find(".hdnCustomerID").val(),
+                ProductID: $tr.find(".hdnProductID").val()
+            };
+            OnSaveData('@Url.Content("~/Merchants/Home/ConfirmRequest")', data, function () {
+                window.location.href = '@Url.Content("~/Merchants/Home/CustomerOrder/")';
+            });
+        });
+
+        $('table').on('click', ".btnVoid", function () {
+            $tr = $(this).closest('tr');
+            var data = { OrderID: $tr.find(".hdnOrderID").val(),
+                MerchantID: $tr.find(".hdnMerchantID").val(),
+                CustomerID: $tr.find(".hdnCustomerID").val(),
+                ProductID: $tr.find(".hdnProductID").val()
+            };
+            OnSaveData('@Url.Content("~/Merchants/Home/VoidRequest")', data, function () {
+                window.location.href = '@Url.Content("~/Merchants/Home/CustomerOrder/")';
+            });
+        });
+    });
+</script>
+
+<h2>Pemesanan Barang</h2>
+<table class="grdView">
+    <colgroup>
+        <col width="350px"/>
+        <col width="70px"/>
+        <col />
+        <col width="150px"/>
+    </colgroup>
+    <thead>
+        <tr>
+            <td align="center">Produk</td>
+            <td align="center">Jumlah</td>
+            <td align="center">Alamat</td>
+            <td align="center"></td>
+        </tr>
+    </thead>
+    @foreach(var item in Model){
+        <tr>
+            <td>
+                @Html.HiddenFor(x => item.MerchantID, new { @class = "hdnMerchantID" })
+                @Html.HiddenFor(x => item.OrderID, new { @class = "hdnOrderID" })
+                @Html.HiddenFor(x => item.ProductID, new { @class = "hdnProductID" })
+                @Html.HiddenFor(x => item.CustomerID, new { @class = "hdnCustomerID" })
+                @Html.DisplayFor(x => item.product.ProductName)
+            </td>
+            <td align="right">@Html.DisplayFor(x => item.Quantity) Pcs</td>
+            <td>
+                @Html.DisplayFor(x => item.customer.Fullname)<br/>
+                @Html.DisplayFor(x => item.customer.address.Address)
+            </td>
+            <td align="center">
+                @if (item.RequestStatus == Todoku.Models.RequestStatus.Booked)
+                { 
+                    @Html.Label("Booked")
+                }
+                else if (item.RequestStatus == Todoku.Models.RequestStatus.ConfirmedByAdmin)
+                { 
+                    @Html.Button("Prosess", new { @class = "btnProcess" })
+                }
+                @Html.Button("Batal", new { @class = "btnVoid" })
+            </td>
+        </tr>
+    }
+</table>

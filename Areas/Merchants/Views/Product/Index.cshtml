@@ -3,13 +3,12 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Produk</h2>
-
 <div>
     <fieldset>
         <legend>Upload</legend>
         @using (Html.BeginForm("UploadFile", "Product", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
+            <input type="hidden" name="MerchantID" value="@ViewBag.MerchantID" />
             <label for="file">File :</label>
             <input type="file" name="file" id="file" />
             <input type="submit" value="Upload" />
@@ -46,7 +45,7 @@
                         <td>@item.ProductCode</td>
                         <td>@item.ProductName</td>
                         <td>@item.sccategory.StandardCodeName</td>
-                        <td>@item.ShortDescription</td>
+                        <td>@Html.Raw(item.ShortDescription)</td>
                         <td align="right">@Html.DisplayFor(model => item.detail.LineAmount)</td>
                         <td align="center">
                         @Html.ActionLink("Edit", "Edit", "Product", new { id = @item.ProductID }, null) | 

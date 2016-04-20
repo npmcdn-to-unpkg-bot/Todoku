@@ -358,10 +358,16 @@ namespace Todoku.Models
 
         [DataType(DataType.MultilineText)]
         [Display(Name = "Spesifikasi")]
+        [AllowHtml]
         public String Spesification { get; set; }
 
         [DataType(DataType.MultilineText)]
+        [Display(Name = "Deskripsi Pendek")]
+        public String ShortDescription { get; set; }
+
+        [DataType(DataType.MultilineText)]
         [Display(Name = "Deskripsi")]
+        [AllowHtml]
         public String Description { get; set; }
 
         public bool IsDeleted { get; set; }
@@ -382,19 +388,6 @@ namespace Todoku.Models
 
         [ForeignKey("Category")]
         public virtual StandardCode sccategory { get; set; }
-
-        public String ShortDescription 
-        {
-            get 
-            {
-                if (Description != null)
-                {
-                    return Description.Length > 100 ? String.Format("{0}...", Description.Substring(0, 100)) : Description;
-                }
-                else { return ""; }
-                
-            }
-        }
     }
 
     public class Menu
@@ -405,6 +398,7 @@ namespace Todoku.Models
         public String MenuArea { get; set; }
         public String Path { get; set; }
         public Int32? ParentID { get; set; }
+        public Boolean IsChildMenu { get; set; }
         public Boolean IsParent { get; set; }
         public bool IsActive { get; set; }
         public String CreatedBy { get; set; }

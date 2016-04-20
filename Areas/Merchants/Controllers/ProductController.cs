@@ -17,18 +17,18 @@ namespace Todoku.Areas.Merchants.Controllers
         //
         // GET: /Merchants/Product/
 
-        public ActionResult Index()
+        public ActionResult Index(Int32 MerchantID)
         {
-            Int32 MerchantID = Convert.ToInt32(TempData.Peek("MerchantID"));
             BusinessLayer db = new BusinessLayer();
             List<Product> products = db.products.Where(x => x.MerchantID == MerchantID).ToList();
-            return View(products);
+            ViewBag.MerchantID = MerchantID;
+            return PartialView(products);
         }
 
         [HttpPost]
-        public ActionResult UploadFile(HttpPostedFileBase file, Int32 hdnProductID = 0)
+        public ActionResult UploadFile(HttpPostedFileBase file, Int32 MerchantID, Int32 hdnProductID = 0)
         {
-            if (file.ContentLength > 0)
+            if (file != null && file.ContentLength > 0)
             {
                 String fileName = Path.GetFileName(file.FileName);
                 String ext = Path.GetExtension(file.FileName);
@@ -39,7 +39,6 @@ namespace Todoku.Areas.Merchants.Controllers
                         try
                         {
                             #region Unzip File
-                            Int32 MerchantID = Convert.ToInt32(TempData.Peek("MerchantID"));
                             Merchant merchant = db.merchants.FirstOrDefault(x => x.MerchantID == MerchantID);
 
                             String MerchantFolder = Path.Combine(Server.MapPath(SystemSetting.Default_Upload_Path), merchant.MerchantCode);
@@ -135,11 +134,11 @@ namespace Todoku.Areas.Merchants.Controllers
                                 #endregion
                             }
 
-                            return RedirectToAction("Index");
+                            return RedirectToAction("Detail", "Home", new { area = "Merchants", id = MerchantID });
                         }
                         catch (Exception ex)
                         {
-                            return RedirectToAction("Index");
+                            return View();
                         }
                     }
                 }
@@ -295,6 +294,50 @@ namespace Todoku.Areas.Merchants.Controllers
                 String errMessage = ex.Message;
                 return View("Delete");
             }
+        }
+
+        [HttpPost]
+        public ActionResult SaveDescription(Product product) 
+        {
+            BusinessLayer db = new BusinessLayer();
+            try
+            {
+                if (TempData.Peek("MerchantID") != null)
+                {
+                    Int32 MerchantID = Convert.ToInt32(TempData.Peek("MerchantID"));
+                    Product entity = db.products.Find(product.ProductID);
+                    entity.Description = product.Description;
+                    db.Entry(entity).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            { 
+                
+            }
+            return RedirectToAction("Edit", new { id = product.ProductID});
+        }
+
+        [HttpPost]
+        public ActionResult SaveSpesification(Product product)
+        {
+            BusinessLayer db = new BusinessLayer();
+            try
+            {
+                if (TempData.Peek("MerchantID") != null)
+                {
+                    Int32 MerchantID = Convert.ToInt32(TempData.Peek("MerchantID"));
+                    Product entity = db.products.Find(product.ProductID);
+                    entity.Spesification = product.Spesification;
+                    db.Entry(entity).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return RedirectToAction("Edit", new { id = product.ProductID });
         }
     }
 }

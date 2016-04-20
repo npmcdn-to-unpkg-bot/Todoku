@@ -17,27 +17,23 @@ namespace Todoku.Areas.Merchants.Controllers
 
         public ActionResult Index()
         {
-            ViewBag.PartialView = "LeftPanel";
-            ViewBag.filterExpression = "Merchant";
             BusinessLayer db = new BusinessLayer();
             String Username = Membership.GetUser().UserName;
             List<Merchant> merchants = db.merchants.Where(x => x.userprofile.UserName == Username && x.IsActive == true).ToList();
             return View(merchants);
         }
 
-        public ActionResult CustomerOrder() 
-        {
-            ViewBag.PartialView = "LeftPanel";
-            ViewBag.filterExpression = "Merchant_Detail";
-            Int32 MerchantID = Convert.ToInt32(TempData.Peek("MerchantID"));
-            BusinessLayer db = new BusinessLayer();
-            String OwnerID = Membership.GetUser().ProviderUserKey.ToString();
-            //Merchant merchant = db.merchants.FirstOrDefault(x => x.IsActive && x.userprofile.UserName == OwnerID && x.MerchantID == MerchantID);
-            List<CustomerOrder> cos = db.customerOrder
-                .Where(x => x.MerchantID == MerchantID && (x.RequestStatus == RequestStatus.Booked || x.RequestStatus == RequestStatus.ConfirmedByAdmin))
-                .ToList();
-            return View(cos);
-        }
+        //public ActionResult CustomerOrder() 
+        //{
+        //    Int32 MerchantID = Convert.ToInt32(TempData.Peek("MerchantID"));
+        //    BusinessLayer db = new BusinessLayer();
+        //    String OwnerID = Membership.GetUser().ProviderUserKey.ToString();
+        //    //Merchant merchant = db.merchants.FirstOrDefault(x => x.IsActive && x.userprofile.UserName == OwnerID && x.MerchantID == MerchantID);
+        //    List<CustomerOrder> cos = db.customerOrder
+        //        .Where(x => x.MerchantID == MerchantID && (x.RequestStatus == RequestStatus.Booked || x.RequestStatus == RequestStatus.ConfirmedByAdmin))
+        //        .ToList();
+        //    return View(cos);
+        //}
 
         public JsonResult ConfirmRequest(CustomerOrder entity) 
         {
@@ -88,17 +84,16 @@ namespace Todoku.Areas.Merchants.Controllers
 
         public ActionResult SendPackage() 
         {
-            ViewBag.PartialView = "LeftPanel";
-            ViewBag.filterExpression = "Merchant_Detail";
-            BusinessLayer db = new BusinessLayer();
-            String OwnerID = Membership.GetUser().UserName;
-            List<Merchant> merchants = db.merchants.Where(x => x.IsActive && x.userprofile.UserName == OwnerID).ToList();
-            List<ItemDeliveryHd> itemdeliveryhds = new List<ItemDeliveryHd>();
-            foreach(Merchant entity in merchants)
-            {
-                itemdeliveryhds.AddRange(db.itemdeliveryhds.Where(x => x.MerchantID == entity.MerchantID && x.DeliveryStatus == DeliveryStatus.Prepared).ToList());
-            }
-            return View(itemdeliveryhds);
+            //BusinessLayer db = new BusinessLayer();
+            //String OwnerID = Membership.GetUser().UserName;
+            //List<Merchant> merchants = db.merchants.Where(x => x.IsActive && x.userprofile.UserName == OwnerID).ToList();
+            //List<ItemDeliveryHd> itemdeliveryhds = new List<ItemDeliveryHd>();
+            //foreach(Merchant entity in merchants)
+            //{
+            //    itemdeliveryhds.AddRange(db.itemdeliveryhds.Where(x => x.MerchantID == entity.MerchantID && x.DeliveryStatus == DeliveryStatus.Prepared).ToList());
+            //}
+            //return View(itemdeliveryhds);
+            return View();
         }
 
         public JsonResult ProcessPackage(ItemDeliveryHd entity) 
@@ -161,11 +156,8 @@ namespace Todoku.Areas.Merchants.Controllers
 
         public ActionResult Detail(Int32 id) 
         {
-            ViewBag.PartialView = "LeftPanel";
-            ViewBag.filterExpression = "Merchant;Merchant_Detail";
             BusinessLayer db = new BusinessLayer();
             Merchant merchant = db.merchants.FirstOrDefault(x => x.MerchantID == id);
-            TempData["MerchantID"] = id;
             return View(merchant);
         }
     }

@@ -12,6 +12,23 @@
     });
     //#endregion
 
+    //#region TextEditor
+    if (typeof (tinyMCE) != "undefined") {
+        tinymce.init({
+            selector: 'textarea.RichEditor',
+            height: 500,
+            theme: 'modern',
+            plugins: [
+                'advlist autolink lists link image charmap print preview hr anchor pagebreak',
+                'searchreplace wordcount visualblocks visualchars code fullscreen',
+                'insertdatetime media nonbreaking save table contextmenu directionality',
+                'emoticons template paste textcolor colorpicker textpattern imagetools'
+              ],
+            toolbar: "undo redo | styleselect | forecolor backcolor emoticons | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent |"
+        });
+    }
+    //#endregion
+
     $('.tabs').each(function () {
         $(this).tabs();
     });
