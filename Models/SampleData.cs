@@ -71,6 +71,14 @@ namespace Todoku.Models
                 //}.ForEach(x => context.productsDetails.Add(x));
                 #endregion
 
+                #region Product Attribute Group
+                new List<ProductAttributeGroup>()
+                {
+                    new ProductAttributeGroup { GroupName = "Ukuran", IsDeleted = false, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                    new ProductAttributeGroup { GroupName = "Warna", IsDeleted = false, CreatedBy = "sysadmin", CreatedDate = DateTime.Now}
+                }.ForEach(x => context.productAttributeGroups.Add(x));
+                #endregion
+
                 #region Product
                 //new List<Product>
                 //{

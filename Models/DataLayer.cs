@@ -14,7 +14,7 @@ namespace Todoku.Models
         public String StandardCodeID { get; set; }
         public String StandardCodeName { get; set; }
         public String Alias { get; set; }
-        public bool IsParent { get; set; }
+        public Boolean IsParent { get; set; }
         public String ParentID { get; set; }
         public String CreatedBy { get; set; }
         public DateTime CreatedDate { get; set; }
@@ -56,7 +56,7 @@ namespace Todoku.Models
         public string Password { get; set; }
 
         [Display(Name = "Remember me?")]
-        public bool RememberMe { get; set; }
+        public Boolean RememberMe { get; set; }
     }
 
     public class RegisterModel
@@ -370,7 +370,7 @@ namespace Todoku.Models
         [AllowHtml]
         public String Description { get; set; }
 
-        public bool IsDeleted { get; set; }
+        public Boolean IsDeleted { get; set; }
 
         public String CreatedBy { get; set; }
 
@@ -388,6 +388,63 @@ namespace Todoku.Models
 
         [ForeignKey("Category")]
         public virtual StandardCode sccategory { get; set; }
+
+        public virtual List<ProductAttribute> attribute { get; set; }
+    }
+
+    public class ProductAttribute
+    {
+        [Key]
+        public Int32 AttributeID { get; set; }
+
+        public Int32 ProductID { get; set; }
+
+        [Display(Name="Nama")]
+        public String AttributeName { get; set; }
+
+        [DataType(DataType.ImageUrl)]
+        [Display(Name = "Gambar")]
+        public String imgLink { get; set; }
+
+        [Display(Name = "Group")]
+        public Int32 GroupID { get; set; }
+
+        [Display(Name = "Stok")]
+        public Int32? Quantity { get; set; }
+
+        public Boolean IsDeleted { get; set; }
+
+        public String CreatedBy { get; set; }
+
+        public DateTime CreatedDate { get; set; }
+
+        public String LastUpdatedBy { get; set; }
+
+        public DateTime? LastUpdatedDate { get; set; }
+
+        [ForeignKey("ProductID")]
+        public virtual Product product { get; set; }
+
+        [ForeignKey("GroupID")]
+        public virtual ProductAttributeGroup attgroup { get; set; }
+    }
+
+    public class ProductAttributeGroup 
+    {
+        [Key]
+        public Int32 GroupID { get; set; }
+
+        public String GroupName { get; set; }
+
+        public Boolean IsDeleted { get; set; }
+
+        public String CreatedBy { get; set; }
+
+        public DateTime CreatedDate { get; set; }
+
+        public String LastUpdatedBy { get; set; }
+
+        public DateTime? LastUpdatedDate { get; set; }
     }
 
     public class Menu
@@ -400,7 +457,7 @@ namespace Todoku.Models
         public Int32? ParentID { get; set; }
         public Boolean IsChildMenu { get; set; }
         public Boolean IsParent { get; set; }
-        public bool IsActive { get; set; }
+        public Boolean IsActive { get; set; }
         public String CreatedBy { get; set; }
         public DateTime CreatedDate { get; set; }
         public String LastUpdatedBy { get; set; }
@@ -620,6 +677,10 @@ namespace Todoku.Models
 
         public Int32 ProductID { get; set; }
 
+        public String Attributes { get; set; }
+
+        [DataType(DataType.Currency)]
+        [DisplayFormat(DataFormatString = "{0:c}")]
         public Decimal TotalAmount { get; set; }
 
         [Display(Name="Jumlah")]
@@ -632,7 +693,6 @@ namespace Todoku.Models
 
         [DataType(DataType.Currency)]
         [DisplayFormat(DataFormatString = "{0:c}")]
-
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public Decimal LineAmount { get { return Quantity * TotalAmount; } private set { } }
         
@@ -1051,6 +1111,19 @@ namespace Todoku.Models
         public Int32 ReceiveID { get; set; }
         public List<PurchaseOrderHd> lstAgentID { get; set; }
         //public Dictionary<String, String> lstAgentID { get; set; }
+    }
+
+    public class ProductAttributeEntry
+    {
+        public Int32 ProductID { get; set; }
+
+        public String AttributeName { get; set; }
+
+        public HttpPostedFileBase file { get; set; }
+
+        public Int32 GroupID { get; set; }
+
+        public Int32? Quantity { get; set; }
     }
     #endregion
 }

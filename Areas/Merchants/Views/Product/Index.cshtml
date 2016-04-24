@@ -48,9 +48,10 @@
                         <td>@Html.Raw(item.ShortDescription)</td>
                         <td align="right">@Html.DisplayFor(model => item.detail.LineAmount)</td>
                         <td align="center">
-                        @Html.ActionLink("Edit", "Edit", "Product", new { id = @item.ProductID }, null) | 
-                        @Html.ActionLink("Detail", "Detail", "Product", new { id = @item.ProductID }, null) | 
-                        @Html.ActionLink("Delete", "Delete", "Product", new { id = @item.ProductID }, null)</td>
+                            @Html.ActionLink("Edit", "Edit", "Product", new { id = @item.ProductID }, null) | 
+                            @Html.ActionLink("Detail", "Detail", "Product", new { id = @item.ProductID }, null) | 
+                            @Html.ActionLink("Delete", "Delete", "Product", new { id = @item.ProductID }, null)
+                        </td>
                     </tr>   
                 }
             </tbody>

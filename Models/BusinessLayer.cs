@@ -15,6 +15,8 @@ namespace Todoku.Models
         public DbSet<Addresses> addresses { get; set; }
         public DbSet<ShippingAddresses> ShippingAddresses { get; set; }
         public DbSet<Bank> banks { get; set; }
+        public DbSet<ProductAttributeGroup> productAttributeGroups { get; set; }
+        public DbSet<ProductAttribute> productAttributes { get; set; }
         public DbSet<Product> products { get; set; }
         public DbSet<Menu> menus { get; set; }
         public DbSet<MenuInUserRole> menuinuserrole { get; set; }

@@ -203,66 +203,60 @@ namespace Todoku.Areas.Merchants.Controllers
             BusinessLayer db = new BusinessLayer();
             Product product = db.products.Find(id);
             ViewBag.Category = new SelectList(new BusinessLayer().standardcodes.Where(x => x.ParentID == SCConstant.Kategori_Produk).ToList(), "StandardCodeID", "StandardCodeName", product.Category);
+            //ViewBag.MerchantID = MerchantID;
             return View(product);
         }
 
         [HttpPost]
         public JsonResult Edit(Product product) 
         {
-            if (TempData.Peek("MerchantID") != null)
+            using (BusinessLayer db = new BusinessLayer())
             {
-                using (BusinessLayer db = new BusinessLayer())
+                try
                 {
-                    try
+                    Product entity = db.products.Find(product.ProductID);
+                    entity.ProductName = product.ProductName;
+                    entity.Category = product.Category;
+                    entity.ShortDescription = product.ShortDescription;
+                    Merchant merchant = db.merchants.Find(entity.MerchantID);
+                    entity.ImgLink = String.Format(@"~\Uploads\{0}\Produk\{1}\Produk.jpg", merchant.MerchantCode, entity.ProductCode);
+                    entity.Description = product.Description;
+                    entity.LastUpdatedBy = Membership.GetUser().UserName;
+                    entity.LastUpdatedDate = DateTime.Now;
+                    if (entity.detail == null)
                     {
-                        Product entity = db.products.Find(product.ProductID);
-                        entity.ProductName = product.ProductName;
-                        entity.Category = product.Category;
-                        entity.MerchantID = Convert.ToInt32(TempData.Peek("MerchantID"));
-                        Merchant merchant = db.merchants.Find(entity.MerchantID);
-                        entity.ImgLink = String.Format(@"~\Uploads\{0}\Produk\{1}\Produk.jpg", merchant.MerchantCode, entity.ProductCode);
-                        entity.Description = product.Description;
-                        entity.LastUpdatedBy = Membership.GetUser().UserName;
-                        entity.LastUpdatedDate = DateTime.Now;
-                        if (entity.detail == null)
-                        {
-                            entity.detail = new ProductsDetails();
-                            entity.detail.Quantity = product.detail.Quantity;
-                            entity.detail.Weight = product.detail.Weight;
-                            entity.detail.Price = Convert.ToDecimal(product.detail.Price);
-                            entity.detail.DiscountInPercentage = product.detail.DiscountInPercentage;
-                            entity.detail.DiscountInPercentage2 = product.detail.DiscountInPercentage2;
-                            entity.detail.DiscountInPercentage3 = product.detail.DiscountInPercentage3;
-                            Decimal total = (product.detail.Price * (1 - (((Decimal)entity.detail.DiscountInPercentage + entity.detail.DiscountInPercentage2) / 100) + ((Decimal)entity.detail.DiscountInPercentage * entity.detail.DiscountInPercentage2 / 10000)));
-                            entity.detail.VATAmount = total * SystemSetting.VATPercentage / 100;
-                            entity.detail.LineAmount = total * (100 + SystemSetting.VATPercentage) / 100;
-                        }
-                        else 
-                        {
-                            entity.detail.Quantity = product.detail.Quantity;
-                            entity.detail.Weight = product.detail.Weight;
-                            entity.detail.Price = Convert.ToDecimal(product.detail.Price);
-                            entity.detail.DiscountInPercentage = product.detail.DiscountInPercentage;
-                            entity.detail.DiscountInPercentage2 = product.detail.DiscountInPercentage2;
-                            entity.detail.DiscountInPercentage3 = product.detail.DiscountInPercentage3;
-                            Decimal total = (product.detail.Price * (1 - (((Decimal)entity.detail.DiscountInPercentage + entity.detail.DiscountInPercentage2) / 100) + ((Decimal)entity.detail.DiscountInPercentage * entity.detail.DiscountInPercentage2 / 10000)));
-                            entity.detail.VATAmount = total * SystemSetting.VATPercentage / 100;
-                            entity.detail.LineAmount = total * (100 + SystemSetting.VATPercentage) / 100;
-                        }
-                        
-                        db.Entry(entity).State = EntityState.Modified;
-                        db.SaveChanges();
-                        return Json(new { ok = true, status = "Success" });
+                        entity.detail = new ProductsDetails();
+                        entity.detail.Quantity = product.detail.Quantity;
+                        entity.detail.Weight = product.detail.Weight;
+                        entity.detail.Price = Convert.ToDecimal(product.detail.Price);
+                        entity.detail.DiscountInPercentage = product.detail.DiscountInPercentage;
+                        entity.detail.DiscountInPercentage2 = product.detail.DiscountInPercentage2;
+                        entity.detail.DiscountInPercentage3 = product.detail.DiscountInPercentage3;
+                        Decimal total = (product.detail.Price * (1 - (((Decimal)entity.detail.DiscountInPercentage + entity.detail.DiscountInPercentage2) / 100) + ((Decimal)entity.detail.DiscountInPercentage * entity.detail.DiscountInPercentage2 / 10000)));
+                        entity.detail.VATAmount = total * SystemSetting.VATPercentage / 100;
+                        entity.detail.LineAmount = total * (100 + SystemSetting.VATPercentage) / 100;
                     }
-                    catch (Exception ex)
+                    else
                     {
-                        return Json(new { ok = false, status = ex.Message });
+                        entity.detail.Quantity = product.detail.Quantity;
+                        entity.detail.Weight = product.detail.Weight;
+                        entity.detail.Price = Convert.ToDecimal(product.detail.Price);
+                        entity.detail.DiscountInPercentage = product.detail.DiscountInPercentage;
+                        entity.detail.DiscountInPercentage2 = product.detail.DiscountInPercentage2;
+                        entity.detail.DiscountInPercentage3 = product.detail.DiscountInPercentage3;
+                        Decimal total = (product.detail.Price * (1 - (((Decimal)entity.detail.DiscountInPercentage + entity.detail.DiscountInPercentage2) / 100) + ((Decimal)entity.detail.DiscountInPercentage * entity.detail.DiscountInPercentage2 / 10000)));
+                        entity.detail.VATAmount = total * SystemSetting.VATPercentage / 100;
+                        entity.detail.LineAmount = total * (100 + SystemSetting.VATPercentage) / 100;
                     }
+
+                    db.Entry(entity).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return Json(new { ok = true, status = "Success" });
                 }
-            }
-            else 
-            {
-                return Json(new { ok = false, status = "MerchantID is null" });;
+                catch (Exception ex)
+                {
+                    return Json(new { ok = false, status = ex.Message });
+                }
             }
         }
 
@@ -338,6 +332,80 @@ namespace Todoku.Areas.Merchants.Controllers
 
             }
             return RedirectToAction("Edit", new { id = product.ProductID });
+        }
+
+        public ActionResult CreateProductAttribute(Int32 ProductID) 
+        {
+            List<ProductAttributeGroup> group = new BusinessLayer().productAttributeGroups.Where(x => !x.IsDeleted).ToList();
+            ViewBag.GroupID = new SelectList(group, "GroupID", "GroupName");
+            ProductAttribute entity = new ProductAttribute();
+            entity.ProductID = ProductID;
+            return View(entity);
+        }
+
+        [HttpPost]
+        public ActionResult CreateProductAttribute(ProductAttributeEntry productAtt,Int32 AttributeID = 0) 
+        {
+            BusinessLayer db = new BusinessLayer();
+            try
+            {
+                ProductAttribute entity = null;
+                if (AttributeID == 0)
+                {
+                    entity = new ProductAttribute();
+                    entity.AttributeName = productAtt.AttributeName;
+                    entity.ProductID = productAtt.ProductID;
+                    entity.GroupID = productAtt.GroupID;
+                    entity.Quantity = productAtt.Quantity;
+                    entity.IsDeleted = false;
+                    entity.CreatedBy = Membership.GetUser().UserName;
+                    entity.CreatedDate = DateTime.Now;
+                    db.productAttributes.Add(entity);
+                }
+                else 
+                {
+                    entity = db.productAttributes.FirstOrDefault(x => x.AttributeID == AttributeID);
+                    entity.AttributeName = productAtt.AttributeName;
+                    entity.ProductID = productAtt.ProductID;
+                    entity.GroupID = productAtt.GroupID;
+                    entity.Quantity = productAtt.Quantity;
+                    entity.IsDeleted = false;
+                    entity.LastUpdatedBy = Membership.GetUser().UserName;
+                    entity.LastUpdatedDate = DateTime.Now;
+                    db.Entry(entity).State = EntityState.Modified;
+                }
+                db.SaveChanges();
+                return RedirectToAction("Edit", new { id = entity.ProductID });
+            }
+            catch (Exception ex) 
+            {
+                String errMessage = ex.Message;
+                List<ProductAttributeGroup> group = new BusinessLayer().productAttributeGroups.Where(x => !x.IsDeleted).ToList();
+                ViewBag.GroupID = new SelectList(group, "GroupID", "GroupName");
+                ViewBag.ProductID = productAtt.ProductID;
+                return View();
+            }
+        }
+
+        public ActionResult EditProductAttribute(Int32 id) 
+        {
+            ProductAttribute entity = new BusinessLayer().productAttributes.FirstOrDefault(x => x.AttributeID == id);
+            List<ProductAttributeGroup> group = new BusinessLayer().productAttributeGroups.Where(x => !x.IsDeleted).ToList();
+            ViewBag.GroupID = new SelectList(group, "GroupID", "GroupName", entity.GroupID);
+            return View("CreateProductAttribute", entity);
+        }
+
+        [HttpPost]
+        public JsonResult DeleteProductAttribute(Int32 id) 
+        {
+            BusinessLayer db = new BusinessLayer();
+            ProductAttribute entity = db.productAttributes.FirstOrDefault(x => x.AttributeID == id);
+            entity.IsDeleted = true;
+            entity.LastUpdatedBy = Membership.GetUser().UserName;
+            entity.LastUpdatedDate = DateTime.Now;
+            db.Entry(entity).State = EntityState.Modified;
+            db.SaveChanges();
+            return Json(new { ok = true, status = "Success" });
         }
     }
 }

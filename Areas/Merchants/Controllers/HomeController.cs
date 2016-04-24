@@ -158,6 +158,8 @@ namespace Todoku.Areas.Merchants.Controllers
         {
             BusinessLayer db = new BusinessLayer();
             Merchant merchant = db.merchants.FirstOrDefault(x => x.MerchantID == id);
+            //List<Menu> menus = db.menus.Where(x => x.ParentID == 10 && x.IsActive && x.IsChildMenu).ToList();
+            //ViewBag.Menus = menus;
             return View(merchant);
         }
     }

@@ -715,6 +715,7 @@
   <ItemGroup>
     <Content Include="Areas\Merchants\Views\CustomerOrder\Index.cshtml" />
     <Content Include="Areas\Merchants\Views\Shipping\Index.cshtml" />
+    <Content Include="Areas\Merchants\Views\Product\CreateProductAttribute.cshtml" />
     <None Include="Scripts\Node\node_modules\body-parser\HISTORY.md" />
     <None Include="Scripts\Node\node_modules\body-parser\LICENSE" />
     <None Include="Scripts\Node\node_modules\body-parser\node_modules\bytes\History.md" />

@@ -24,15 +24,17 @@ namespace Todoku.Areas.Members.Controllers
                 UserID = Membership.GetUser().UserName;
                 carts = db.carts.Where(x => x.UserName == UserID && x.ItemStatus == ItemStatus.Requested).ToList();
             }
-            else 
+            else
             {
                 carts = AppSession.GetCartUsingCookie(this.HttpContext);
             }
+            List<ProductAttribute> productAtt = db.productAttributes.Where(x => !x.IsDeleted).ToList();
+            ViewBag.ProductAtt = productAtt;
             return View(carts);
         }
 
         [HttpPost]
-        public ActionResult AddToCart(Cart cart)
+        public JsonResult AddToCart(Cart cart)
         {
             BusinessLayer db = new BusinessLayer();
             try
@@ -45,15 +47,16 @@ namespace Todoku.Areas.Members.Controllers
                     if (User.Identity.IsAuthenticated)
                     {
                         UserName = Membership.GetUser().UserName;
-                        Cart entity = db.carts.FirstOrDefault(x => x.UserName == UserName && x.ProductID == cart.ProductID && x.ItemStatus == ItemStatus.Requested);
+                        Cart entity = db.carts.FirstOrDefault(x => x.UserName == UserName && x.ProductID == cart.ProductID && x.Attributes == cart.Attributes && x.ItemStatus == ItemStatus.Requested);
                         if (entity == null)
                         {
                             entity = new Cart();
                             entity.ProductID = cart.ProductID;
                             entity.Quantity = cart.Quantity;
-                            entity.TotalAmount = cart.product.detail.LineAmount;
+                            entity.TotalAmount = product.detail.LineAmount;
                             entity.DiscountAmount = product.detail.DiscountAmount + product.detail.DiscountAmount2 + product.detail.DiscountAmount3;
                             entity.DiscountInPercentage = product.detail.DiscountInPercentage;
+                            entity.Attributes = cart.Attributes;
                             //entity.LineAmount = cart.Quantity * product.detail.LineAmount;
                             entity.CreatedDate = DateTime.Now;
                             entity.UserName = UserName;
@@ -73,7 +76,7 @@ namespace Todoku.Areas.Members.Controllers
                         List<Cart> carts = AppSession.GetCartUsingCookie(this.HttpContext);
                         if (carts == null) carts = new List<Cart>();
 
-                        Cart entity = carts != null ? carts.FirstOrDefault(x => x.UserName == UserName && x.ProductID == cart.ProductID) : null;
+                        Cart entity = carts != null ? carts.FirstOrDefault(x => x.UserName == UserName && x.Attributes == cart.Attributes && x.ProductID == cart.ProductID) : null;
                         if (entity == null)
                         {
                             entity = new Cart();
@@ -84,6 +87,7 @@ namespace Todoku.Areas.Members.Controllers
                             entity.product.detail = new ProductsDetails();
                             entity.product.detail.LineAmount = product.detail.LineAmount;
                             entity.Quantity = cart.Quantity;
+                            entity.Attributes = String.Join("|", cart.Attributes);
                             entity.TotalAmount = product.detail.LineAmount;
                             //entity.LineAmount = cart.Quantity * product.detail.Price;
                             entity.CreatedDate = DateTime.Now;
@@ -100,12 +104,13 @@ namespace Todoku.Areas.Members.Controllers
                         AppSession.SetCartUsingCookie(this.HttpContext, carts);
                     }
                 }
+                return Json(new { ok = true, message = "Success" });
             }
             catch (Exception ex)
             {
-                String errMessage = ex.Message;
+                return Json(new { ok = false, message = ex.Message });
             }
-            return RedirectToAction("Detail", "Product", new { area="Stores", id = cart.ProductID });
+            
         }
 
         [Authorize]
@@ -152,6 +157,8 @@ namespace Todoku.Areas.Members.Controllers
                             podt.CartID = cart.CartID;
                             db.purchaseorderdts.Add(podt);
                             cart.ItemStatus = ItemStatus.Ordered;
+                            podt.CreatedBy = Membership.GetUser().UserName;
+                            podt.CreatedDate = DateTime.Now;
                             db.Entry(cart).State = EntityState.Modified;
 
                             CustomerOrder co = new CustomerOrder();

@@ -79,6 +79,11 @@ namespace Todoku.Controllers
             Cart cart = new Cart();
             cart.ProductID = ProductID;
             cart.Quantity = 1;
+            List<ProductAttribute> productAttribute = new BusinessLayer().productAttributes.Where(x => x.ProductID == ProductID && !x.IsDeleted).ToList();
+            List<ProductAttributeGroup> group = productAttribute.GroupBy(x => new { x.attgroup.GroupID, x.attgroup.GroupName }).Select(x => new ProductAttributeGroup { GroupID = x.Key.GroupID, GroupName = x.Key.GroupName }).ToList();
+            ViewBag.ProductAttribute = productAttribute;
+            ViewBag.GroupAttribute = group;
+            ViewBag.GroupAttributeInString = String.Join("|",group.Select(x => x.GroupID).ToList());
             return PartialView(cart);
         }
 

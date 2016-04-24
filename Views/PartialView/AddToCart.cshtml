@@ -1,20 +1,65 @@
 ﻿@model Todoku.Models.Cart
-           
-@using (Html.BeginForm("AddToCart", "Cart", new { area="Members"}))
-{ 
-    @Html.ValidationSummary(true, "Barang tidak bisa ditambahkan")
-    <div>
-        @Html.HiddenFor(m => m.ProductID)
 
-        <div class="editor-label">
-            @Html.LabelFor(m => m.Quantity)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(m => m.Quantity)
-            @Html.ValidationMessageFor(m => m.Quantity)
-        </div>
-        <p>
-            <input type="submit" value="Tambah Ke Keranjang" />
-        </p>
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+
+<script type="text/javascript">
+    $(function () {
+        $('.submit').click(function () {
+            var attributes = "@ViewBag.GroupAttributeInString";
+            var arr = attributes.split('|');
+            var temp = "";
+            for (var i = 0; i < arr.length; i++) {
+                if (typeof ($('.att_' + arr[i] + ':checked').val()) != 'undefined') {
+                    if (temp != "") temp += "|";
+                    temp += $('.att_' + arr[i] + ':checked').val();
+                }    
+            }
+            var data = { ProductID: $('#ProductID').val(), Quantity: $('#Quantity').val(), Attributes: temp };
+            OnSaveData('@Url.Content("~/Members/Cart/AddToCart")', data, function () {
+                window.location.href = '@Url.Content("~/Stores/Detail/")' + $('#ProductID').val();
+            });
+        });
+    });
+</script>
+
+<div>
+    @Html.HiddenFor(m => m.ProductID)
+
+    <div class="editor-label">
+        @Html.LabelFor(m => m.Quantity)
     </div>
-}
+    <div class="editor-field">
+        @Html.EditorFor(m => m.Quantity)
+        @Html.ValidationMessageFor(m => m.Quantity)
+    </div>
+
+    @foreach (var item in (List<Todoku.Models.ProductAttributeGroup>)ViewBag.GroupAttribute) 
+    { 
+        <table>
+            <tr>
+                <td colspan="2">@item.GroupName</td>
+            </tr>
+            <tr>
+                <td>
+                    @foreach (var att in ((List<Todoku.Models.ProductAttribute>)ViewBag.ProductAttribute).Where(x => x.GroupID == item.GroupID)) 
+                    { 
+                        @Html.RadioButton("att_" + att.GroupID, att.AttributeID, new { @class = "att_" + att.GroupID })
+                        if (att.imgLink != null)
+                        { 
+                            <img src="@att.imgLink" alt="" />
+                        }
+                        else 
+                        { 
+                            @Html.Label(@att.AttributeName)
+                        }
+                    }
+                </td>
+            </tr>
+        </table>
+    }
+
+    <p>
+        <input type="button" class="submit" value="Tambah Ke Keranjang"/>
+    </p>
+</div>
