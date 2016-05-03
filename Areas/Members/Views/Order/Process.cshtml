@@ -1,0 +1,200 @@
+﻿@model Todoku.Models.PurchaseOrderHd
+
+<script type="text/javascript">
+    $(function () {
+        // Asynchronously load the template definition file.
+        $('#ShippingAddress').click(function () {
+            var url = "@Url.Content("~/Template/_shippingAddress.tmpl.htm")";
+
+            $.get(url, function (templates) {
+                // Inject all those templates at the end of the document.
+                $('body').append(templates);
+                $("#ShippingModal .modal-dialog .modal-content").text('');
+                url = window.location.origin + "/Todoku/Ajax/GetListObject/";
+                var filterExpression = 'UserProfileID = @Model.CustomerID';
+                GetListObject(url, 'GetShippingAddressList', filterExpression, null, null, function (result) {
+                    var data = { lstAddress: result };
+                    $('#tmpl-address').tmpl(data).appendTo("#ShippingModal .modal-dialog .modal-content");
+                });
+            });            
+        });
+
+        $('body').on('click','.btnOk',function(){
+            var id = $('#hdnSelectedValue').val();
+            var url = window.location.origin + "/Todoku/Ajax/GetListObject/";
+            GetListObject(url, 'GetShippingAddressList', "ShippingID = " + id, null, null, function (result) {
+                $('#address').val(
+                            "Provinsi : " + result[0].ScProvince.StandardCodeName + "\r\n" +
+                            "Kota : " + result[0].City + "\r\n" +
+                            "Alamat : " + result[0].Address + "\r\n" +
+                            "Kode Pos : " + result[0].ZipCode
+                            );
+                $('#hdnShippingProvince').val(result[0].RajaOngkir_Province_ID);
+                $('#hdnShippingCity').val(result[0].RajaOngkir_City_ID);
+                SetAddress();
+            });
+            $('#hdnSelectedValue').val("");
+        });
+
+        $('body').on('click','.list-group-item', function(){
+            var id = $(this).find('.keyField').val();
+            $('#hdnSelectedValue').val(id);
+        });
+
+        $('body').on('change', '.ShippingService', function () {
+            $('#hdnShippingSelectedValue').val($(this).val());
+            $('#ShippingCharges').val($(this).val().split('|')[1]);
+            SetAddress();
+        });
+    });
+
+    function SetAddress() {
+        var url = "http://localhost:8081/rajaongkir/cost/";
+        var courier = $("input[name=radioCourier]:checked").val();
+        var data = { origin: $('#hdnStoreAddress').val(), destination: $('#hdnShippingCity').val(), weight: $('#hdnTotalWeight').val(), courier: courier };
+        
+        AjaxFunction(url, data, "POST", function (result) {
+            var url = "@Url.Content("~/Template/_shippingPackage.tmpl.htm")";
+
+            $.get(url, function (templates) {
+                // Inject all those templates at the end of the document.
+                $('body').append(templates);
+                $("#ShippingPackage").text('');
+                result['rajaongkir'].results[0].costs.sort(SortByPrice);
+                $("#tmpl-shipping-package").tmpl(result).appendTo("#ShippingPackage");
+                $('.txtNumber').number( true, 0,',','.' );
+            });
+        });
+    }
+
+    function SortByPrice(obj1,obj2)
+    {
+        return obj1.cost[0].value - obj2.cost[0].value;
+    };
+</script>
+<input type="hidden" id="hdnTotalWeight" value="@ViewBag.TotalWeight"/>
+<input type="hidden" id="hdnStoreAddress" value="@Model.merchant.address.RajaOngkir_City_ID"/>
+<div class="row">
+    <div class="col-md-12">
+        <div class="page-header">
+            <h3>Pembayaran</h3>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <div class="row">
+            <div class="col-md-2"><label>Nomor</label></div>
+            <div class="col-md-1"><label>:</label></div>
+            <div class="col-md-9 nopadding"><label>@Model.OrderNo</label></div>
+        </div>
+        <div class="row">
+            <div class="col-md-2"><label>Tanggal</label></div>
+            <div class="col-md-1"><label>:</label></div>
+            <div class="col-md-9 nopadding"><label>@Html.DisplayFor(model => model.OrderDate)</label></div>
+        </div>
+        <div class="row">
+            <div class="col-md-2"><label>Total</label></div>
+            <div class="col-md-1"><label>:</label></div>
+            <div class="col-md-9 nopadding"><label>@Html.DisplayFor(model => model.LineAmount)</label></div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="row">
+            <div class="col-md-2"><label>Toko</label></div>
+            <div class="col-md-1"><label>:</label></div>
+            <div class="col-md-9 nopadding"><label>@Model.merchant.MerchantName</label></div>
+        </div>
+        <div class="row">
+            <div class="col-md-2"><label>Kurir</label></div>
+            <div class="col-md-1"><label>:</label></div>
+            <div class="col-md-9 nopadding">
+                <input type="radio" name="radioCourier" class="ShippingService" value="jne" checked><label>&nbsp;JNE</label></input>
+                <input type="radio" name="radioCourier" class="ShippingService" value="pos" ><label>&nbsp;POS</label></input>
+                <input type="radio" name="radioCourier" class="ShippingService" value="tiki" ><label>&nbsp;TIKI</label></input>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <div class="row nopadding">
+            <div class="list-group">
+                @foreach (var item in Model.orderdetails)
+                { 
+                    <div class="list-group-item">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <img src="@Url.Content(@item.cart.product.ImgLink)" data-src="holder.js/80x80" class="img-thumbnail" alt="A generic square placeholder image with a white border around it, making it resemble a photograph taken with an old instant camera">
+                            </div>
+                            <div class="col-md-8 nopadding">
+                                <h5 style="margin-bottom:0px;"><strong>@item.cart.product.ProductName</strong></h5>
+                                <div class="row">
+                                    <div class="col-md-2">Pesan</div>
+                                    <div class="col-md-1">:</div>
+                                    <div class="col-md-9">@Html.DisplayFor(model => item.cart.TotalAmount) x @item.cart.Quantity.ToString() Buah</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-2">Total</div>
+                                    <div class="col-md-1">:</div>
+                                    <div class="col-md-9">@Html.DisplayFor(model => item.cart.LineAmount)</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>    
+                }
+            </div>
+        </div>
+        <div class="row nopadding">
+            <div>
+                <label for="address">Agen:</label>
+                <a href="#" style="float:right;">Cari</a>
+                <input type="text" class="form-control"/>
+            </div>
+            <div class="gap-sm"></div>
+            <div>
+                <input type="hidden" id="hdnShippingProvince" value="" />
+                <input type="hidden" id="hdnShippingCity" value="" />
+                <label for="address">Alamat:</label>
+                <a href="#" style="float:right;" data-toggle="modal" id="ShippingAddress" data-target="#ShippingModal">Cari</a>
+                <textarea class="form-control" rows="4" id="address" readonly></textarea>
+            </div>
+        </div>
+        <div class="row nopadding">
+            <div class="gap-sm"></div>
+            <div class="form-group">
+                <label for="address">Transfer:</label>
+                <div class="list-group">
+                    @foreach (var item in ((List<Todoku.Models.Bank>)ViewBag.Banks))
+                    {
+                        <div class="list-group-item">
+                            <div class="row">
+                                <div class="col-md-1"><input type="radio" name="bank" /></div>
+                                <div class="col-md-2"><label>@item.BankName</label></div>
+                                <div class="col-md-4"><label>A.N. @item.AccountName</label></div>
+                                <div class="col-md-5"><label>@item.AccountNo</label></div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6" style="height:500px; overflow-y:auto; overflow-x:hidden">
+        <div class="list-group" id="ShippingPackage"></div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        @Html.ActionLink("Kembali", "Index")
+        <div class="divider"></div>
+        @Html.ActionLink("Bayar", "Process", "Order", new { area = "Members" }, new { @class = "lnkProses" })
+    </div>
+</div>
+<!-- Modal -->
+<div id="ShippingModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content"></div>
+    </div>
+</div>

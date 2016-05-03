@@ -40,35 +40,9 @@ namespace Todoku.Models
                 #region Merchants
                 new List<Merchant>
                 {
-                    new Merchant { MerchantCode = String.Format("{0}/{1}/0001", SystemSetting.RegisMerchantCode, DateTime.Now.ToString("yyyyMMdd")), MerchantName = "Ace Hardware", IsActive = true, OwnerID = 2, JoinDate = DateTime.Now, AddressCode = String.Format("{0}{1}{2}", SystemSetting.MerchantCode, DateTime.Now.ToString("yyyyMMdd"), "0001"), Description = "Ace Hardware sell home appliance", IsDeleted = false, CreatedBy = "sysadmin", CreatedDate = DateTime.Now },
+                    new Merchant { MerchantID = 1, MerchantCode = String.Format("{0}/{1}/0001", SystemSetting.RegisMerchantCode, DateTime.Now.ToString("yyyyMMdd")), MerchantName = "Ace Hardware", IsActive = true, OwnerID = 2, JoinDate = DateTime.Now, AddressCode = String.Format("{0}{1}{2}", SystemSetting.MerchantCode, DateTime.Now.ToString("yyyyMMdd"), "0001"), Description = "Ace Hardware sell home appliance", IsDeleted = false, CreatedBy = "sysadmin", CreatedDate = DateTime.Now },
                     //new Merchant { MerchantCode = "TDM000002", MerchantName = "Electronic City", IsActive = true, OwnerID = 1, JoinDate = DateTime.Now },
                 }.ForEach(x => context.merchants.Add(x));
-                #endregion
-
-                #region ProductsDetails
-                //new List<ProductsDetails>
-                //{
-                //    //new ProductsDetails { ProductID = 1, DiscountAmount = 0, DiscountAmount2 = 0, DiscountAmount3 = 0, DiscountInPercentage = 0, DiscountInPercentage2 = 0, DiscountInPercentage3 = 0, Price = 4750000, Quantity = 10 },
-                //    //new ProductsDetails { ProductID = 2, DiscountAmount = 0, DiscountAmount2 = 0, DiscountAmount3 = 0, DiscountInPercentage = 0, DiscountInPercentage2 = 0, DiscountInPercentage3 = 0, Price = 3000000, Quantity = 10 },
-                //    //new ProductsDetails { ProductID = 5, DiscountAmount = 0, DiscountAmount2 = 0, DiscountAmount3 = 0, DiscountInPercentage = 0, DiscountInPercentage2 = 0, DiscountInPercentage3 = 0, Price = 2000000, Quantity = 10 },
-                //    //new ProductsDetails { ProductID = 6, DiscountAmount = 0, DiscountAmount2 = 0, DiscountAmount3 = 0, DiscountInPercentage = 0, DiscountInPercentage2 = 0, DiscountInPercentage3 = 0, Price = 3000000, Quantity = 10 },
-                //    //new ProductsDetails { ProductID = 7, DiscountAmount = 0, DiscountAmount2 = 0, DiscountAmount3 = 0, DiscountInPercentage = 0, DiscountInPercentage2 = 0, DiscountInPercentage3 = 0, Price = 675000, Quantity = 10 },
-                //    //new ProductsDetails { ProductID = 8, DiscountAmount = 0, DiscountAmount2 = 0, DiscountAmount3 = 0, DiscountInPercentage = 0, DiscountInPercentage2 = 0, DiscountInPercentage3 = 0, Price = 675000, Quantity = 10 },
-                //    //new ProductsDetails { ProductID = 9, DiscountAmount = 0, DiscountAmount2 = 0, DiscountAmount3 = 0, DiscountInPercentage = 0, DiscountInPercentage2 = 0, DiscountInPercentage3 = 0, Price = 50000, Quantity = 10 },
-
-                //    //new ProductsDetails { ProductID = 3, DiscountAmount = 0, DiscountAmount2 = 0, DiscountAmount3 = 0, DiscountInPercentage = 0, DiscountInPercentage2 = 0, DiscountInPercentage3 = 0, Price = 3450000, Quantity = 10 },
-                //    //new ProductsDetails { ProductID = 4, DiscountAmount = 0, DiscountAmount2 = 0, DiscountAmount3 = 0, DiscountInPercentage = 0, DiscountInPercentage2 = 0, DiscountInPercentage3 = 0, Price = 10000000, Quantity = 10 },
-                
-                //    new ProductsDetails { ProductDetailID = 1, DiscountAmount = 0, DiscountAmount2 = 0, DiscountAmount3 = 0, DiscountInPercentage = 0, DiscountInPercentage2 = 0, DiscountInPercentage3 = 0, Price = 4750000, LineAmount = 4750000, Quantity = 10 },
-                //    new ProductsDetails { ProductDetailID = 2, DiscountAmount = 0, DiscountAmount2 = 0, DiscountAmount3 = 0, DiscountInPercentage = 0, DiscountInPercentage2 = 0, DiscountInPercentage3 = 0, Price = 3000000, LineAmount = 3000000, Quantity = 10 },
-                //    new ProductsDetails { ProductDetailID = 3, DiscountAmount = 0, DiscountAmount2 = 0, DiscountAmount3 = 0, DiscountInPercentage = 0, DiscountInPercentage2 = 0, DiscountInPercentage3 = 0, Price = 2000000, LineAmount = 2000000, Quantity = 10 },
-                //    new ProductsDetails { ProductDetailID = 4, DiscountAmount = 0, DiscountAmount2 = 0, DiscountAmount3 = 0, DiscountInPercentage = 0, DiscountInPercentage2 = 0, DiscountInPercentage3 = 0, Price = 3000000, LineAmount = 3000000, Quantity = 10 },
-                //    new ProductsDetails { ProductDetailID = 5, DiscountAmount = 0, DiscountAmount2 = 0, DiscountAmount3 = 0, DiscountInPercentage = 0, DiscountInPercentage2 = 0, DiscountInPercentage3 = 0, Price = 675000, LineAmount = 675000, Quantity = 10 },
-                //    new ProductsDetails { ProductDetailID = 6, DiscountAmount = 0, DiscountAmount2 = 0, DiscountAmount3 = 0, DiscountInPercentage = 0, DiscountInPercentage2 = 0, DiscountInPercentage3 = 0, Price = 675000, LineAmount = 675000, Quantity = 10 },
-                //    new ProductsDetails { ProductDetailID = 7, DiscountAmount = 0, DiscountAmount2 = 0, DiscountAmount3 = 0, DiscountInPercentage = 0, DiscountInPercentage2 = 0, DiscountInPercentage3 = 0, Price = 50000, LineAmount = 50000, Quantity = 10 },
-                //    new ProductsDetails { ProductDetailID = 8, DiscountAmount = 0, DiscountAmount2 = 0, DiscountAmount3 = 0, DiscountInPercentage = 0, DiscountInPercentage2 = 0, DiscountInPercentage3 = 0, Price = 3450000, LineAmount = 3450000, Quantity = 10 },
-                //    new ProductsDetails { ProductDetailID = 9, DiscountAmount = 0, DiscountAmount2 = 0, DiscountAmount3 = 0, DiscountInPercentage = 0, DiscountInPercentage2 = 0, DiscountInPercentage3 = 0, Price = 10000000, LineAmount = 10000000, Quantity = 10 },
-                //}.ForEach(x => context.productsDetails.Add(x));
                 #endregion
 
                 #region Product Attribute Group
@@ -80,81 +54,154 @@ namespace Todoku.Models
                 #endregion
 
                 #region Product
-                //new List<Product>
-                //{
-                //    new Product {ProductID = 1, ProductDetailID=1, MerchantID = 1, ProductCode = "CNSL0001", ProductName = "Sony Playstation 4 Charcoal Black - 500 GB [ PS4 CUH 1106 ] Garansi", ImgLink = "#", Category="SC0010.011"},
-                //    new Product {ProductID = 2, ProductDetailID=2, MerchantID = 1, ProductCode = "CNSL0002", ProductName = "Sony Playstation 3 Charcoal Black - 125 GB", ImgLink = "#", Category="SC0010.011"},
-                //    new Product {ProductID = 3, ProductDetailID=8, MerchantID = 1, ProductCode = "CNSL0003", ProductName = "Sony Bravia 32 inch", ImgLink = "#", Category="SC0010.011"},
-                //    new Product {ProductID = 4, ProductDetailID=9, MerchantID = 1, ProductCode = "CNSL0004", ProductName = "Sony Experia Z5", ImgLink = "#", Category="SC0010.008"},
-                //    new Product {ProductID = 5, ProductDetailID=3, MerchantID = 1, ProductCode = "CNSL0005", ProductName = "Sony PSP", ImgLink = "#", Category="SC0010.011"},
-                //    new Product {ProductID = 6, ProductDetailID=4, MerchantID = 1, ProductCode = "CNSL0006", ProductName = "Sony PS Vita", ImgLink = "#", Category="SC0010.011"},
-                //    new Product {ProductID = 7, ProductDetailID=5, MerchantID = 1, ProductCode = "CNSL0007", ProductName = "Star Wars Battle Front", Category="SC0010.021", ImgLink = "#"},
-                //    new Product {ProductID = 8, ProductDetailID=6, MerchantID = 1, ProductCode = "CNSL0008", ProductName = "Fallout 4", ImgLink = "#", Category="SC0010.021"},
-                //    new Product {ProductID = 9, ProductDetailID=7, MerchantID = 1, ProductCode = "CNSL0009", ProductName = "Final Fantasy XV - Pre Order", Category="SC0010.021", ImgLink = "#"}
-                //}.ForEach(x => context.products.Add(x));
+                new List<Product>
+                {
+                    new Product {ProductID = 1, MerchantID = 1, ProductCode = "CNSL0001", ProductName = "Item 1", ImgLink = @"~\Uploads\RMC/20160426/0001\Produk\item_1\Produk.jpg", Category="SC0010.017", IsDeleted = false, CreatedBy="sysadmin", CreatedDate = DateTime.Now, detail = new ProductDt { Price = 100000, Quantity = 10, Weight = 1000, Profit = 0, DiscountAmount = 0, DiscountAmount2 = 0, DiscountAmount3 = 0, DiscountInPercentage = 0, DiscountInPercentage2 = 0, DiscountInPercentage3 = 0, VATAmount = 10000, VATPercentage = 10, LineAmount=110000, IsDeleted = false, CreatedBy="sysadmin", CreatedDate = DateTime.Now } },
+                    new Product {ProductID = 2, MerchantID = 1, ProductCode = "CNSL0002", ProductName = "Item 2", ImgLink = @"~\Uploads\RMC/20160426/0001\Produk\item_2\Produk.jpg", Category="SC0010.017", IsDeleted = false, CreatedBy="sysadmin", CreatedDate = DateTime.Now, detail = new ProductDt { Price = 100000, Quantity = 10, Weight = 1000, Profit = 0, DiscountAmount = 0, DiscountAmount2 = 0, DiscountAmount3 = 0, DiscountInPercentage = 0, DiscountInPercentage2 = 0, DiscountInPercentage3 = 0, VATAmount = 10000, VATPercentage = 10, LineAmount=110000, IsDeleted = false, CreatedBy="sysadmin", CreatedDate = DateTime.Now } },
+                    new Product {ProductID = 3, MerchantID = 1, ProductCode = "CNSL0003", ProductName = "Item 3", ImgLink = @"~\Uploads\RMC/20160426/0001\Produk\item_3\Produk.jpg", Category="SC0010.017", IsDeleted = false, CreatedBy="sysadmin", CreatedDate = DateTime.Now, detail = new ProductDt { Price = 100000, Quantity = 10, Weight = 1000, Profit = 0, DiscountAmount = 0, DiscountAmount2 = 0, DiscountAmount3 = 0, DiscountInPercentage = 0, DiscountInPercentage2 = 0, DiscountInPercentage3 = 0, VATAmount = 10000, VATPercentage = 10, LineAmount=110000, IsDeleted = false, CreatedBy="sysadmin", CreatedDate = DateTime.Now } },
+                    new Product {ProductID = 4, MerchantID = 1, ProductCode = "CNSL0004", ProductName = "Item 4", ImgLink = @"~\Uploads\RMC/20160426/0001\Produk\item_4\Produk.jpg", Category="SC0010.017", IsDeleted = false, CreatedBy="sysadmin", CreatedDate = DateTime.Now, detail = new ProductDt { Price = 100000, Quantity = 10, Weight = 1000, Profit = 0, DiscountAmount = 0, DiscountAmount2 = 0, DiscountAmount3 = 0, DiscountInPercentage = 0, DiscountInPercentage2 = 0, DiscountInPercentage3 = 0, VATAmount = 10000, VATPercentage = 10, LineAmount=110000, IsDeleted = false, CreatedBy="sysadmin", CreatedDate = DateTime.Now } },
+                    new Product {ProductID = 5, MerchantID = 1, ProductCode = "CNSL0005", ProductName = "Item 5", ImgLink = @"~\Uploads\RMC/20160426/0001\Produk\item_5\Produk.jpg", Category="SC0010.017", IsDeleted = false, CreatedBy="sysadmin", CreatedDate = DateTime.Now, detail = new ProductDt { Price = 100000, Quantity = 10, Weight = 1000, Profit = 0, DiscountAmount = 0, DiscountAmount2 = 0, DiscountAmount3 = 0, DiscountInPercentage = 0, DiscountInPercentage2 = 0, DiscountInPercentage3 = 0, VATAmount = 10000, VATPercentage = 10, LineAmount=110000, IsDeleted = false, CreatedBy="sysadmin", CreatedDate = DateTime.Now } },
+                    new Product {ProductID = 6, MerchantID = 1, ProductCode = "CNSL0006", ProductName = "Item 6", ImgLink = @"~\Uploads\RMC/20160426/0001\Produk\item_6\Produk.jpg", Category="SC0010.017", IsDeleted = false, CreatedBy="sysadmin", CreatedDate = DateTime.Now, detail = new ProductDt { Price = 100000, Quantity = 10, Weight = 1000, Profit = 0, DiscountAmount = 0, DiscountAmount2 = 0, DiscountAmount3 = 0, DiscountInPercentage = 0, DiscountInPercentage2 = 0, DiscountInPercentage3 = 0, VATAmount = 10000, VATPercentage = 10, LineAmount=110000, IsDeleted = false, CreatedBy="sysadmin", CreatedDate = DateTime.Now } },
+                    new Product {ProductID = 7, MerchantID = 1, ProductCode = "CNSL0007", ProductName = "Item 7", ImgLink = @"~\Uploads\RMC/20160426/0001\Produk\item_7\Produk.jpg", Category="SC0010.017", IsDeleted = false, CreatedBy="sysadmin", CreatedDate = DateTime.Now, detail = new ProductDt { Price = 100000, Quantity = 10, Weight = 1000, Profit = 0, DiscountAmount = 0, DiscountAmount2 = 0, DiscountAmount3 = 0, DiscountInPercentage = 0, DiscountInPercentage2 = 0, DiscountInPercentage3 = 0, VATAmount = 10000, VATPercentage = 10, LineAmount=110000, IsDeleted = false, CreatedBy="sysadmin", CreatedDate = DateTime.Now } },
+                    new Product {ProductID = 8, MerchantID = 1, ProductCode = "CNSL0008", ProductName = "Item 8", ImgLink = @"~\Uploads\RMC/20160426/0001\Produk\item_8\Produk.jpg", Category="SC0010.017", IsDeleted = false, CreatedBy="sysadmin", CreatedDate = DateTime.Now, detail = new ProductDt { Price = 100000, Quantity = 10, Weight = 1000, Profit = 0, DiscountAmount = 0, DiscountAmount2 = 0, DiscountAmount3 = 0, DiscountInPercentage = 0, DiscountInPercentage2 = 0, DiscountInPercentage3 = 0, VATAmount = 10000, VATPercentage = 10, LineAmount=110000, IsDeleted = false, CreatedBy="sysadmin", CreatedDate = DateTime.Now } },
+                    new Product {ProductID = 9, MerchantID = 1, ProductCode = "CNSL0009", ProductName = "Item 9", ImgLink = @"~\Uploads\RMC/20160426/0001\Produk\item_9\Produk.jpg", Category="SC0010.017", IsDeleted = false, CreatedBy="sysadmin", CreatedDate = DateTime.Now, detail = new ProductDt { Price = 100000, Quantity = 10, Weight = 1000, Profit = 0, DiscountAmount = 0, DiscountAmount2 = 0, DiscountAmount3 = 0, DiscountInPercentage = 0, DiscountInPercentage2 = 0, DiscountInPercentage3 = 0, VATAmount = 10000, VATPercentage = 10, LineAmount=110000, IsDeleted = false, CreatedBy="sysadmin", CreatedDate = DateTime.Now } },
+                }.ForEach(x => context.products.Add(x));
+                #endregion
+
+                #region Product Attributes
+                new List<ProductAttribute>
+                {
+                    new ProductAttribute{ AttributeName = "S", ProductID = 1, GroupID = 1, IsDeleted = false, CreatedBy="sysadmin", CreatedDate = DateTime.Now },
+                    new ProductAttribute{ AttributeName = "M", ProductID = 1, GroupID = 1, IsDeleted = false, CreatedBy="sysadmin", CreatedDate = DateTime.Now },
+                    new ProductAttribute{ AttributeName = "L", ProductID = 1, GroupID = 1, IsDeleted = false, CreatedBy="sysadmin", CreatedDate = DateTime.Now },
+                    new ProductAttribute{ AttributeName = "XL", ProductID = 1, GroupID = 1, IsDeleted = false, CreatedBy="sysadmin", CreatedDate = DateTime.Now },
+
+                    new ProductAttribute{ AttributeName = "Merah", ProductID = 1, GroupID = 2, IsDeleted = false, CreatedBy="sysadmin", CreatedDate = DateTime.Now },
+                    new ProductAttribute{ AttributeName = "Kuning", ProductID = 1, GroupID = 2, IsDeleted = false, CreatedBy="sysadmin", CreatedDate = DateTime.Now },
+                    new ProductAttribute{ AttributeName = "Hijau", ProductID = 1, GroupID = 2, IsDeleted = false, CreatedBy="sysadmin", CreatedDate = DateTime.Now },
+                    new ProductAttribute{ AttributeName = "Biru", ProductID = 1, GroupID = 2, IsDeleted = false, CreatedBy="sysadmin", CreatedDate = DateTime.Now },
+
+                    new ProductAttribute{ AttributeName = "S", ProductID = 2, GroupID = 1, IsDeleted = false, CreatedBy="sysadmin", CreatedDate = DateTime.Now },
+                    new ProductAttribute{ AttributeName = "M", ProductID = 2, GroupID = 1, IsDeleted = false, CreatedBy="sysadmin", CreatedDate = DateTime.Now },
+                    new ProductAttribute{ AttributeName = "L", ProductID = 2, GroupID = 1, IsDeleted = false, CreatedBy="sysadmin", CreatedDate = DateTime.Now },
+                    new ProductAttribute{ AttributeName = "XL", ProductID = 2, GroupID = 1, IsDeleted = false, CreatedBy="sysadmin", CreatedDate = DateTime.Now },
+
+                    new ProductAttribute{ AttributeName = "Merah", ProductID = 2, GroupID = 2, IsDeleted = false, CreatedBy="sysadmin", CreatedDate = DateTime.Now },
+                    new ProductAttribute{ AttributeName = "Kuning", ProductID = 2, GroupID = 2, IsDeleted = false, CreatedBy="sysadmin", CreatedDate = DateTime.Now },
+                    new ProductAttribute{ AttributeName = "Hijau", ProductID = 2, GroupID = 2, IsDeleted = false, CreatedBy="sysadmin", CreatedDate = DateTime.Now },
+                    new ProductAttribute{ AttributeName = "Biru", ProductID = 2, GroupID = 2, IsDeleted = false, CreatedBy="sysadmin", CreatedDate = DateTime.Now },
+                }.ForEach(x => context.productAttributes.Add(x));
+                #endregion
+
+                #region Dashboard
+                new List<Dashboard>
+                {
+                    new Dashboard { DashboardID = 1, DashboardName = "Member", Action = "Index", Controller = "Home", Area = DashboardArea.Members, IsDeleted = false, CreatedBy = "sysadmin", CreatedDate = DateTime.Now },
+                    new Dashboard { DashboardID = 2, DashboardName = "Administrator", Action = "Index", Controller = "Home", Area = DashboardArea.Admin, IsDeleted = false, CreatedBy = "sysadmin", CreatedDate = DateTime.Now },
+                    new Dashboard { DashboardID = 3, DashboardName = "Toko", Action = "Index", Controller = "Home", Area = DashboardArea.Merchants, IsDeleted = false, CreatedBy = "sysadmin", CreatedDate = DateTime.Now },
+                    new Dashboard { DashboardID = 4, DashboardName = "Agen", Action = "Index", Controller = "Home", Area = DashboardArea.Agents, IsDeleted = false, CreatedBy = "sysadmin", CreatedDate = DateTime.Now },
+                    new Dashboard { DashboardID = 5, DashboardName = "Manajemen", Action = "Index", Controller = "Home", Area = DashboardArea.Management, IsDeleted = false, CreatedBy = "sysadmin", CreatedDate = DateTime.Now },
+                }.ForEach(x => context.dashboards.Add(x));
+                #endregion
+
+                #region Dashboard in UserRole
+                new List<DashboardInUserRole>
+                {
+                    new DashboardInUserRole {UserRole = "systemadministrator", DashboardID = 1, IsDefault = false, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                    new DashboardInUserRole {UserRole = "systemadministrator", DashboardID = 2, IsDefault = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                    new DashboardInUserRole {UserRole = "systemadministrator", DashboardID = 3, IsDefault = false, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                    new DashboardInUserRole {UserRole = "systemadministrator", DashboardID = 4, IsDefault = false, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                    new DashboardInUserRole {UserRole = "systemadministrator", DashboardID = 5, IsDefault = false, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                    new DashboardInUserRole {UserRole = "administrator", DashboardID = 1, IsDefault = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                    new DashboardInUserRole {UserRole = "administrator", DashboardID = 2, IsDefault = false, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                    new DashboardInUserRole {UserRole = "member", DashboardID = 1, IsDefault = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                    new DashboardInUserRole {UserRole = "merchantowner", DashboardID = 3, IsDefault = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                    new DashboardInUserRole {UserRole = "agen", DashboardID = 4, IsDefault = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                    new DashboardInUserRole {UserRole = "management", DashboardID = 5, IsDefault = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                }.ForEach(x => context.dashboardinuserroles.Add(x));
                 #endregion
 
                 #region Menu
                 new List<Menu>
                 {
-                    new Menu{ MenuID = 1, MenuName = "User", MenuArea = "SC0014.002", Path = "", ParentID = null, IsChildMenu = false, IsParent = true, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
-                        new Menu{ MenuID = 2, MenuName = "User Profil", MenuArea = "SC0014.002", Path = "Members", ParentID = 1, IsChildMenu = false, IsParent = false, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
-                        new Menu{ MenuID = 3, MenuName = "Riwayat Pembelian", MenuArea = "SC0014.002", Path = "#", ParentID = 1, IsChildMenu = false, IsParent = false, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
-                        new Menu{ MenuID = 4, MenuName = "Cart", MenuArea = "SC0014.002", Path = "Cart", ParentID = 1, IsChildMenu = false, IsParent = false, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
-                        new Menu{ MenuID = 5, MenuName = "Konfirmasi", MenuArea = "SC0014.002", Path = "", ParentID = 1, IsChildMenu = false, IsParent = true, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
-                            new Menu{ MenuID = 6, MenuName = "Pemesanan Barang", MenuArea = "SC0014.002", Path = "Members/Home/OrderConfirmation", ParentID = 5, IsChildMenu = false, IsParent = false, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
-                            new Menu{ MenuID = 7, MenuName = "Pembayaran Barang", MenuArea = "SC0014.002", Path = "Members/Home/PaymentConfirmation", ParentID = 5, IsChildMenu = false, IsParent = false, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                    new Menu{ MenuID = 1, DashboardID = 1, MenuName = "User", Area = "SC0014.002", Path = "", ParentID = null, IsChildMenu = false, IsParent = true, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                        new Menu{ MenuID = 2, DashboardID = 1, MenuName = "User Profil", Area = "SC0014.002", Path = "Members", ParentID = 1, IsChildMenu = false, IsParent = false, IsActive = false, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                        new Menu{ MenuID = 3, DashboardID = 1, MenuName = "Riwayat Pembelian", Area = "SC0014.002", Path = "#", Action = "Index", Controller = "Information", ParentID = 1, IsChildMenu = false, IsParent = false, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                        new Menu{ MenuID = 4, DashboardID = 1, MenuName = "Cart", Area = "SC0014.002", Path = "Cart", Action = "Index", Controller = "Cart", ParentID = 1, IsChildMenu = false, IsParent = false, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                        new Menu{ MenuID = 5, DashboardID = 1, MenuName = "Konfirmasi", Area = "SC0014.002", Path = "", ParentID = 1, IsChildMenu = false, IsParent = true, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                            new Menu{ MenuID = 6, DashboardID = 1, MenuName = "Pemesanan Barang", Area = "SC0014.002", Path = "Members/Home/OrderConfirmation", Action = "Index", Controller = "Order", ParentID = 5, IsChildMenu = false, IsParent = false, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                            new Menu{ MenuID = 7, DashboardID = 1, MenuName = "Pembayaran Barang", Area = "SC0014.002", Path = "Members/Home/PaymentConfirmation", Action = "Index", Controller = "Purchasing", ParentID = 5, IsChildMenu = false, IsParent = false, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                        new Menu{ MenuID = 8, DashboardID = 1, MenuName = "Informasi", Area = "SC0014.002", Path = "Members/Information/", Action = "Index", Controller = "Information", ParentID = 1, IsChildMenu = false, IsParent = false, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
 
-                    new Menu{ MenuID = 8, MenuName = "Toko", Path = "", MenuArea = "SC0014.003", ParentID = null, IsChildMenu = false, IsParent = true, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
-                        new Menu{ MenuID = 9, MenuName = "Pendaftaran", MenuArea = "SC0014.003", Path = "Merchants/Registration", ParentID = 8, IsChildMenu = false, IsParent = false, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
-                        new Menu{ MenuID = 10, MenuName = "Dashboard", MenuArea = "SC0014.003", Path = "Merchants/", ParentID = 8, IsChildMenu = false, IsParent = false, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
-                            new Menu{ MenuID = 11, MenuName = "Profil", MenuArea = "SC0014.003", Path = "Merchants/Profil/Index", ParentID = 10, IsChildMenu = true, IsParent = false, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
-                            new Menu{ MenuID = 12, MenuName = "Produk", MenuArea = "SC0014.003", Path = "Merchants/Product/Index", ParentID = 10, IsChildMenu = true, IsParent = false, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
-                            new Menu{ MenuID = 13, MenuName = "Order", MenuArea = "SC0014.003", Path = "Merchants/CustomerOrder/Index", ParentID = 10, IsChildMenu = true, IsParent = false, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
-                            new Menu{ MenuID = 14, MenuName = "Pengiriman", MenuArea = "SC0014.003", Path = "Merchants/Shipping/Index", ParentID = 10, IsChildMenu = true, IsParent = false, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                    new Menu{ MenuID = 9, DashboardID = 3, MenuName = "Toko", Path = "", Area = "SC0014.003", ParentID = null, IsChildMenu = false, IsParent = true, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                        new Menu{ MenuID = 10, DashboardID = 3, MenuName = "Pendaftaran", Area = "SC0014.003", Path = "Merchants/Registration", ParentID = 9, IsChildMenu = false, IsParent = false, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                        new Menu{ MenuID = 11, DashboardID = 3, MenuName = "Dashboard", Area = "SC0014.003", Path = "Merchants/", ParentID = 9, IsChildMenu = false, IsParent = false, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                            new Menu{ MenuID = 12, DashboardID = 3, MenuName = "Profil", Area = "SC0014.003", Path = "Merchants/Profil/Index", ParentID = 11, IsChildMenu = true, IsParent = false, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                            new Menu{ MenuID = 13, DashboardID = 3, MenuName = "Produk", Area = "SC0014.003", Path = "Merchants/Product/Index", ParentID = 11, IsChildMenu = true, IsParent = false, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                            new Menu{ MenuID = 14, DashboardID = 3, MenuName = "Order", Area = "SC0014.003", Path = "Merchants/CustomerOrder/Index", ParentID = 11, IsChildMenu = true, IsParent = false, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                            new Menu{ MenuID = 15, DashboardID = 3, MenuName = "Pengiriman", Area = "SC0014.003", Path = "Merchants/Shipping/Index", ParentID = 11, IsChildMenu = true, IsParent = false, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
 
-                    new Menu{ MenuID = 15, MenuName = "Agen", MenuArea = "SC0014.005", Path = "", ParentID = null, IsChildMenu = false, IsParent = true, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
-                        new Menu{ MenuID = 16, MenuName = "Pendaftaran", MenuArea = "SC0014.005", Path = "#", ParentID = 15, IsChildMenu = false, IsParent = false, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                    new Menu{ MenuID = 16, DashboardID = 4, MenuName = "Agen", Area = "SC0014.005", Path = "", ParentID = null, IsChildMenu = false, IsParent = true, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                        new Menu{ MenuID = 17, DashboardID = 4, MenuName = "Pendaftaran", Area = "SC0014.005", Path = "#", ParentID = 16, IsChildMenu = false, IsParent = false, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
 
-                    new Menu{ MenuID = 17, MenuName = "Admin", MenuArea = "SC0014.006", Path = "", ParentID = null,  IsChildMenu = false, IsParent = true, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
-                        new Menu{ MenuID = 18, MenuName = "Konfirmasi", MenuArea = "SC0014.006", Path = "", ParentID = 17,  IsChildMenu = false, IsParent = true, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
-                            new Menu{ MenuID = 19, MenuName = "Pembayaran", MenuArea = "SC0014.006", Path = "Members/Admin", ParentID = 18,  IsChildMenu = false, IsParent = false, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
-                            new Menu{ MenuID = 20, MenuName = "Pendaftaran Toko", MenuArea = "SC0014.006", Path = "Members/Home/MerchantRegistration", ParentID = 18,  IsChildMenu = false, IsParent = false, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
-                            new Menu{ MenuID = 21, MenuName = "Pendaftaran Agen", MenuArea = "SC0014.006", Path = "", ParentID = 18,  IsChildMenu = false, IsParent = false, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
-                        new Menu{ MenuID = 22, MenuName = "Perubahan Data", MenuArea = "SC0014.006", Path = "", ParentID = 17,  IsChildMenu = false, IsParent = true, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
-                            new Menu{ MenuID = 23, MenuName = "Data Toko", MenuArea = "SC0014.006", Path = "", ParentID = 22,  IsChildMenu = false, IsParent = false, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                    new Menu{ MenuID = 18, DashboardID = 2, MenuName = "Admin", Area = "SC0014.006", Path = "/Admin/", Action= "Index", Controller = "Home", ParentID = null,  IsChildMenu = false, IsParent = true, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                        new Menu{ MenuID = 19, DashboardID = 2, MenuName = "Konfirmasi", Area = "SC0014.006", Path = "", ParentID = 18,  IsChildMenu = false, IsParent = true, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                            new Menu{ MenuID = 20, DashboardID = 2, MenuName = "Konfirmasi Pembayaran PO", Area = "SC0014.006", Path = "", Action = "CustomerPayment", Controller = "Confirmation", ParentID = 19,  IsChildMenu = false, IsParent = false, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                            new Menu{ MenuID = 21, DashboardID = 2, MenuName = "Pendaftaran Toko", Area = "SC0014.006", Path = "Members/Home/MerchantRegistration", Action = "MerchantRegistration", Controller = "Registration", ParentID = 19,  IsChildMenu = false, IsParent = false, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                            new Menu{ MenuID = 22, DashboardID = 2, MenuName = "Pendaftaran Agen", Area = "SC0014.006", Path = "", Action = "AgentRegistration", Controller = "Registration", ParentID = 19,  IsChildMenu = false, IsParent = false, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                        new Menu{ MenuID = 23, DashboardID = 2, MenuName = "Perubahan Data", Area = "SC0014.006", Path = "", ParentID = 18,  IsChildMenu = false, IsParent = true, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                            new Menu{ MenuID = 24, DashboardID = 2, MenuName = "Perubahan Data Toko", Area = "SC0014.006", Path = "", Action = "MerchantDataChanged", Controller = "Confirmation", ParentID = 23,  IsChildMenu = false, IsParent = false, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
 
-                    new Menu{ MenuID = 24, MenuName = "Manajamen", MenuArea = "SC0014.007", Path = "", ParentID = null,  IsChildMenu = false, IsParent = true, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
-                        new Menu{ MenuID = 25, MenuName = "Konfirmasi", MenuArea = "SC0014.007", Path = "", ParentID = 24,  IsChildMenu = false, IsParent = true, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
-                            new Menu{ MenuID = 26, MenuName = "Pendaftaran Toko", MenuArea = "SC0014.007", Path = "Management/MerchantRegistration", ParentID = 25,  IsChildMenu = false, IsParent = false, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                    new Menu{ MenuID = 25, DashboardID = 5, MenuName = "Manajamen", Area = "SC0014.007", Path = "", ParentID = null,  IsChildMenu = false, IsParent = true, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                        new Menu{ MenuID = 26, DashboardID = 5, MenuName = "Konfirmasi", Area = "SC0014.007", Path = "", ParentID = 25,  IsChildMenu = false, IsParent = true, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                            new Menu{ MenuID = 27, DashboardID = 5, MenuName = "Pendaftaran Toko", Area = "SC0014.007", Path = "Management/MerchantRegistration", ParentID = 26,  IsChildMenu = false, IsParent = false, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
 
-                    new Menu{ MenuID = 27, MenuName = "Sistem", MenuArea = "SC0014.008", Path = "", ParentID = null,  IsChildMenu = false, IsParent = true, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
-                        new Menu{ MenuID = 28, MenuName = "Pengaturan Sistem", MenuArea = "SC0014.008", Path = "#", ParentID = 27,  IsChildMenu = false, IsParent = false, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
-                        new Menu{ MenuID = 29, MenuName = "Bantuan", MenuArea = "SC0014.001", Path = "#", ParentID = 27,  IsChildMenu = false, IsParent = false, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                    new Menu{ MenuID = 28, DashboardID = 2, MenuName = "Sistem", Area = "SC0014.008", Path = "", ParentID = null,  IsChildMenu = false, IsParent = true, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                        new Menu{ MenuID = 29, DashboardID = 2, MenuName = "Pengaturan Sistem", Area = "SC0014.008", Path = "#", Action = "Index", Controller = "System", ParentID = 28,  IsChildMenu = false, IsParent = false, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                        new Menu{ MenuID = 30, DashboardID = 2, MenuName = "Bantuan", Area = "SC0014.001", Path = "#", Action = "Help", Controller = "System", ParentID = 28,  IsChildMenu = false, IsParent = false, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
                 }.ForEach(x => context.menus.Add(x));
                 #endregion
 
                 #region Menu In UserRole
                 new List<MenuInUserRole>
                 {
+                    #region System Administrator
+                    new MenuInUserRole {UserRole = "systemadministrator", MenuID = 1, CreatedBy="sysadmin", CreatedDate = DateTime.Now},
+                    new MenuInUserRole {UserRole = "systemadministrator", MenuID = 2, CreatedBy="sysadmin", CreatedDate = DateTime.Now},
+                    new MenuInUserRole {UserRole = "systemadministrator", MenuID = 3, CreatedBy="sysadmin", CreatedDate = DateTime.Now},
+                    new MenuInUserRole {UserRole = "systemadministrator", MenuID = 4, CreatedBy="sysadmin", CreatedDate = DateTime.Now},
+                    new MenuInUserRole {UserRole = "systemadministrator", MenuID = 5, CreatedBy="sysadmin", CreatedDate = DateTime.Now},
+                    new MenuInUserRole {UserRole = "systemadministrator", MenuID = 6, CreatedBy="sysadmin", CreatedDate = DateTime.Now},
+                    new MenuInUserRole {UserRole = "systemadministrator", MenuID = 7, CreatedBy="sysadmin", CreatedDate = DateTime.Now},
+                    new MenuInUserRole {UserRole = "systemadministrator", MenuID = 8, CreatedBy="sysadmin", CreatedDate = DateTime.Now},
+                    new MenuInUserRole {UserRole = "systemadministrator", MenuID = 9, CreatedBy="sysadmin", CreatedDate = DateTime.Now},
+                    new MenuInUserRole {UserRole = "systemadministrator", MenuID = 10, CreatedBy="sysadmin", CreatedDate = DateTime.Now},
+                    new MenuInUserRole {UserRole = "systemadministrator", MenuID = 11, CreatedBy="sysadmin", CreatedDate = DateTime.Now},
+                    new MenuInUserRole {UserRole = "systemadministrator", MenuID = 12, CreatedBy="sysadmin", CreatedDate = DateTime.Now},
+                    new MenuInUserRole {UserRole = "systemadministrator", MenuID = 13, CreatedBy="sysadmin", CreatedDate = DateTime.Now},
+                    new MenuInUserRole {UserRole = "systemadministrator", MenuID = 14, CreatedBy="sysadmin", CreatedDate = DateTime.Now},
+                    new MenuInUserRole {UserRole = "systemadministrator", MenuID = 15, CreatedBy="sysadmin", CreatedDate = DateTime.Now},
+                    new MenuInUserRole {UserRole = "systemadministrator", MenuID = 16, CreatedBy="sysadmin", CreatedDate = DateTime.Now},
+                    new MenuInUserRole {UserRole = "systemadministrator", MenuID = 17, CreatedBy="sysadmin", CreatedDate = DateTime.Now},
+                    new MenuInUserRole {UserRole = "systemadministrator", MenuID = 18, CreatedBy="sysadmin", CreatedDate = DateTime.Now},
+                    new MenuInUserRole {UserRole = "systemadministrator", MenuID = 19, CreatedBy="sysadmin", CreatedDate = DateTime.Now},
+                    new MenuInUserRole {UserRole = "systemadministrator", MenuID = 20, CreatedBy="sysadmin", CreatedDate = DateTime.Now},
+                    new MenuInUserRole {UserRole = "systemadministrator", MenuID = 21, CreatedBy="sysadmin", CreatedDate = DateTime.Now},
+                    new MenuInUserRole {UserRole = "systemadministrator", MenuID = 22, CreatedBy="sysadmin", CreatedDate = DateTime.Now},
+                    new MenuInUserRole {UserRole = "systemadministrator", MenuID = 23, CreatedBy="sysadmin", CreatedDate = DateTime.Now},
+                    new MenuInUserRole {UserRole = "systemadministrator", MenuID = 24, CreatedBy="sysadmin", CreatedDate = DateTime.Now},
+                    new MenuInUserRole {UserRole = "systemadministrator", MenuID = 25, CreatedBy="sysadmin", CreatedDate = DateTime.Now},
+                    new MenuInUserRole {UserRole = "systemadministrator", MenuID = 26, CreatedBy="sysadmin", CreatedDate = DateTime.Now},
+                    new MenuInUserRole {UserRole = "systemadministrator", MenuID = 27, CreatedBy="sysadmin", CreatedDate = DateTime.Now},
+                    new MenuInUserRole {UserRole = "systemadministrator", MenuID = 28, CreatedBy="sysadmin", CreatedDate = DateTime.Now},
+                    new MenuInUserRole {UserRole = "systemadministrator", MenuID = 29, CreatedBy="sysadmin", CreatedDate = DateTime.Now},
+                    new MenuInUserRole {UserRole = "systemadministrator", MenuID = 30, CreatedBy="sysadmin", CreatedDate = DateTime.Now},
+                    #endregion
+
                     #region administrator
                     new MenuInUserRole {UserRole = "administrator", MenuID = 1, CreatedBy="sysadmin", CreatedDate = DateTime.Now},
                     new MenuInUserRole {UserRole = "administrator", MenuID = 2, CreatedBy="sysadmin", CreatedDate = DateTime.Now},
-                    new MenuInUserRole {UserRole = "administrator", MenuID = 3, CreatedBy="sysadmin", CreatedDate = DateTime.Now},
-                    new MenuInUserRole {UserRole = "administrator", MenuID = 4, CreatedBy="sysadmin", CreatedDate = DateTime.Now},
-                    new MenuInUserRole {UserRole = "administrator", MenuID = 5, CreatedBy="sysadmin", CreatedDate = DateTime.Now},
-                    new MenuInUserRole {UserRole = "administrator", MenuID = 6, CreatedBy="sysadmin", CreatedDate = DateTime.Now},
-                    new MenuInUserRole {UserRole = "administrator", MenuID = 7, CreatedBy="sysadmin", CreatedDate = DateTime.Now},
-                    new MenuInUserRole {UserRole = "administrator", MenuID = 8, CreatedBy="sysadmin", CreatedDate = DateTime.Now},
-                    new MenuInUserRole {UserRole = "administrator", MenuID = 9, CreatedBy="sysadmin", CreatedDate = DateTime.Now},
-                    new MenuInUserRole {UserRole = "administrator", MenuID = 10, CreatedBy="sysadmin", CreatedDate = DateTime.Now},
-                    new MenuInUserRole {UserRole = "administrator", MenuID = 11, CreatedBy="sysadmin", CreatedDate = DateTime.Now},
-                    new MenuInUserRole {UserRole = "administrator", MenuID = 12, CreatedBy="sysadmin", CreatedDate = DateTime.Now},
-                    new MenuInUserRole {UserRole = "administrator", MenuID = 13, CreatedBy="sysadmin", CreatedDate = DateTime.Now},
-                    new MenuInUserRole {UserRole = "administrator", MenuID = 14, CreatedBy="sysadmin", CreatedDate = DateTime.Now},
-                    new MenuInUserRole {UserRole = "administrator", MenuID = 15, CreatedBy="sysadmin", CreatedDate = DateTime.Now},
-                    new MenuInUserRole {UserRole = "administrator", MenuID = 16, CreatedBy="sysadmin", CreatedDate = DateTime.Now},
-                    new MenuInUserRole {UserRole = "administrator", MenuID = 17, CreatedBy="sysadmin", CreatedDate = DateTime.Now},
+                    
                     new MenuInUserRole {UserRole = "administrator", MenuID = 18, CreatedBy="sysadmin", CreatedDate = DateTime.Now},
                     new MenuInUserRole {UserRole = "administrator", MenuID = 19, CreatedBy="sysadmin", CreatedDate = DateTime.Now},
                     new MenuInUserRole {UserRole = "administrator", MenuID = 20, CreatedBy="sysadmin", CreatedDate = DateTime.Now},
@@ -162,10 +209,6 @@ namespace Todoku.Models
                     new MenuInUserRole {UserRole = "administrator", MenuID = 22, CreatedBy="sysadmin", CreatedDate = DateTime.Now},
                     new MenuInUserRole {UserRole = "administrator", MenuID = 23, CreatedBy="sysadmin", CreatedDate = DateTime.Now},
                     new MenuInUserRole {UserRole = "administrator", MenuID = 24, CreatedBy="sysadmin", CreatedDate = DateTime.Now},
-                    new MenuInUserRole {UserRole = "administrator", MenuID = 25, CreatedBy="sysadmin", CreatedDate = DateTime.Now},
-                    new MenuInUserRole {UserRole = "administrator", MenuID = 26, CreatedBy="sysadmin", CreatedDate = DateTime.Now},
-                    new MenuInUserRole {UserRole = "administrator", MenuID = 27, CreatedBy="sysadmin", CreatedDate = DateTime.Now},
-                    new MenuInUserRole {UserRole = "administrator", MenuID = 28, CreatedBy="sysadmin", CreatedDate = DateTime.Now},
                     #endregion
 
                     #region Member
@@ -178,21 +221,22 @@ namespace Todoku.Models
                     new MenuInUserRole {UserRole = "member", MenuID = 7, CreatedBy="sysadmin", CreatedDate = DateTime.Now},
                     new MenuInUserRole {UserRole = "member", MenuID = 8, CreatedBy="sysadmin", CreatedDate = DateTime.Now},
                     new MenuInUserRole {UserRole = "member", MenuID = 9, CreatedBy="sysadmin", CreatedDate = DateTime.Now},
+                    new MenuInUserRole {UserRole = "member", MenuID = 10, CreatedBy="sysadmin", CreatedDate = DateTime.Now},
                     
-                    new MenuInUserRole {UserRole = "member", MenuID = 15, CreatedBy="sysadmin", CreatedDate = DateTime.Now},
                     new MenuInUserRole {UserRole = "member", MenuID = 16, CreatedBy="sysadmin", CreatedDate = DateTime.Now},
-                    new MenuInUserRole {UserRole = "member", MenuID = 27, CreatedBy="sysadmin", CreatedDate = DateTime.Now},
-                    new MenuInUserRole {UserRole = "member", MenuID = 29, CreatedBy="sysadmin", CreatedDate = DateTime.Now},
+                    new MenuInUserRole {UserRole = "member", MenuID = 17, CreatedBy="sysadmin", CreatedDate = DateTime.Now},
+                    new MenuInUserRole {UserRole = "member", MenuID = 28, CreatedBy="sysadmin", CreatedDate = DateTime.Now},
+                    new MenuInUserRole {UserRole = "member", MenuID = 30, CreatedBy="sysadmin", CreatedDate = DateTime.Now},
                     #endregion
 
                     #region MerchantOwner
-                    new MenuInUserRole {UserRole = "merchantowner", MenuID = 8, CreatedBy="sysadmin", CreatedDate = DateTime.Now},
                     new MenuInUserRole {UserRole = "merchantowner", MenuID = 9, CreatedBy="sysadmin", CreatedDate = DateTime.Now},
                     new MenuInUserRole {UserRole = "merchantowner", MenuID = 10, CreatedBy="sysadmin", CreatedDate = DateTime.Now},
                     new MenuInUserRole {UserRole = "merchantowner", MenuID = 11, CreatedBy="sysadmin", CreatedDate = DateTime.Now},
                     new MenuInUserRole {UserRole = "merchantowner", MenuID = 12, CreatedBy="sysadmin", CreatedDate = DateTime.Now},
                     new MenuInUserRole {UserRole = "merchantowner", MenuID = 13, CreatedBy="sysadmin", CreatedDate = DateTime.Now},
                     new MenuInUserRole {UserRole = "merchantowner", MenuID = 14, CreatedBy="sysadmin", CreatedDate = DateTime.Now},
+                    new MenuInUserRole {UserRole = "merchantowner", MenuID = 15, CreatedBy="sysadmin", CreatedDate = DateTime.Now},
                     #endregion
 
                 }.ForEach(x => context.menuinuserrole.Add(x));
@@ -205,6 +249,14 @@ namespace Todoku.Models
                     new UserProfile { UserProfileID = 2, UserName = "agireza", Fullname = "Agi Reza Jasuma S.", AddressCode = String.Format("{0}{1}00002", SystemSetting.MemberCode, DateTime.Now.ToString("yyyyMMdd")), Gender = Gender.Laki_Laki, DateOfBirth = new DateTime(1991,2,23), address = new Addresses { AddressCode = String.Format("{0}{1}00002", SystemSetting.MemberCode, DateTime.Now.ToString("yyyyMMdd")), Phone = "", Address = "", City = "Jakarta", Province = "SC0002.006", Country = "Ind", IsDeleted = false, CreatedBy = "sysadmin", CreatedDate = DateTime.Now  }, IsDeleted = false, CreatedBy = "sysadmin", CreatedDate = DateTime.Now },
                     new UserProfile { UserProfileID = 3, UserName = "ibnu", Fullname = "Ibnu Vito", AddressCode = String.Format("{0}{1}00003", SystemSetting.MemberCode, DateTime.Now.ToString("yyyyMMdd")), Gender = Gender.Laki_Laki, DateOfBirth = new DateTime(1994,2,23), address = new Addresses { AddressCode = String.Format("{0}{1}00003", SystemSetting.MemberCode, DateTime.Now.ToString("yyyyMMdd")), Phone = "", Address = "", City = "Jakarta", Province = "SC0002.006", Country = "Ind", IsDeleted = false, CreatedBy = "sysadmin", CreatedDate = DateTime.Now }, IsDeleted = false, CreatedBy = "sysadmin", CreatedDate = DateTime.Now }
                 }.ForEach(x => context.userprofiles.Add(x));
+                #endregion
+
+                #region ShippingAddresses
+                new List <ShippingAddresses>
+                {
+                    new ShippingAddresses { AddressName = "Alamat Rumah", UserProfileID = 3, Address = "Jln. XXX", Handphone = "08521346789", Country= "SC0003.001", City ="JAKARTA PUSAT", RajaOngkir_City_ID = 152, Province = "SC0002.006", RajaOngkir_Province_ID = 6, ZipCode = "10110", Email = "ibnu.vito@yahoo.com", Email2 = "ibnu.vito@gmail.com", IsDeleted = false, CreatedBy = "sysadmin", CreatedDate = DateTime.Now },
+                    new ShippingAddresses { AddressName = "Alamat Pacar", UserProfileID = 3, Address = "Jln. XXX", Handphone = "12345678901", Country= "SC0003.001", City ="JAKARTA PUSAT", RajaOngkir_City_ID = 152, Province = "SC0002.006", RajaOngkir_Province_ID = 6, ZipCode = "10110", Email = "ibnu.vito@yahoo.com", Email2 = "ibnu.vito@gmail.com", IsDeleted = false, CreatedBy = "sysadmin", CreatedDate = DateTime.Now },
+                }.ForEach(x => context.ShippingAddresses.Add(x));
                 #endregion
 
                 #region Standard Code
@@ -279,9 +331,9 @@ namespace Todoku.Models
                     new StandardCode{StandardCodeID = "SC0006", StandardCodeName = "Status Pemesanan", IsParent = true, ParentID = null, CreatedBy = "sysadmin", CreatedDate = DateTime.Now, LastUpdatedBy = null, LastUpdatedDate = null },
                     new StandardCode{StandardCodeID = "SC0006.001", StandardCodeName = "Open", IsParent = false, ParentID = "SC0006", CreatedBy = "sysadmin", CreatedDate = DateTime.Now, LastUpdatedBy = null, LastUpdatedDate = null },
                     new StandardCode{StandardCodeID = "SC0006.002", StandardCodeName = "Order", IsParent = false, ParentID = "SC0006", CreatedBy = "sysadmin", CreatedDate = DateTime.Now, LastUpdatedBy = null, LastUpdatedDate = null },
-                    new StandardCode{StandardCodeID = "SC0006.003", StandardCodeName = "Konfirmasi", IsParent = false, ParentID = "SC0006", CreatedBy = "sysadmin", CreatedDate = DateTime.Now, LastUpdatedBy = null, LastUpdatedDate = null },
-                    new StandardCode{StandardCodeID = "SC0006.004", StandardCodeName = "Dibayar", IsParent = false, ParentID = "SC0006", CreatedBy = "sysadmin", CreatedDate = DateTime.Now, LastUpdatedBy = null, LastUpdatedDate = null },
-                    new StandardCode{StandardCodeID = "SC0006.005", StandardCodeName = "Refund", IsParent = false, ParentID = "SC0006", CreatedBy = "sysadmin", CreatedDate = DateTime.Now, LastUpdatedBy = null, LastUpdatedDate = null },
+                    new StandardCode{StandardCodeID = "SC0006.003", StandardCodeName = "Closed", IsParent = false, ParentID = "SC0006", CreatedBy = "sysadmin", CreatedDate = DateTime.Now, LastUpdatedBy = null, LastUpdatedDate = null },
+                    //new StandardCode{StandardCodeID = "SC0006.004", StandardCodeName = "Dibayar", IsParent = false, ParentID = "SC0006", CreatedBy = "sysadmin", CreatedDate = DateTime.Now, LastUpdatedBy = null, LastUpdatedDate = null },
+                    //new StandardCode{StandardCodeID = "SC0006.005", StandardCodeName = "Refund", IsParent = false, ParentID = "SC0006", CreatedBy = "sysadmin", CreatedDate = DateTime.Now, LastUpdatedBy = null, LastUpdatedDate = null },
                     new StandardCode{StandardCodeID = "SC0006.999", StandardCodeName = "Void", IsParent = false, ParentID = "SC0006", CreatedBy = "sysadmin", CreatedDate = DateTime.Now, LastUpdatedBy = null, LastUpdatedDate = null },
                     #endregion
                     
@@ -354,13 +406,13 @@ namespace Todoku.Models
                     new StandardCode{StandardCodeID = "SC0013.002", StandardCodeName = "Kota", IsParent = false, ParentID = "SC0013", CreatedBy = "sysadmin", CreatedDate = DateTime.Now, LastUpdatedBy = null, LastUpdatedDate = null },
                     #endregion
 
-                    #region MenuArea
+                    #region Area
                     new StandardCode{StandardCodeID = "SC0014", StandardCodeName = "Area Menu", IsParent = true, ParentID = null, CreatedBy = "sysadmin", CreatedDate = DateTime.Now, LastUpdatedBy = null, LastUpdatedDate = null },
                     new StandardCode{StandardCodeID = "SC0014.001", StandardCodeName = "General", IsParent = false, ParentID = "SC0014", CreatedBy = "sysadmin", CreatedDate = DateTime.Now, LastUpdatedBy = null, LastUpdatedDate = null },
-                    new StandardCode{StandardCodeID = "SC0014.002", StandardCodeName = "Member", IsParent = false, ParentID = "SC0014", CreatedBy = "sysadmin", CreatedDate = DateTime.Now, LastUpdatedBy = null, LastUpdatedDate = null },
+                    new StandardCode{StandardCodeID = "SC0014.002", StandardCodeName = "Members", IsParent = false, ParentID = "SC0014", CreatedBy = "sysadmin", CreatedDate = DateTime.Now, LastUpdatedBy = null, LastUpdatedDate = null },
                     new StandardCode{StandardCodeID = "SC0014.003", StandardCodeName = "Merchants", IsParent = false, ParentID = "SC0014", CreatedBy = "sysadmin", CreatedDate = DateTime.Now, LastUpdatedBy = null, LastUpdatedDate = null },
                     new StandardCode{StandardCodeID = "SC0014.004", StandardCodeName = "Store", IsParent = false, ParentID = "SC0014", CreatedBy = "sysadmin", CreatedDate = DateTime.Now, LastUpdatedBy = null, LastUpdatedDate = null },
-                    new StandardCode{StandardCodeID = "SC0014.005", StandardCodeName = "Agen", IsParent = false, ParentID = "SC0014", CreatedBy = "sysadmin", CreatedDate = DateTime.Now, LastUpdatedBy = null, LastUpdatedDate = null },
+                    new StandardCode{StandardCodeID = "SC0014.005", StandardCodeName = "Agents", IsParent = false, ParentID = "SC0014", CreatedBy = "sysadmin", CreatedDate = DateTime.Now, LastUpdatedBy = null, LastUpdatedDate = null },
                     new StandardCode{StandardCodeID = "SC0014.006", StandardCodeName = "Admin", IsParent = false, ParentID = "SC0014", CreatedBy = "sysadmin", CreatedDate = DateTime.Now, LastUpdatedBy = null, LastUpdatedDate = null },
                     new StandardCode{StandardCodeID = "SC0014.007", StandardCodeName = "Management", IsParent = false, ParentID = "SC0014", CreatedBy = "sysadmin", CreatedDate = DateTime.Now, LastUpdatedBy = null, LastUpdatedDate = null },
                     new StandardCode{StandardCodeID = "SC0014.008", StandardCodeName = "Control Panel", IsParent = false, ParentID = "SC0014", CreatedBy = "sysadmin", CreatedDate = DateTime.Now, LastUpdatedBy = null, LastUpdatedDate = null },
@@ -379,34 +431,60 @@ namespace Todoku.Models
                 #endregion
 
                 #region Cart
-                //new List<Cart>
-                //{
-                //    new Cart{ CartID = 1, UserName = "agireza", DiscountAmount = 0, DiscountInPercentage = 0, ProductID =  1, Quantity = 1, LineAmount = 4750000, ItemStatus = ItemStatus.Requested, CreatedDate = DateTime.Now },
-                //    new Cart{ CartID = 2, UserName = "agireza", DiscountAmount = 0, DiscountInPercentage = 0, ProductID =  2, Quantity = 1, LineAmount = 3000000, ItemStatus = ItemStatus.Requested, CreatedDate = DateTime.Now }
-                //}.ForEach(x => context.carts.Add(x));
+                new List<Cart>
+                {
+                    new Cart{ CartID = 1, UserName = "ibnu", DiscountAmount = 0, DiscountInPercentage = 0, TotalAmount = 110000, ProductID =  1, Quantity = 1, ItemStatus = ItemStatus.Ordered, CreatedDate = DateTime.Now },
+                    new Cart{ CartID = 2, UserName = "ibnu", DiscountAmount = 0, DiscountInPercentage = 0, TotalAmount = 110000, ProductID =  2, Quantity = 1, ItemStatus = ItemStatus.Ordered, CreatedDate = DateTime.Now },
+                    new Cart{ CartID = 3, UserName = "ibnu", DiscountAmount = 0, DiscountInPercentage = 0, TotalAmount = 110000, ProductID =  1, Quantity = 1, ItemStatus = ItemStatus.Ordered, CreatedDate = DateTime.Now },
+                    new Cart{ CartID = 4, UserName = "ibnu", DiscountAmount = 0, DiscountInPercentage = 0, TotalAmount = 110000, ProductID =  2, Quantity = 1, ItemStatus = ItemStatus.Ordered, CreatedDate = DateTime.Now },
+                    new Cart{ CartID = 5, UserName = "ibnu", DiscountAmount = 0, DiscountInPercentage = 0, TotalAmount = 110000, ProductID =  1, Quantity = 1, ItemStatus = ItemStatus.Ordered, CreatedDate = DateTime.Now }
+                }.ForEach(x => context.carts.Add(x));
                 #endregion
 
                 #region PurchaseOrderHd
-                //new List<PurchaseOrderHd>
-                //{
-                //    new PurchaseOrderHd { OrderID = 1, CustomerID=2, OrderNo = "PO/20160122/0000001", TotalAmount = 7750000, AgentID = "", CreatedDate = DateTime.Now, OrderStatus = OrderStatus.Open, PayerName = "", PaymentMehod = PaymentMethod.TRANSFER, ValidUntil = DateTime.Now.AddDays(SystemSetting.ValidUntil)}
-                //}.ForEach(x => context.purchaseorderhds.Add(x));
+                new List<PurchaseOrderHd>
+                {
+                    new PurchaseOrderHd { OrderID = 1, CustomerID = 3, MerchantID = 1, OrderNo = "PO/20160501/000001", OrderDate = DateTime.Now, TotalAmount = 220000, AgentID = null, Address = "Provinsi : Jakarta Kota : JAKARTA PUSAT Alamat : Jln. XXX Kode Pos : 10110", ShippingCharges = 0, InsuranceCharges = 0, CreatedDate = DateTime.Now, OrderStatus = OrderStatus.Order, PaymentMehod = PaymentMethod.TRANSFER, ValidUntil = DateTime.Now.AddDays(SystemSetting.ValidUntil)},
+                    new PurchaseOrderHd { OrderID = 2, CustomerID = 3, MerchantID = 1, OrderNo = "PO/20160501/000002", OrderDate = DateTime.Now, TotalAmount = 220000, AgentID = 1, Address = "Provinsi : Jakarta Kota : JAKARTA PUSAT Alamat : Jln. XXX Kode Pos : 10110", ShippingCharges = 0, InsuranceCharges = 0, CreatedDate = DateTime.Now, OrderStatus = OrderStatus.Order, PaymentMehod = PaymentMethod.TRANSFER, ValidUntil = DateTime.Now.AddDays(SystemSetting.ValidUntil)},
+                    new PurchaseOrderHd { OrderID = 3, CustomerID = 3, MerchantID = 1, OrderNo = "PO/20160501/000003", OrderDate = DateTime.Now, TotalAmount = 110000, AgentID = null, Address = null, ShippingCharges = 0, InsuranceCharges = 0, CreatedDate = DateTime.Now, OrderStatus = OrderStatus.Open, PaymentMehod = PaymentMethod.TRANSFER, ValidUntil = DateTime.Now.AddDays(SystemSetting.ValidUntil)}
+                }.ForEach(x => context.purchaseorderhds.Add(x));
                 #endregion
 
                 #region PurchaseOrderDt
-                //new List<PurchaseOrderDt>
-                //{
-                //    new PurchaseOrderDt { OrderID = 1, CartID = 1, OrderStatus = OrderStatus.Open},
-                //    new PurchaseOrderDt { OrderID = 1, CartID = 2, OrderStatus = OrderStatus.Open}
-                //}.ForEach(x => context.purchaseorderdts.Add(x));
+                new List<PurchaseOrderDt>
+                {
+                    new PurchaseOrderDt { OrderID = 1, CartID = 1, OrderStatus = OrderStatus.Order, IsDeleted = false, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                    new PurchaseOrderDt { OrderID = 1, CartID = 2, OrderStatus = OrderStatus.Order, IsDeleted = false, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                    new PurchaseOrderDt { OrderID = 2, CartID = 3, OrderStatus = OrderStatus.Order, IsDeleted = false, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                    new PurchaseOrderDt { OrderID = 2, CartID = 4, OrderStatus = OrderStatus.Order, IsDeleted = false, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                    new PurchaseOrderDt { OrderID = 3, CartID = 5, OrderStatus = OrderStatus.Order, IsDeleted = false, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                }.ForEach(x => context.purchaseorderdts.Add(x));
                 #endregion
 
                 #region CustomerOrder
-                //new List<CustomerOrder>
-                //{
-                //    new CustomerOrder { OrderID = 1, ProductID = 1, MerchantID = 1, Quantity = 1, CustomerID = 2, RequestStatus = RequestStatus.Booked },
-                //    new CustomerOrder { OrderID = 1, ProductID = 2, MerchantID = 1, Quantity = 1, CustomerID = 2, RequestStatus = RequestStatus.Booked }
-                //}.ForEach(x => context.customerOrder.Add(x));
+                new List<CustomerOrder>
+                {
+                    new CustomerOrder { OrderID = 1, ProductID = 1, MerchantID = 1, Quantity = 1, CustomerID = 2, RequestStatus = RequestStatus.Booked },
+                    new CustomerOrder { OrderID = 1, ProductID = 2, MerchantID = 1, Quantity = 1, CustomerID = 2, RequestStatus = RequestStatus.Booked },
+                    new CustomerOrder { OrderID = 2, ProductID = 3, MerchantID = 1, Quantity = 1, CustomerID = 2, RequestStatus = RequestStatus.Booked },
+                    new CustomerOrder { OrderID = 2, ProductID = 4, MerchantID = 1, Quantity = 1, CustomerID = 2, RequestStatus = RequestStatus.Booked },
+                }.ForEach(x => context.customerOrder.Add(x));
+                #endregion
+
+                #region PurchaseReceiveHd
+                new List<PurchaseReceiveHd>
+                {
+                    new PurchaseReceiveHd { ReceiveNo = "PR/20160501/000001", ReceiveDate = DateTime.Now, CustomerID = 3, ShippingCharges = 0, InsuranceCharges = 0, TotalAmount = 220000, PayerName = "Ibnu Vito", Address = "Provinsi : Jakarta Kota : JAKARTA PUSAT Alamat : Jln. XXX Kode Pos : 10110", BankID = 1, TransferAmount = 220000, RefundAmount = 0, SenderAccountNo = "1234567890", ReceiveStatus = ReceiveStatus.PayedByCustomer, CreatedBy = "sysadmin", CreatedDate = DateTime.Now },
+                    new PurchaseReceiveHd { ReceiveNo = "PR/20160501/000002", ReceiveDate = DateTime.Now, CustomerID = 3, ShippingCharges = 0, InsuranceCharges = 0, TotalAmount = 220000, PayerName = "Ibnu Vito", Address = "Provinsi : Jakarta Kota : JAKARTA PUSAT Alamat : Jln. XXX Kode Pos : 10110", BankID = 1, TransferAmount = 220000, RefundAmount = 0, SenderAccountNo = "1234567890", ReceiveStatus = ReceiveStatus.PayedByCustomer, CreatedBy = "sysadmin", CreatedDate = DateTime.Now },
+                }.ForEach(x => context.purchasereceivehds.Add(x));
+                #endregion
+
+                #region PurchaseReceiveDt
+                new List<PurchaseReceiveDt>
+                {
+                    new PurchaseReceiveDt {ReceiveID = 1, OrderID = 1, TotalAmount = 110000, IsDeleted = false, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                    new PurchaseReceiveDt {ReceiveID = 2, OrderID = 2, TotalAmount = 110000, IsDeleted = false, CreatedBy = "sysadmin", CreatedDate = DateTime.Now}
+                }.ForEach(x => context.purchasereceivedts.Add(x));
                 #endregion
 
                 #region ZipCode

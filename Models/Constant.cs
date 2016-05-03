@@ -31,9 +31,10 @@ namespace Todoku.Models
     {
         public const String Open = "SC0006.001";
         public const String Order = "SC0006.002";
-        public const String Konfimasi = "SC0006.003";
-        public const String Dibayar = "SC0006.004";
-        public const String Refund = "SC0006.005";
+        public const String Closed = "SC0006.003";
+        //public const String Konfimasi = "SC0006.003";
+        //public const String Dibayar = "SC0006.004";
+        //public const String Refund = "SC0006.005";
         public const String Void = "SC0006.999";
     }
 
@@ -118,6 +119,18 @@ namespace Todoku.Models
         public const String Closed = "SC0015.004";
         public const String Void = "SC0015.999";
     }
+
+    public class DashboardArea
+    {
+        public const String General = "SC0014.001";
+        public const String Members = "SC0014.002";
+        public const String Merchants = "SC0014.003";
+        public const String Store = "SC0014.004";
+        public const String Agents = "SC0014.005";
+        public const String Admin = "SC0014.006";
+        public const String Management = "SC0014.007";
+        public const String ControlPanel = "SC0014.008";
+    }
     #endregion
 
     public class SCConstant
@@ -140,6 +153,7 @@ namespace Todoku.Models
     #region System Setting
     public class SystemSetting 
     {
+        public const String Default_System_Name = "Todoku Online Shop";
         public const Int32 ValidUntil = 3;
         public const Int32 VATPercentage = 10;
         public const String Default_Upload_Path = @"~\Uploads\";
@@ -153,6 +167,11 @@ namespace Todoku.Models
         public const String AgentCode = "AGN";
         public const String RegisMerchantCode = "RMC";
         public const String RegisAgenCode = "RAG";
+
+        public const Int32 Default_Grid_Row = 10;
+        public const Int32 Grid_Row_1 = 20;
+        public const Int32 Grid_Row_2 = 50;
+        public const Int32 Grid_Row_3 = 100;
     }
     #endregion
 }

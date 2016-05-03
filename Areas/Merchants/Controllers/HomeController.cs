@@ -23,65 +23,6 @@ namespace Todoku.Areas.Merchants.Controllers
             return View(merchants);
         }
 
-        //public ActionResult CustomerOrder() 
-        //{
-        //    Int32 MerchantID = Convert.ToInt32(TempData.Peek("MerchantID"));
-        //    BusinessLayer db = new BusinessLayer();
-        //    String OwnerID = Membership.GetUser().ProviderUserKey.ToString();
-        //    //Merchant merchant = db.merchants.FirstOrDefault(x => x.IsActive && x.userprofile.UserName == OwnerID && x.MerchantID == MerchantID);
-        //    List<CustomerOrder> cos = db.customerOrder
-        //        .Where(x => x.MerchantID == MerchantID && (x.RequestStatus == RequestStatus.Booked || x.RequestStatus == RequestStatus.ConfirmedByAdmin))
-        //        .ToList();
-        //    return View(cos);
-        //}
-
-        public JsonResult ConfirmRequest(CustomerOrder entity) 
-        {
-            try
-            {
-                BusinessLayer db = new BusinessLayer(); 
-                CustomerOrder co = db.customerOrder.FirstOrDefault(x =>
-                    x.OrderID == entity.OrderID &&
-                    x.MerchantID == entity.MerchantID &&
-                    x.CustomerID == entity.CustomerID &&
-                    x.ProductID == entity.ProductID
-                    );
-                co.RequestStatus = RequestStatus.ConfirmedByMerchant;
-                co.pohd.DeliveryStatus = DeliveryStatus.Prepared;
-                db.Entry(co).State = EntityState.Modified;
-
-                ItemDeliveryHd deliveryHd = db.itemdeliveryhds.FirstOrDefault(x => x.MerchantID == co.MerchantID && x.OrderID == co.OrderID && x.DeliveryStatus == DeliveryStatus.Prepared);
-                if (deliveryHd == null) 
-                {
-                    deliveryHd = new ItemDeliveryHd();
-                    deliveryHd.MerchantID = co.MerchantID;
-                    deliveryHd.OrderID = co.OrderID;
-                    deliveryHd.ReceiptNumber = "";
-                    deliveryHd.DeliveryDate = DateTime.Now;
-                    deliveryHd.CustomerID = co.CustomerID;
-                    deliveryHd.Address = co.pohd.Address;
-                    deliveryHd.DeliveryStatus = DeliveryStatus.Prepared;
-                    deliveryHd.CreatedBy = Membership.GetUser().UserName;
-                    deliveryHd.CreatedDate = DateTime.Now;
-                    db.itemdeliveryhds.Add(deliveryHd);
-                }
-
-                ItemDeliveryDt delivDt = new ItemDeliveryDt();
-                delivDt.ProductID = co.ProductID;
-                delivDt.Quantity = co.Quantity;
-                delivDt.itemdeliveryhd = deliveryHd;
-                db.itemdeliverydts.Add(delivDt);
-                db.SaveChanges();
-
-                return Json(new { ok = true, message = "Success" });
-            }
-            catch (Exception ex)
-            {
-                return Json(new { ok = false, message = ex.Message });
-            }
-            
-        }
-
         public ActionResult SendPackage() 
         {
             //BusinessLayer db = new BusinessLayer();
@@ -119,47 +60,12 @@ namespace Todoku.Areas.Merchants.Controllers
             }
             
         }
-
-        public JsonResult VoidRequest(CustomerOrder entity) 
-        {
-            try
-            {
-                BusinessLayer db = new BusinessLayer();
-                //CustomerOrder co = db.customerOrder.FirstOrDefault(x =>
-                //    x.OrderID == entity.OrderID &&
-                //    x.MerchantID == entity.MerchantID &&
-                //    x.CustomerID == entity.CustomerID &&
-                //    x.ProductID == entity.ProductID
-                //    );
-                //co.RequestStatus = RequestStatus.Void;
-                
-                //PurchaseOrderDt podt = co.pohd.orderdetails.FirstOrDefault(x => x.OrderID == co.OrderID && x.cart.ProductID == co.ProductID);
-                //podt.OrderStatus = OrderStatus.Void;
-                //if (co.pohd.TotalAmount >= co.pohd.TransferAmount)
-                //{
-                //    co.pohd.RefundAmount += podt.cart.LineAmount;
-                //}
-
-                //if (co.pohd.TransferAmount - co.pohd.RefundAmount == 0) 
-                //{
-                //    co.pohd.DeliveryStatus = DeliveryStatus.Void;
-                //}
-                //db.Entry(co).State = EntityState.Modified;
-                //db.SaveChanges();
-                return Json(new { ok = true, Status = "Success" });
-            }
-            catch (Exception ex) 
-            {
-                return Json(new { ok = false, Status = ex.Message });
-            }
-        }
-
+        
         public ActionResult Detail(Int32 id) 
         {
             BusinessLayer db = new BusinessLayer();
-            Merchant merchant = db.merchants.FirstOrDefault(x => x.MerchantID == id);
-            //List<Menu> menus = db.menus.Where(x => x.ParentID == 10 && x.IsActive && x.IsChildMenu).ToList();
-            //ViewBag.Menus = menus;
+            Int32 userid = db.GetUserProfileID();
+            Merchant merchant = db.merchants.FirstOrDefault(x => x.MerchantID == id && x.OwnerID == userid);
             return View(merchant);
         }
     }

@@ -18,6 +18,8 @@ namespace Todoku.Models
         public DbSet<ProductAttributeGroup> productAttributeGroups { get; set; }
         public DbSet<ProductAttribute> productAttributes { get; set; }
         public DbSet<Product> products { get; set; }
+        public DbSet<Dashboard> dashboards { get; set; }
+        public DbSet<DashboardInUserRole> dashboardinuserroles { get; set; }
         public DbSet<Menu> menus { get; set; }
         public DbSet<MenuInUserRole> menuinuserrole { get; set; }
         public DbSet<UserProfile> userprofiles { get; set; }
@@ -30,7 +32,7 @@ namespace Todoku.Models
         public DbSet<Merchant> merchants { get; set; }
         public DbSet<MerchantRegistration> merchantRegistrations { get; set; }
         public DbSet<MerchantRegistrationDetail> merchantRegistrationDetails { get; set; }
-        public DbSet<ProductsDetails> productsDetails { get; set; }
+        public DbSet<ProductDt> productsDetails { get; set; }
         public DbSet<CustomerOrder> customerOrder { get; set; }
         public DbSet<MemberHistory> memberHistory { get; set; }
         public DbSet<ItemDeliveryHd> itemdeliveryhds { get; set; }
@@ -161,8 +163,6 @@ namespace Todoku.Models
                         .WithMany()
                         .HasForeignKey(m => m.MerchantID)
                         .WillCascadeOnDelete(false);
-            modelBuilder.Entity<PurchaseOrderHd>().Property(t => t.LineAmount)
-                        .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Computed);
             modelBuilder.Entity<PurchaseOrderHd>()
                         .HasRequired(m => m.merchant)
                         .WithMany()

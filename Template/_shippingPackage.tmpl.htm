@@ -1,0 +1,24 @@
+﻿<script id="tmpl-shipping-package" type="text/x-jquery-tmpl">
+<input type="hidden" value="" id="hdnShippingSelectedValue"/>
+{{each rajaongkir.results}}
+    {{each costs}}
+        <div class="list-group-item">
+            <div class="row">
+                <div class="col-md-1">
+                    &nbsp<br/>
+                    <label><input type="radio" name="radioPackage" value="${description} (${service})|${cost[0].value}"/></label>
+                </div>
+                <div class="col-md-4">
+                    <h4><strong>${rajaongkir.results[0].code}</strong></h4>
+                    <h6>${rajaongkir.results[0].name}</h6>
+                </div>
+                <div class="col-md-4 nopadding">
+                    <h4>${service}</h4>
+                    <h6>${description}</h6>
+                </div>
+                <div class="col-md-3" style="text-align:right;"><h4><strong>Rp<span class="txtNumber">${cost[0].value}</span></strong></h4>${cost[0].etd} hari</div>
+            </div>
+        </div>
+    {{/each}}
+{{/each}}
+</script>

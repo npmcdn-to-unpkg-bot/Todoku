@@ -1,15 +1,17 @@
 ﻿$(function () {
     //#region Datepicker
-    $.datepicker.setDefaults({
-        showOn: 'both',
-        regional: 'id',
-        changeMonth: true,
-        changeYear: true,
-        dateFormat: 'dd M yy'
-    });
-    $('.datepicker').each(function () {
-        $(this).datepicker();
-    });
+    if (typeof ($.datepicker) != "undefined") {
+        $.datepicker.setDefaults({
+            showOn: 'both',
+            regional: 'id',
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: 'dd M yy'
+        });
+        $('.datepicker').each(function () {
+            $(this).datepicker();
+        });
+    }
     //#endregion
 
     //#region TextEditor
@@ -29,13 +31,18 @@
     }
     //#endregion
 
-    $('.tabs').each(function () {
-        $(this).tabs();
-    });
+    try {
+        $('.tabs').each(function () {
+            $(this).tabs();
+        });
 
-    $("#menu").menu({
-        items: "> :not(.ui-widget-header)"
-    });
+        $("#menu").menu({
+            items: "> :not(.ui-widget-header)"
+        });
+    }
+    catch (err) {
+        console.log(err);
+    }
 
     $('.txtNumber').number(true, 2, ',', '.');
 
@@ -152,6 +159,16 @@
         var id = $(this).find('.keyField').val();
         $('#hdnSelectedValue').val(id);
     });
+
+    var url = window.location.origin + "/Todoku/Template/_global.tmpl.htm";
+    
+    // Asynchronously load the template definition file.
+    $.get(url, function (templates) {
+
+        // Inject all those templates at the end of the document.
+        $('body').append(templates);
+        $('.page-header').after('<div id="alert-container"></div>');
+    });
 })
 
 function GetListObject(url, method, filterExpression, groupBy, orderBy, funcHandle) {
@@ -253,6 +270,18 @@ function OnSaveData(url, data, func) {
             console.log("XMLHttpRequest=" + XMLHttpRequest.responseText + "\ntextStatus=" + textStatus + "\nerrorThrown=" + errorThrown);
             alert(XMLHttpRequest.responseText);
         }
+    });
+}
+
+function OnSaveData1(url, data, func, err) {
+    $.ajax({
+        type: "POST",
+        url: url,
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        data: window.JSON.stringify(data),
+        success: func,
+        error: err
     });
 }
 

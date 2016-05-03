@@ -19,7 +19,8 @@
     @if (User.Identity.IsAuthenticated)
     {
         <div>
-            <a href="@Url.Content("~/Members/")" >@User.Identity.Name</a>
+            @*<a href="@Url.Content("~/Members/")" >@User.Identity.Name</a>*@
+            @Html.ActionLink(User.Identity.Name, ((Todoku.Models.Dashboard)ViewBag.DefaultPage).Action, ((Todoku.Models.Dashboard)ViewBag.DefaultPage).Controller, new { area = ((Todoku.Models.Dashboard)ViewBag.DefaultPage).scarea.StandardCodeName, DashboardID = ((Todoku.Models.Dashboard)ViewBag.DefaultPage).DashboardID }, null)
         </div>
         <div>
             <a href="@Url.Content("~/Cart")" >Cart @(Convert.ToInt32(ViewData["CartQty"]) > 0 ? "("+ViewData["CartQty"] + ")" : "")</a>

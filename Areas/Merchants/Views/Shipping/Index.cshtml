@@ -3,7 +3,7 @@
     ViewBag.Title = "Todoku";
 }
 
-<script>
+<script type="text/javascript">
     $(function () {
         $("body").on("click", ".txtProcess", function () {
             $tr = $(this).closest('div');
@@ -13,7 +13,7 @@
             };
 
             OnSaveData('@Url.Content("~/Merchants/Home/ProcessPackage")', data, function () {
-                window.location.href = '@Url.Content("~/Merchants/Home/SendPackage/")';
+                window.location.href = '@Url.Content("~/Merchants/Detail/")' + $tr.find("#item_MerchantID").val();
             });
         });
     });
@@ -28,6 +28,7 @@
             <tr>
                 <td>
                     @Html.HiddenFor(x => item.DeliveryID)
+                    @Html.HiddenFor(x => item.MerchantID)
                     @Html.LabelFor(x => item.pohd.OrderNo)
                 </td>
                 <td>:</td>
@@ -37,7 +38,7 @@
                 <td colspan="3">Alamat</td>
             </tr>
             <tr>
-                <td colspan="3">@Html.DisplayFor(x => item.customer.address.Address)</td>
+                <td colspan="3">@Html.DisplayWithBreaksFor(x => item.Address)</td>
             </tr>
             <tr>
                 <td>@Html.LabelFor(x => item.ReceiptNumber)</td>

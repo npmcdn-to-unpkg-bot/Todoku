@@ -1,0 +1,13 @@
+﻿@model List<Todoku.Models.DashboardInUserRole>
+
+<ul class="dropdown-menu">
+    @foreach (var item in Model) 
+    { 
+        <li>@Html.ActionLink(item.dashboard.DashboardName, item.dashboard.Action, item.dashboard.Controller, new { area = item.dashboard.scarea.StandardCodeName, DashboardID = item.DashboardID}, null)</li>
+    }
+    @*<li><a href="#">Member</a></li>
+    <li><a href="#">Administrator</a></li>
+    <li><a href="#">Toko</a></li>
+    <li><a href="#">Agen</a></li>
+    <li><a href="#">Manajemen</a></li>*@
+</ul>

@@ -81,7 +81,7 @@ namespace Todoku.Areas.Merchants.Controllers
                                         while (dr.Read())
                                         {
                                             Product prd = new Product();
-                                            ProductsDetails detail = new ProductsDetails();
+                                            ProductDt detail = new ProductDt();
 
                                             var Code = dr[0];
                                             var Name = dr[1];
@@ -150,7 +150,7 @@ namespace Todoku.Areas.Merchants.Controllers
         {
             Product product = new Product();
             ViewBag.Category = new SelectList(new BusinessLayer().standardcodes.Where(x => x.ParentID == SCConstant.Kategori_Produk).ToList(), "StandardCodeID", "StandardCodeName");
-            product.detail = new ProductsDetails();
+            product.detail = new ProductDt();
             product.detail.Quantity = 0;
             product.detail.Price = 0;
             product.detail.DiscountInPercentage = 0;
@@ -175,7 +175,7 @@ namespace Todoku.Areas.Merchants.Controllers
                 //entity.ImgLink = String.Format(@"~\Uploads\{0}\Produk\{1}\Produk.jpg", merchant.MerchantCode, entity.ProductCode);
                 entity.Description = product.Description;
 
-                entity.detail = new ProductsDetails();
+                entity.detail = new ProductDt();
                 entity.detail.Quantity = product.detail.Quantity;
                 entity.detail.Price = Convert.ToDecimal(product.detail.Price);
                 entity.detail.DiscountInPercentage = product.detail.DiscountInPercentage;
@@ -225,7 +225,7 @@ namespace Todoku.Areas.Merchants.Controllers
                     entity.LastUpdatedDate = DateTime.Now;
                     if (entity.detail == null)
                     {
-                        entity.detail = new ProductsDetails();
+                        entity.detail = new ProductDt();
                         entity.detail.Quantity = product.detail.Quantity;
                         entity.detail.Weight = product.detail.Weight;
                         entity.detail.Price = Convert.ToDecimal(product.detail.Price);

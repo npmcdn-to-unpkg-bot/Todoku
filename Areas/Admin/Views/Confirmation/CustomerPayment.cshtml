@@ -1,0 +1,124 @@
+﻿@model List<Todoku.Models.PurchaseReceiveHd>
+
+<script type="text/javascript">
+    $(function () {
+        $('body').on('click', ".lnkProses", function () {
+            $data = $(this).closest("tr");
+            var arr = new Array();
+            var count = 0;
+            $(this).closest("tr").find('.AgentID').each(function () {
+                var d = { OrderID: $('.OrderID').eq(count).val(), AgentID: $(this).val() };
+                arr.push(d);
+                count++;
+            });
+            var data = { ReceiveID: $data.find(".keyField").val(), lstAgentID: arr };
+            OnSaveData1('@Url.Content("~/Admin/Confirmation/CustomerPaymentConfirmed")', data, function (result) {
+                if (result.ok) {
+                    window.location.href = '@Url.Content("~/Admin/Confirmation/CustomerPayment")';
+                } else {
+                    $('#tmpl-danger').tmpl(result).appendTo('#alert-container');
+                }
+            }, function (result) {
+                $('#tmpl-danger').tmpl(result).appendTo('#alert-container');
+            });
+        });
+        $('body').on('click', ".lnkVoid", function () {
+            $data = $(this).closest("div");
+            var arr = new Array();
+            var count = 0;
+            $('.AgentID').each(function () {
+                var d = { OrderID: $('.OrderID').eq(count).val() };
+                arr.push(d);
+                count++;
+            });
+            var data = { ReceiveID: $data.find(".keyField").val(), lstAgentID: arr };
+            OnSaveData('@Url.Content("~/Admin/Confirmation/CustomerPaymentVoid")', data, function () {
+                window.location.href = '@Url.Content("~/Admin/Confirmation/CustomerPayment")';
+            });
+        });
+    });
+</script>
+<h1 class="page-header">Pembayaran</h1>
+<div class="table-responsive">
+    <table class="table table-striped">
+        <colgroup>
+            <col width="15%"/>
+            <col />
+            <col width="13%"/>
+            <col width="11%"/>
+            <col width="15%"/>
+            <col width="20%"/>
+            <col width="12%"/>
+        </colgroup>
+        <thead>
+            <tr>
+                <th>Pembayaran</th>
+                <th>Pengirim</th>
+                <th>Rekening</th>
+                <th>Transfer</th>
+                <th>Transaksi</th>
+                <th>Agen</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @if(Model.Count() > 0)
+            {
+                foreach (var item in Model)
+                { 
+                    <tr>
+                        <td>
+                            @Html.HiddenFor(model => item.ReceiveID, new { @class = "keyField" })
+                            <a href="#">@item.ReceiveNo</a><br/>
+                            <label>@Html.DisplayFor(model => item.TotalAmount)</label>
+                        </td>
+                        <td>@item.PayerName</td>
+                        <td>
+                            <label>@item.bank.BankName</label><br/>@item.SenderAccountNo<br/><a href="#">Bukti</a>
+                        </td>
+                        <td><label>@Html.DisplayFor(model => item.TransferAmount)</label></td>
+                        <td>
+                            <form class="form-inline" role="form">
+                                @foreach (var prdt in @item.detail)
+                                { 
+                                    <div class="form-group">
+                                        <a href="#">@prdt.order.OrderNo</a>
+                                    </div>
+                                }
+                            </form>
+                        </td>
+                        <td>
+                            <form class="form-inline" role="form">
+                                @foreach (var prdt in @item.detail)
+                                { 
+                                    <div class="form-group">
+                                        @if (prdt.order.AgentID == null)
+                                        { 
+                                            @Html.HiddenFor(model => prdt.OrderID, new { @class = "OrderID" });
+                                            <input type="text" class="form-control input-sm AgentID" placeholder="Masukkan Kode Agen" />
+                                            <a href="#">Cari</a>
+                                        }
+                                        else
+                                        { 
+                                            <label>@prdt.order.AgentID</label>
+                                        }
+                                    </div>
+                                }
+                            </form>
+                        </td>
+                        <td align="center">
+                            <a href="#" class="lnkProses">Proses</a><div class="divider"></div><a href="#" class="lnkVoid">Batal</a>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr style="height:50px;">
+                    <td colspan="7" style="vertical-align:middle;"><center>No Data to Display</center></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    @{Html.RenderAction("Pagination", "PartialView", new {area = "", Page = ViewBag.Page, Pages = ViewBag.Pages, PageAction = "CustomerPayment", PageController = "Confirmation", PageArea = "Admin" });}
+</div>

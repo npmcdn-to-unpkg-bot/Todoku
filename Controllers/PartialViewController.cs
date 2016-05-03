@@ -10,16 +10,21 @@ namespace Todoku.Controllers
 {
     public class PartialViewController : Controller
     {
-        BusinessLayer db = new BusinessLayer();
-        
         [ChildActionOnly]
         public ActionResult Header()
         {
-            String UserName = "";
+            BusinessLayer db = new BusinessLayer();
+            String Username = "";
+            
             if (User.Identity.IsAuthenticated)
             {
-                UserName = Membership.GetUser().UserName;
-                List<Cart> carts = db.carts.Where(x => x.UserName == UserName && x.ItemStatus == ItemStatus.Requested).ToList();
+                Username = Membership.GetUser().UserName;
+                String[] UserRoles = Roles.GetRolesForUser(Username);
+                List<DashboardInUserRole> diur = db.dashboardinuserroles.Where(x => UserRoles.Contains(x.UserRole.ToLower())).ToList();
+                Int32 DashboardID = diur.FirstOrDefault(x => x.IsDefault).DashboardID;
+                Menu menu = db.menus.FirstOrDefault(x => x.IsActive && x.IsParent && x.DashboardID == DashboardID);
+                ViewBag.DefaultPage = diur.FirstOrDefault().dashboard;
+                List<Cart> carts = db.carts.Where(x => x.UserName == Username && x.ItemStatus == ItemStatus.Requested).ToList();
                 ViewData["CartQty"] = carts.Sum(x => x.Quantity);
             }
             else 
@@ -88,30 +93,7 @@ namespace Todoku.Controllers
         }
 
         [ChildActionOnly]
-        public ActionResult LeftPanel(String filterExpression = "") 
-        {
-            String[] setting = filterExpression.Split(';');
-            foreach (String obj in setting) 
-            {
-                switch (obj) 
-                {
-                    case "Member":
-                        ViewBag.MemberMenu = true;
-                        break;
-                    case "Merchant":
-                        ViewBag.MerchantMenu = true;            
-                        break;
-                    case "Merchant_Detail":
-                        ViewBag.MerchantDetail = true;
-                        break;
-                }
-            }
-            return PartialView();
-        }
-
-        //[Authorize]
-        [ChildActionOnly]
-        public ActionResult Menu(String MenuArea = "")
+        public ActionResult Menu(String MenuArea)
         {
             BusinessLayer db = new BusinessLayer();
             String username = Membership.GetUser().UserName;
@@ -122,6 +104,43 @@ namespace Todoku.Controllers
             List<Menu> menus = db.menus.Where(x => x.IsActive == true && x.IsChildMenu == false).ToList().Where(x => miur.Select(s => s.MenuID).Contains(x.MenuID)).ToList();
             
             return PartialView(menus);
+        }
+
+        [ChildActionOnly]
+        public ActionResult MenuInDashboard(Int32 DashboardID) 
+        {
+            BusinessLayer db = new BusinessLayer();
+            String[] uRoles = Roles.GetRolesForUser();
+
+            List<MenuInUserRole> menus = db.menuinuserrole.Where(x => uRoles.Contains(x.UserRole) &&
+                !x.menu.IsParent &&
+                x.menu.DashboardID == DashboardID &&
+                x.menu.IsActive
+                ).ToList();
+
+            return PartialView(menus);
+        }
+
+        [ChildActionOnly]
+        public ActionResult Dashboard() 
+        {
+            BusinessLayer db = new BusinessLayer();
+            String[] roles = Roles.GetRolesForUser();
+
+            List<DashboardInUserRole> dashboards = db.dashboardinuserroles.Where(x => roles.Contains(x.UserRole)).ToList();
+            return PartialView(dashboards);
+        }
+
+        [ChildActionOnly]
+        public ActionResult Pagination(Int32 Page = 0, Int32 Pages = 0, String PageAction = "", String PageController = "", String PageArea = "") 
+        {
+            Pagination pg = new Pagination();
+            pg.Page = Page;
+            pg.Pages = Pages;
+            pg.Action = PageAction;
+            pg.Controller = PageController;
+            pg.Area = PageArea;
+            return PartialView(pg);
         }
     }
 }

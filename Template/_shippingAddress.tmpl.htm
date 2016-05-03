@@ -1,0 +1,29 @@
+﻿<script id="tmpl-address" type="text/x-jquery-tmpl">
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal">&times;</button>
+    <h4 class="modal-title">Alamat Pengiriman</h4>
+</div>
+<div class="modal-body">
+    <input type="hidden" id="hdnSelectedValue" value="" />
+    {{each lstAddress}}
+        <div class="list-group">
+            <a href="#" class="list-group-item">
+                <input type="hidden" class="keyField" value="${ShippingID}" />
+                <label>${AddressName}</label>
+                <div class="row">
+                    <div class="col-md-6">Provinsi : ${ScProvince.StandardCodeName}</div>
+                    <div class="col-md-6">Kota : ${City}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">Alamat : ${Address}</div>
+                    <div class="col-md-6">Kode Pos : ${ZipCode}</div>
+                </div>
+            </a>
+        </div>
+    {{/each}}
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default btnOk" data-dismiss="modal">Pilih</button>
+    <button type="button" class="btn btn-default btnClose" data-dismiss="modal">Close</button>
+</div>
+</script>

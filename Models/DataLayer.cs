@@ -256,7 +256,63 @@ namespace Todoku.Models
 
     }
 
-    public class ProductsDetails
+    public class Dashboard
+    {
+        [Key]
+        public Int32 DashboardID { get; set; }
+        
+        public String DashboardName { get; set; }
+
+        public String Path { get; set; }
+
+        public String Action { get; set; }
+
+        public String Controller { get; set; }
+
+        public String Area { get; set; }
+
+        public Boolean IsDeleted { get; set; }
+
+        public String CreatedBy { get; set; }
+
+        [DataType(DataType.DateTime)]
+        public DateTime CreatedDate { get; set; }
+
+        public String LastUpdatedBy { get; set; }
+
+        [DataType(DataType.DateTime)]
+        public DateTime? LastUpdatedDate { get; set; }
+
+        [ForeignKey("Area")]
+        public virtual StandardCode scarea { get; set; }
+    }
+
+    public class DashboardInUserRole 
+    {
+        [Key]
+        [Column(Order = 1)]
+        public String UserRole { get; set; }
+        [Key]
+        [Column(Order = 2)]
+        public Int32 DashboardID { get; set; }
+
+        public Boolean IsDefault { get; set; }
+
+        public String CreatedBy { get; set; }
+        
+        [DataType(DataType.DateTime)]
+        public DateTime CreatedDate { get; set; }
+
+        public String LastUpdatedBy { get; set; }
+        
+        [DataType(DataType.DateTime)]
+        public DateTime? LastUpdatedDate { get; set; }
+
+        [ForeignKey("DashboardID")]
+        public virtual Dashboard dashboard { get; set; }
+    }
+
+    public class ProductDt
     {
         [Key]
         public Int32 ProductDetailID { get; set; }
@@ -384,7 +440,7 @@ namespace Todoku.Models
         public virtual Merchant merchant { get; set; }
 
         [ForeignKey("ProductDetailID")]
-        public virtual ProductsDetails detail { get; set; }
+        public virtual ProductDt detail { get; set; }
 
         [ForeignKey("Category")]
         public virtual StandardCode sccategory { get; set; }
@@ -451,22 +507,45 @@ namespace Todoku.Models
     {
         [Key]
         public Int32 MenuID { get; set; }
+        
         public String MenuName { get; set; }
-        public String MenuArea { get; set; }
+
+        public Int32 DashboardID { get; set; }
+
+        [DataType(DataType.Url)]
         public String Path { get; set; }
+        
+        public String Action { get; set; }
+        
+        public String Controller { get; set; }
+        
+        public String Area { get; set; }
+        
         public Int32? ParentID { get; set; }
+        
         public Boolean IsChildMenu { get; set; }
+        
         public Boolean IsParent { get; set; }
+        
         public Boolean IsActive { get; set; }
+        
         public String CreatedBy { get; set; }
+        
+        [DataType(DataType.DateTime)]
         public DateTime CreatedDate { get; set; }
+        
         public String LastUpdatedBy { get; set; }
+        
+        [DataType(DataType.DateTime)]
         public DateTime? LastUpdatedDate { get; set; }
 
         [ForeignKey("ParentID")]
         public Menu parent { get; set; }
 
-        [ForeignKey("MenuArea")]
+        [ForeignKey("DashboardID")]
+        public Dashboard dashboard { get; set; }
+
+        [ForeignKey("Area")]
         public virtual StandardCode scmenuarea { get; set; }
 
         public virtual List<Menu> childs { get; set; }
@@ -480,10 +559,18 @@ namespace Todoku.Models
         [Key]
         [Column(Order = 2)]
         public Int32 MenuID { get; set; }
+
         public String CreatedBy { get; set; }
+        
+        [DataType(DataType.DateTime)]
         public DateTime CreatedDate { get; set; }
+        
         public String LastUpdatedBy { get; set; }
+
+        [DataType(DataType.DateTime)]
         public DateTime? LastUpdatedDate { get; set; }
+
+        public virtual Menu menu { get; set; }
     }
 
     public class Merchant
@@ -694,7 +781,7 @@ namespace Todoku.Models
         [DataType(DataType.Currency)]
         [DisplayFormat(DataFormatString = "{0:c}")]
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-        public Decimal LineAmount { get { return Quantity * TotalAmount; } private set { } }
+        public Decimal LineAmount { get { return TotalAmount * ((100 - DiscountInPercentage) / 100) * Quantity; } }
         
         public String ItemStatus { get; set; }
         
@@ -722,6 +809,11 @@ namespace Todoku.Models
         public Int32 MerchantID { get; set; }
 
         [DataType(DataType.Date)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd MMM yyyy}")]
+        public DateTime OrderDate { get; set; }
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd MMM yyyy}")]
         public DateTime ValidUntil { get; set; }
         
         [Display(Name="Cara Pembayaran")]
@@ -746,11 +838,9 @@ namespace Todoku.Models
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:C}")]
         [Display(Name = "Total Keseluruhan")]
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-        public Decimal LineAmount { get { return TotalAmount + ShippingCharges + InsuranceCharges; } private set { } }
+        public Decimal LineAmount { get { return TotalAmount + ShippingCharges + InsuranceCharges; }}
 
         public String OrderStatus { get; set; }
-
-        public String DeliveryStatus { get; set; }
 
         [DataType(DataType.MultilineText)]
         [Display(Name = "Alamat")]
@@ -778,6 +868,9 @@ namespace Todoku.Models
 
         [ForeignKey("MerchantID")]
         public virtual Merchant merchant { get; set; }
+
+        [ForeignKey("OrderStatus")]
+        public virtual StandardCode ScOrderStatus { get; set; }
     }
     
     public class PurchaseOrderDt
@@ -815,7 +908,7 @@ namespace Todoku.Models
         [Display(Name="No. Penerimaan")]
         public String ReceiveNo { get; set; }
 
-        [DataType(DataType.DateTime)]
+        [DataType(DataType.Date)]
         [Display(Name = "Tanggal Terima")]
         public DateTime ReceiveDate { get; set; }
         
@@ -874,6 +967,9 @@ namespace Todoku.Models
         public virtual Bank bank { get; set; }
 
         public virtual List<PurchaseReceiveDt> detail { get; set; }
+
+        [ForeignKey("ReceiveStatus")]
+        public virtual StandardCode ScReceiveStatus { get; set; }
     }
     
     public class PurchaseReceiveDt 
@@ -909,18 +1005,17 @@ namespace Todoku.Models
     public class CustomerOrder 
     {
         [Key]
-        [Column(Order = 1)]
+        public Int32 CustomerOrderID { get; set; }
+
         public Int32 MerchantID { get; set; }
-        [Key]
-        [Column(Order = 2)]
+        
         public Int32 OrderID { get; set; }
-        [Key]
-        [Column(Order = 3)]
+        
         public Int32 CustomerID { get; set; }
 
-        [Key]
-        [Column(Order = 4)]
         public Int32 ProductID { get; set; }
+
+        public String Attributes { get; set; }
 
         [Display(Name="Jumlah")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:0.##}")]
@@ -1017,6 +1112,9 @@ namespace Todoku.Models
         public virtual UserProfile customer { get; set; }
 
         public virtual List<ItemDeliveryDt> itemdeliverydts { get; set; }
+
+        [ForeignKey("DeliveryStatus")]
+        public virtual StandardCode ScDeliveryStatus { get; set; }
     }
 
     public class ItemDeliveryDt
@@ -1124,6 +1222,23 @@ namespace Todoku.Models
         public Int32 GroupID { get; set; }
 
         public Int32? Quantity { get; set; }
+    }
+
+    public class PurchaseOrderInformation 
+    {
+        public List<PurchaseOrderHd> lstPurchaseOrder { get; set; }
+        public List<PurchaseReceiveHd> lstPurchaseReceive { get; set; }
+        public List<ItemDeliveryHd> lstItemDelivery { get; set; }
+    }
+
+    public class Pagination 
+    {
+        public String Action { get; set; }
+        public String Controller { get; set; }
+        public String Area { get; set; }
+        public Int32 Page { get; set; }
+        public Int32 Pages { get; set; }
+        public Int32 Rows { get; set; }
     }
     #endregion
 }

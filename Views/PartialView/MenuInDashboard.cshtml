@@ -1,0 +1,33 @@
+﻿@model List<Todoku.Models.MenuInUserRole>
+
+<ul class="nav nav-sidebar">
+@foreach (var item in Model)
+{ 
+    <li class="@Html.IsActive(item.menu.Action, item.menu.Controller, "active")">
+        @Html.ActionLink(item.menu.MenuName, item.menu.Action, item.menu.Controller, new { area = item.menu.scmenuarea.StandardCodeName }, null)
+        @Html.CreateHtmlView(item.menu.Action, item.menu.Controller, "<span class=\"sr-only\">(current)</span>")
+    </li>   
+}
+</ul>
+@*<ul class="nav nav-sidebar">
+    <li class="@Html.IsActive("Index", "Home", "active")">
+        @Html.ActionLink("Overview", "Index", "Home")
+        @Html.CreateHtmlView("Index", "Home", "<span class=\"sr-only\">(current)</span>")
+    </li>
+</ul>
+<ul class="nav nav-sidebar">
+    <li><a href="#">Konfirmasi Pendaftaran (Toko)</a></li>
+    <li class="@Html.IsActive("Customer", "Purchase", "active")">
+        @Html.ActionLink("Konfirmasi Pembayaran (Pembelian)", "Customer", "Purchase")
+        @Html.CreateHtmlView("Customer", "Purchase", "<span class=\"sr-only\">(current)</span>")
+    </li>
+    <li class="@Html.IsActive("Agen", "Purchase", "active")">
+    @Html.ActionLink("Konfirmasi Pembayaran (Agen)", "Agen", "Purchase")
+    @Html.CreateHtmlView("Agen", "Purchase", "<span class=\"sr-only\">(current)</span>")
+</li>
+</ul>
+<ul class="nav nav-sidebar">
+    <li><a href="#">Reports</a></li>
+    <li><a href="#">Analytics</a></li>
+    <li><a href="#">Export</a></li>
+</ul>*@

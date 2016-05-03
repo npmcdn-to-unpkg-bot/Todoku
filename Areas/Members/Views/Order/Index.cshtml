@@ -1,0 +1,60 @@
+﻿@model List<Todoku.Models.PurchaseOrderHd>
+
+<h1 class="page-header">Pemesanan</h1>
+<a href="#" class="lnkProses">Proses</a><div class="divider"></div><a href="#" class="lnkVoid">Batal</a>
+<div class="table-responsive">
+    <table class="table table-striped">
+        <colgroup>
+            <col width="3%"/>
+            <col width="15%"/>
+            <col />
+            <col width="13%"/>
+            <col width="11%"/>
+            <col width="15%"/>
+            <col width="12%"/>
+        </colgroup>
+        <thead>
+            <tr>
+                <th><input type="checkbox"/></th>
+                <th>No Pemesanan</th>
+                <th>Toko</th>
+                <th style="text-align:center">Berlaku Sampai</th>
+                <th style="text-align:right">Total</th>
+                <th style="text-align:center">Status</th>
+                <th style="text-align:center"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @if(Model.Count() > 0)
+            {
+                foreach (var item in Model)
+                { 
+                    <tr>
+                        <th><input type="checkbox"/></th>
+                        <td>@item.OrderNo</td>
+                        <td>@item.merchant.MerchantName</td>
+                        <td align="center">
+                            @Html.DisplayFor(model => item.ValidUntil)
+                        </td>
+                        <td align="right">
+                            @Html.DisplayFor(model => item.TotalAmount)
+                        </td>
+                        <td align="center">@Html.DisplayFor(model => item.ScOrderStatus.StandardCodeName)</td>
+                        <td align="center">
+                            @Html.ActionLink("Proses", "Process", "Order", new { area = "Members", id = item.OrderID }, new { @class = "lnkProses" })
+                            <div class="divider"></div>
+                            @Html.ActionLink("Batal", "Void", "Order", new { area = "Members" }, new { @class = "lnkVoid" })
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr style="height:50px;">
+                    <td colspan="6" style="vertical-align:middle;"><center>No Data to Display</center></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    @{Html.RenderAction("Pagination", "PartialView", new {area = "", Page = ViewBag.Page, Pages = ViewBag.Pages, PageAction = "Index", PageController = "Order", PageArea = "Members" });}
+</div>

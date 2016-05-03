@@ -1,0 +1,75 @@
+﻿body.Store
+{
+    padding-top: 70px; 
+    padding-bottom: 30px;
+    }
+    
+.gap-sm
+{
+    margin-top:10px;
+    margin-bottom:10px;
+    }
+
+.gap-md
+{
+    margin-top:20px;
+    margin-bottom:20px;
+    }
+
+.gap-lg
+{
+    margin-top:30px;
+    margin-bottom:30px;
+    }
+    
+.a-font-black
+{
+    color:#777777;
+    }
+
+a.a-font-black:hover
+{
+    color:#777777;
+    }
+ 
+.navbar-center
+ {
+     display: inline-block;
+      float: none;
+      vertical-align: top;
+     }
+ 
+.navbar .navbar-collapse {
+  text-align: center;
+}
+
+.login-menu
+{
+    width:300px;
+    padding:10px 10px 10px 10px;
+    }
+ 
+.nopadding {
+   padding-left: 0 !important;
+   padding-right: 0 !important;
+   margin-left: 0 !important;
+   margin-right: 0 !important;
+}
+
+.vertical-center {
+  min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
+  min-height: 100vh; /* These two lines are counted as one :-)       */
+
+  display: flex;
+  align-items: center;
+}
+
+.divider {
+  margin-left: 7px;
+  margin-right: 7px;
+  height: 21px;
+  border: 0;
+  border-left: 1px solid #cccccc;
+  display: inline-block;
+  vertical-align: bottom;
+}

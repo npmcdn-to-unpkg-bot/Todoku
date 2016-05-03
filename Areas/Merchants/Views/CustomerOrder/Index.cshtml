@@ -7,25 +7,17 @@
     $(function () {
         $('table').on('click', ".btnProcess", function () {
             $tr = $(this).closest('tr');
-            var data = { OrderID: $tr.find(".hdnOrderID").val(),
-                MerchantID: $tr.find(".hdnMerchantID").val(),
-                CustomerID: $tr.find(".hdnCustomerID").val(),
-                ProductID: $tr.find(".hdnProductID").val()
-            };
-            OnSaveData('@Url.Content("~/Merchants/Home/ConfirmRequest")', data, function () {
-                window.location.href = '@Url.Content("~/Merchants/Home/CustomerOrder/")';
+            var data = { CustomerOrderID: $tr.find(".hdnCustomerOrderID").val() };
+            OnSaveData('@Url.Content("~/Merchants/CustomerOrder/Confirm")', data, function () {
+                window.location.href = '@Url.Content("~/Merchants/Detail/")' + $tr.find(".hdnMerchantID").val();
             });
         });
 
         $('table').on('click', ".btnVoid", function () {
             $tr = $(this).closest('tr');
-            var data = { OrderID: $tr.find(".hdnOrderID").val(),
-                MerchantID: $tr.find(".hdnMerchantID").val(),
-                CustomerID: $tr.find(".hdnCustomerID").val(),
-                ProductID: $tr.find(".hdnProductID").val()
-            };
-            OnSaveData('@Url.Content("~/Merchants/Home/VoidRequest")', data, function () {
-                window.location.href = '@Url.Content("~/Merchants/Home/CustomerOrder/")';
+            var data = { CustomerOrderID: $tr.find(".hdnCustomerOrderID").val() };
+            OnSaveData('@Url.Content("~/Merchants/Home/Void")', data, function () {
+                window.location.href = '@Url.Content("~/Merchants/Detail/")' + $tr.find(".hdnMerchantID").val();
             });
         });
     });
@@ -34,7 +26,8 @@
 <h2>Pemesanan Barang</h2>
 <table class="grdView">
     <colgroup>
-        <col width="350px"/>
+        <col width="200px"/>
+        <col width="150px"/>
         <col width="70px"/>
         <col />
         <col width="150px"/>
@@ -42,6 +35,7 @@
     <thead>
         <tr>
             <td align="center">Produk</td>
+            <td align="left">Keterangan</td>
             <td align="center">Jumlah</td>
             <td align="center">Alamat</td>
             <td align="center"></td>
@@ -51,15 +45,24 @@
         <tr>
             <td>
                 @Html.HiddenFor(x => item.MerchantID, new { @class = "hdnMerchantID" })
-                @Html.HiddenFor(x => item.OrderID, new { @class = "hdnOrderID" })
-                @Html.HiddenFor(x => item.ProductID, new { @class = "hdnProductID" })
-                @Html.HiddenFor(x => item.CustomerID, new { @class = "hdnCustomerID" })
+                @Html.HiddenFor(x => item.CustomerOrderID, new { @class = "hdnCustomerOrderID" })
                 @Html.DisplayFor(x => item.product.ProductName)
+            </td>
+            <td>
+                @if(item.Attributes!= null)
+                {
+                    foreach (String str in item.Attributes.Split('|'))
+                    {
+                        Int32 AttributeID = Convert.ToInt32(str);
+                        Todoku.Models.ProductAttribute entity = ((List<Todoku.Models.ProductAttribute>)ViewBag.ProductAtt).FirstOrDefault(x => x.AttributeID == AttributeID);
+                        <div>@Html.Label(String.Format("{0} : {1}", entity.attgroup.GroupName, entity.AttributeName))</div>
+                    }
+                }
             </td>
             <td align="right">@Html.DisplayFor(x => item.Quantity) Pcs</td>
             <td>
                 @Html.DisplayFor(x => item.customer.Fullname)<br/>
-                @Html.DisplayFor(x => item.customer.address.Address)
+                @Html.DisplayWithBreaksFor(x => item.pohd.Address)
             </td>
             <td align="center">
                 @if (item.RequestStatus == Todoku.Models.RequestStatus.Booked)

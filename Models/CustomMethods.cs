@@ -11,6 +11,7 @@ using System.Text;
 using System.Web.UI;
 using System.Web.Mvc.Html;
 using Todoku.Models;
+using System.Web.Routing;
 
 namespace Todoku.Models
 {
@@ -62,7 +63,7 @@ namespace Todoku.Models
                     switch (entry.Key) 
                     {
                         case "detail":
-                            ClassName = "ProductsDetails";
+                            ClassName = "ProductDt";
                             break;
                         default :
                             ClassName = UppercaseFirst(entry.Key);
@@ -255,6 +256,66 @@ namespace System.Web.Mvc
                 }
                 return stringWriter.ToString();
             }
+        }
+    }
+
+    public static class HtmlBootstrapExtension 
+    {
+        public static Boolean IsSelected(this HtmlHelper html, string actions = "", string controllers = "")
+        {
+            ViewContext viewContext = html.ViewContext;
+            bool isChildAction = viewContext.Controller.ControllerContext.IsChildAction;
+
+            if (isChildAction)
+                viewContext = html.ViewContext.ParentActionViewContext;
+
+            RouteValueDictionary routeValues = viewContext.RouteData.Values;
+            string currentAction = RoutingActionTable(routeValues["action"].ToString());
+            string currentController = RoutingControllerTable(routeValues["controller"].ToString());
+
+            if (String.IsNullOrEmpty(actions))
+                actions = currentAction;
+
+            if (String.IsNullOrEmpty(controllers))
+                controllers = currentController;
+
+            string[] acceptedActions = actions.Trim().Split(',').Distinct().ToArray();
+            string[] acceptedControllers = controllers.Trim().Split(',').Distinct().ToArray();
+
+            return acceptedActions.Contains(currentAction) && acceptedControllers.Contains(currentController) ? true : false;
+        }
+
+        public static String IsActive(this HtmlHelper html, string actions = "", string controllers = "", string cssClass = "selected")
+        {
+            return IsSelected(html, actions, controllers) ? cssClass : String.Empty;
+        }
+
+        public static MvcHtmlString CreateHtmlView(this HtmlHelper html, string actions = "", string controllers = "", string htmlString = "")
+        {
+            return IsSelected(html, actions, controllers) ? MvcHtmlString.Create(htmlString) : null;
+        }
+
+        private static String RoutingActionTable(String Action)
+        {
+            String result = "";
+            switch (Action)
+            {
+                case "CustomerPurchaseReceive": result = "Customer"; break;
+                case "AgenPurchaseReceive": result = "Agen"; break;
+                default: result = Action; break;
+            }
+            return result;
+        }
+
+        private static String RoutingControllerTable(String Controller)
+        {
+            String result = "";
+            switch (Controller)
+            {
+                case "PurchaseConfirmation": result = "Purchase"; break;
+                default: result = Controller; break;
+            }
+            return result;
         }
     }
 }

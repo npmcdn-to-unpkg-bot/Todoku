@@ -6,7 +6,7 @@
         <div class="itemName">@(Model.ProductName.Length < 50 ? Model.ProductName : Model.ProductName.Substring(0, 50) + "...")</div>
         <div class="ItemDesc">
             <p style=" text-align:justify;">@Model.ShortDescription</p>
-            @String.Format("{0:c}", Model.detail.Price).Replace("Rp","Rp ")
+            @String.Format("{0:c}", Model.detail.LineAmount).Replace("Rp","Rp ")
         </div>
     </a>
 </div>
