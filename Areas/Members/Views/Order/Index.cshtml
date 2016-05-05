@@ -30,7 +30,7 @@
                 foreach (var item in Model)
                 { 
                     <tr>
-                        <th><input type="checkbox"/></th>
+                        <td><input type="checkbox"/></td>
                         <td>@item.OrderNo</td>
                         <td>@item.merchant.MerchantName</td>
                         <td align="center">
@@ -51,7 +51,7 @@
             else
             {
                 <tr style="height:50px;">
-                    <td colspan="6" style="vertical-align:middle;"><center>No Data to Display</center></td>
+                    <td colspan="7" style="vertical-align:middle;"><center>No Data to Display</center></td>
                 </tr>
             }
         </tbody>

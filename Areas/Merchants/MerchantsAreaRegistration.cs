@@ -14,16 +14,16 @@ namespace Todoku.Areas.Merchants
 
         public override void RegisterArea(AreaRegistrationContext context)
         {
-            context.MapRoute(
-                "Merchants_detail",
-                "Merchants/Detail/{id}",
-                new { controller = "Home", action = "Detail", id = UrlParameter.Optional }
-            );
+            //context.MapRoute(
+            //    "Merchants_detail",
+            //    "Merchants/Detail/{id}",
+            //    new { controller = "Home", action = "Detail", id = UrlParameter.Optional }
+            //);
 
             context.MapRoute(
                 "Merchants_default",
                 "Merchants/{controller}/{action}/{id}",
-                new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+                new { controller = "Home", action = "Index", id = UrlParameter.Optional, area = "Merchants" }
             );
         }
     }

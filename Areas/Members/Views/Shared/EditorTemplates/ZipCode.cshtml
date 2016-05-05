@@ -1,0 +1,8 @@
+﻿@model String
+<div class="form-inline input-group">
+    <input type="text" id="@ViewData.TemplateInfo.HtmlFieldPrefix.Replace('.','_')" name="@ViewData.TemplateInfo.HtmlFieldPrefix" class="form-control input-sm" value="@Model">
+    <div class="input-group-addon" style="cursor:pointer">
+        <span class="glyphicon glyphicon-search"></span>
+    </div>
+</div>
+

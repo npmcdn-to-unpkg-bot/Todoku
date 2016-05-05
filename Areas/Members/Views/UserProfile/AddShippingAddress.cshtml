@@ -1,0 +1,178 @@
+﻿@model Todoku.Models.ShippingAddresses
+
+<script type="text/javascript">
+    var arr = [];
+    var cities = [];
+    $(function () {
+        var url = "http://localhost:8081/rajaongkir/province/";
+        var provinces = (@Html.Raw(Json.Encode(ViewBag.provinces)))["Data"];
+        AjaxFunction(url, null, "GET", function (result) {
+            arr = result['rajaongkir'].results;
+        });
+        
+        url = "http://localhost:8081/rajaongkir/city/id=&province=";
+        AjaxFunction(url, null, "GET", function (result) {
+            cities = result['rajaongkir'].results;
+        });
+
+        $("#Province").change(function () {
+            var province = $(this).find('option:selected').text();
+            for (var i = 0; i < arr.length; i++) {
+                var alias = provinces[province];
+                if(alias == null)alias = "null";
+                if (arr[i].province.toLowerCase().indexOf(province.toLowerCase()) != -1 || arr[i].province.toLowerCase().indexOf(alias.toLowerCase()) != -1) {
+                    $('#RajaOngkir_Province_ID').val(arr[i].province_id);
+                    break;
+                }
+            }
+        });
+
+        $('#City').change(function () {
+            var city = $(this).val();
+            for (var i = 0; i < cities.length; i++) {
+                if (cities[i].city_name.toLowerCase().indexOf(city.toLowerCase()) != -1) {
+                    $('#RajaOngkir_City_ID').val(cities[i].city_id);
+                    break;
+                }
+            }
+        });
+    });
+
+    function LoadOnSaveNotifHandle(){
+        var status = @Html.Raw(Json.Encode(TempData["SaveResult"]));
+        console.log(status);
+        if(status != null){
+            OnSaveSuccess(status.Data);
+        }
+    }
+
+    function OnSaveSuccess(result) {
+        if (!result.ok) {
+            OnSaveFailed(result);
+        }
+    }
+
+    function OnSaveFailed(result) {
+        $('#tmpl-danger').tmpl(result).appendTo('#alert-container');
+    }
+</script>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="page-header">
+            <h3>Tambah Alamat</h3>
+        </div>
+    </div>
+</div>
+<form name="form" class="form-horizontal" role="form" method="post" action="">
+    <div class="row">
+        <div class="form-group">
+            <div class="col-md-12">
+                @Html.LabelFor(model => Model.AddressName, new { @class = "control-label col-md-2" })
+                <div class="col-md-3">
+                    @Html.TextBoxFor(model => Model.AddressName, new { @class = "form-control input-sm" })
+                </div>
+            </div>
+        </div>        
+    </div>
+    <div class="row">
+        <div class="form-group">
+            <div class="col-md-12">
+                @Html.LabelFor(model => Model.ZipCode, new { @class = "control-label col-md-2" })
+                <div class="col-md-2">
+                    @Html.EditorFor(model => model.ZipCode,"ZipCode")
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group">
+            <div class="col-md-12">
+                @Html.LabelFor(model => Model.Country, new { @class = "control-label col-md-2" })
+                <div class="col-md-2">
+                    @Html.DropDownList("Country", (SelectList)ViewBag.Country, new { @class = "form-control input-sm" })
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group">
+            <div class="col-md-12">
+                @Html.LabelFor(model => Model.Province, new { @class = "control-label col-md-2" })
+                <div class="col-md-2">
+                    @Html.HiddenFor(model => model.RajaOngkir_Province_ID)
+                    @Html.DropDownList("Province", (SelectList)ViewBag.Province, new { @class = "form-control input-sm" })
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group">
+            <div class="col-md-12">
+                @Html.LabelFor(model => model.City, new { @class = "control-label col-md-2" })
+                <div class="col-md-2">
+                    @Html.HiddenFor(model => model.RajaOngkir_City_ID)
+                    @Html.TextBoxFor(model => Model.City, new { @class = "form-control input-sm" })
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group">
+            <div class="col-md-12">
+                @Html.LabelFor(model => model.Address, new { @class = "control-label col-md-2" })
+                <div class="col-md-3">
+                    @Html.TextAreaFor(model => Model.Address, new { @class = "form-control input-sm" })
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group">
+            <div class="col-md-12">
+                @Html.LabelFor(model => model.Phone, new { @class = "control-label col-md-2" })
+                <div class="col-md-2">
+                    @Html.TextBoxFor(model => model.Phone, new { @class = "form-control input-sm" })
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group">
+            <div class="col-md-12">
+                @Html.LabelFor(model => model.Handphone, new { @class = "control-label col-md-2" })
+                <div class="col-md-2">
+                    @Html.TextBoxFor(model => Model.Handphone, new { @class = "form-control input-sm" })
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group">
+            <div class="col-md-12">
+                @Html.LabelFor(model => model.Email, new { @class = "control-label col-md-2" })
+                <div class="col-md-2">
+                    @Html.TextBoxFor(model => Model.Email, new { @class = "form-control input-sm", type = "email", placeholder = "Enter email" })
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group">
+            <div class="col-md-12">
+                @Html.LabelFor(model => model.Email2, new { @class = "control-label col-md-2" })
+                <div class="col-md-2">
+                    @Html.TextBoxFor(model => Model.Email2, new { @class = "form-control input-sm", type = "email", placeholder = "Enter email" })
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-3">
+            @Html.ActionLink("Kembali", "Index")
+            <div class="divider"></div>
+            <a href="JAVASCRIPT:form.submit()">Simpan</a>
+        </div>
+    </div>
+</form>

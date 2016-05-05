@@ -17,7 +17,6 @@ namespace Todoku.Areas.Members.Controllers
         public ActionResult Index(Int32 Page = 1, Int32 Rows = SystemSetting.Default_Grid_Row)
         {
             BusinessLayer db = new BusinessLayer();
-            String username = Membership.GetUser().UserName;
             Int32 UserID = db.GetUserProfileID();
             List<PurchaseOrderHd> lst = null;
             if (UserID != 0)
@@ -47,7 +46,6 @@ namespace Todoku.Areas.Members.Controllers
             return View(lst);
         }
 
-
         public ActionResult Process(int id = 0) 
         {
             BusinessLayer db = new BusinessLayer();
@@ -69,12 +67,13 @@ namespace Todoku.Areas.Members.Controllers
             else return RedirectToAction("index");
         }
 
-        public ActionResult Confirmation(PurchaseOrderConfirmation entity)
+        [HttpPost]
+        public JsonResult Confirmation(PurchaseOrderConfirmation entity)
         {
             BusinessLayer db = new BusinessLayer();
             try
             {
-                PurchaseOrderHd obj = db.purchaseorderhds.FirstOrDefault(x => x.OrderNo == entity.OrderNo);
+                PurchaseOrderHd obj = db.purchaseorderhds.FirstOrDefault(x => x.OrderID == entity.OrderID || x.OrderNo == entity.OrderNo);
                 obj.PaymentMehod = entity.PaymentMehod;
                 obj.AgentID = entity.AgentID;
                 obj.Address = entity.Address;
@@ -107,11 +106,13 @@ namespace Todoku.Areas.Members.Controllers
                 db.purchasereceivedts.Add(prdt);
 
                 db.SaveChanges();
-                return View(obj);
+                //return View(obj);
+                return Json(new { ok = true, Status = "Success" });
             }
             catch (Exception ex)
             {
-                return RedirectToAction("index", "PurchaseOrder", new { OrderNo = entity.OrderNo });
+                //return RedirectToAction("index", "PurchaseOrder", new { OrderNo = entity.OrderNo });
+                return Json(new { ok = false, Status = ex.Message });
             }
         }
     }

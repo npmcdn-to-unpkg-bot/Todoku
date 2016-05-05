@@ -1,0 +1,7 @@
+﻿@model DateTime?
+<div class="input-group date" data-provide="datepicker" data-date-orientation="bottom" data-date-format="dd/mm/yyyy">
+    <input type="text" id="@ViewData.TemplateInfo.HtmlFieldPrefix.Replace('.','_')" name="@ViewData.TemplateInfo.HtmlFieldPrefix" class="form-control input-sm datepicker" value="@(((DateTime)Model).ToString("dd/MM/yyyy"))">
+    <div class="input-group-addon">
+        <span class="glyphicon glyphicon-th"></span>
+    </div>
+</div>

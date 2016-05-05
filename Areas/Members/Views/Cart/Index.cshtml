@@ -1,5 +1,62 @@
-﻿@{
-    ViewBag.Title = "Index";
-}
+﻿@model List<Todoku.Models.Cart>
+<script src="@Url.Content("~/Areas/Members/Scripts/CartController.js")" type="text/javascript"></script>
+<script type="text/javascript">
+    function LoadOnSaveNotifHandle(){
+        var status = @Html.Raw(Json.Encode(TempData["SaveResult"]));
+        if(status != null){
+            OnSaveSuccess(status.Data);
+        }
+    }
 
-<h2>Index</h2>
+    function OnSaveSuccess(result) {
+        if (!result.ok) {
+            OnSaveFailed(result);
+        }
+    }
+
+    function OnSaveFailed(result) {
+        $('#tmpl-danger').tmpl(result).appendTo('#alert-container');
+    }
+</script>
+<h1 class="page-header">Keranjang</h1>
+<div class="row">
+    <div class="col-md-8">
+        <div class="list-group">
+            @foreach (var item in Model) 
+            {
+                <div class="list-group-item">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <img src="@Url.Content(item.product.ImgLink)" style="width:80px;height:80px;" data-src="holder.js/80x80" class="img-thumbnail" alt="A generic square placeholder image with a white border around it, making it resemble a photograph taken with an old instant camera">
+                        </div>
+                        <div class="col-md-7 nopadding">
+                            <h5><strong>@item.product.ProductName</strong></h5>
+                            <label class="nopadding">Pesan : @item.TotalAmount.ToString("c") x @item.Quantity Buah</label><br/>
+                            <label class="nopadding">Total : @item.LineAmount.ToString("c")</label>
+                        </div>
+                        <div class="col-md-3">
+                            <form name="@String.Format("{0}_{1}", "form", @item.CartID)" class="form-inline" role="form" method="post" action="">
+                                <input type="hidden" name="id" value="@item.CartID" />
+                                <a href="@String.Format("JAVASCRIPT:{0}_{1}.submit()", "form", @item.CartID)">
+                                    <span style="float:right;" class="glyphicon glyphicon-remove"></span>
+                                </a>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="col-md-2"></div>
+</div>
+<div class="row">
+    <div class="col-md-8">
+        <div class="col-md-6">
+            <form action="@Url.Content("~/Members/Cart/Process")" method="post" name="form">
+                <a href="javascript:form.submit()">Bayar Transaksi Ini</a>
+            </form>
+        </div>
+        <div class="col-md-6"><h3 style="margin-top:0px; margin-right:0px; float:right;">Total: @ViewBag.TotalAmount.ToString("c")</h3></div>
+    </div>
+    <div class="col-md-2"></div>
+</div>

@@ -92,14 +92,15 @@
                                 @foreach (var prdt in @item.detail)
                                 { 
                                     <div class="form-group">
+                                        @Html.HiddenFor(model => prdt.OrderID, new { @class = "OrderID" })
                                         @if (prdt.order.AgentID == null)
                                         { 
-                                            @Html.HiddenFor(model => prdt.OrderID, new { @class = "OrderID" });
                                             <input type="text" class="form-control input-sm AgentID" placeholder="Masukkan Kode Agen" />
                                             <a href="#">Cari</a>
                                         }
                                         else
                                         { 
+                                            <input type="text" style="display:none;" class="form-control input-sm AgentID" placeholder="Masukkan Kode Agen" value="@prdt.order.AgentID" />
                                             <label>@prdt.order.AgentID</label>
                                         }
                                     </div>

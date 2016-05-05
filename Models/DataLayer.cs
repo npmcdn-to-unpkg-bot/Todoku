@@ -722,6 +722,7 @@ namespace Todoku.Models
 
         public String UserName { get; set; }
 
+        [Display(Name="Panggilan")]
         public String Prefix { get; set; }
 
         [Display(Name="Nama Lengkap")]
@@ -760,7 +761,7 @@ namespace Todoku.Models
         [Key]
         public Int32 CartID { get; set; }
         
-        public String UserName { get; set; }
+        public String Username { get; set; }
 
         public Int32 ProductID { get; set; }
 
@@ -1031,6 +1032,9 @@ namespace Todoku.Models
 
         [ForeignKey("ProductID")]
         public virtual Product product { get; set; }
+
+        [ForeignKey("MerchantID")]
+        public virtual Merchant merchant { get; set; }
     }
 
     public class MemberHistory 
@@ -1195,7 +1199,8 @@ namespace Todoku.Models
     }
 
     public class PurchaseOrderConfirmation 
-    { 
+    {
+        public Int32 OrderID { get; set; }
         public String OrderNo { get; set;}
         public String PaymentMehod {get; set;}
         public Int32? AgentID {get;set;}
@@ -1239,6 +1244,22 @@ namespace Todoku.Models
         public Int32 Page { get; set; }
         public Int32 Pages { get; set; }
         public Int32 Rows { get; set; }
+    }
+
+    public class MyViewModel
+    {
+        public String SelectedOrderId { get; set; }
+        public SelectList OrderTemplates { get; set; }
+
+        // Other properties you need in your view
+    }
+    #endregion
+
+    #region View Controller
+    public class CartView 
+    {
+        public List<Cart> carts { get; set; }
+        public String jsonCarts { get; set; }
     }
     #endregion
 }

@@ -81,17 +81,13 @@
     <Compile Include="Areas\Members\Controllers\InformationController.cs" />
     <Compile Include="Areas\Members\Controllers\OrderController.cs" />
     <Compile Include="Areas\Members\Controllers\PurchasingController.cs" />
-    <Compile Include="Areas\Members\old.Controllers\AdminController.cs" />
-    <Compile Include="Areas\Members\old.Controllers\CartController.cs" />
-    <Compile Include="Areas\Members\old.Controllers\HomeController.cs" />
-    <Compile Include="Areas\Members\old.Controllers\InformationController.cs" />
-    <Compile Include="Areas\Members\old.Controllers\PurchaseOrderController.cs" />
+    <Compile Include="Areas\Members\Controllers\UserProfileController.cs" />
     <Compile Include="Areas\Members\MemberAreaRegistration.cs" />
     <Compile Include="Areas\Merchants\Controllers\CustomerOrderController.cs" />
     <Compile Include="Areas\Merchants\Controllers\HomeController.cs" />
+    <Compile Include="Areas\Merchants\Controllers\PartialViewController.cs" />
     <Compile Include="Areas\Merchants\Controllers\ProductController.cs" />
     <Compile Include="Areas\Merchants\Controllers\ProfilController.cs" />
-    <Compile Include="Areas\Merchants\Controllers\RegistrationController.cs" />
     <Compile Include="Areas\Merchants\Controllers\ShippingController.cs" />
     <Compile Include="Areas\Merchants\MerchantsAreaRegistration.cs" />
     <Compile Include="Areas\Stores\Controllers\ProductController.cs" />
@@ -114,7 +110,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\Todoku.sdf" />
-    <Content Include="Areas\Members\Scripts\main.js" />
+    <Content Include="Areas\Members\Scripts\CartController.js" />
     <Content Include="Content\admin.css" />
     <Content Include="Content\_Site.css" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
@@ -938,12 +934,21 @@
     <Content Include="PlugIn\Angular\i18n\angular-locale_zu-za.js" />
     <Content Include="PlugIn\Angular\i18n\angular-locale_zu.js" />
     <Content Include="PlugIn\Angular\version.txt" />
+    <Content Include="PlugIn\Bootstrap\css\bootstrap-datepicker.css" />
+    <Content Include="PlugIn\Bootstrap\css\bootstrap-datepicker.min.css" />
+    <Content Include="PlugIn\Bootstrap\css\bootstrap-datepicker.standalone.css" />
+    <Content Include="PlugIn\Bootstrap\css\bootstrap-datepicker.standalone.min.css" />
+    <Content Include="PlugIn\Bootstrap\css\bootstrap-datepicker3.css" />
+    <Content Include="PlugIn\Bootstrap\css\bootstrap-datepicker3.min.css" />
+    <Content Include="PlugIn\Bootstrap\css\bootstrap-datepicker3.standalone.css" />
+    <Content Include="PlugIn\Bootstrap\css\bootstrap-datepicker3.standalone.min.css" />
     <Content Include="PlugIn\Bootstrap\css\bootstrap-theme.css" />
     <Content Include="PlugIn\Bootstrap\css\bootstrap-theme.min.css" />
     <Content Include="PlugIn\Bootstrap\css\bootstrap.css" />
     <Content Include="PlugIn\Bootstrap\css\bootstrap.min.css" />
     <Content Include="PlugIn\Bootstrap\css\dashboard.css" />
     <Content Include="PlugIn\Bootstrap\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="PlugIn\Bootstrap\js\bootstrap-datepicker.min.js" />
     <Content Include="PlugIn\Bootstrap\js\bootstrap.js" />
     <Content Include="PlugIn\Bootstrap\js\bootstrap.min.js" />
     <Content Include="PlugIn\Bootstrap\js\holder.min.js" />
@@ -1360,9 +1365,6 @@
     <Content Include="Areas\Stores\Views\Stores\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Areas\Merchants\Views\Home\Index.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Areas\Stores\Views\_ViewStart.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -1370,11 +1372,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Stores\Views\Shared\DisplayTemplates\Product.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Areas\Members\old.Views\Web.config">
-      <SubType>Designer</SubType>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Stores\Views\Product\Index.cshtml" />
@@ -1391,89 +1388,13 @@
     <Content Include="Views\Shared\DisplayTemplates\Product.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Areas\Members\old.Views\Cart\Index.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Areas\Members\old.Views\Home\Index.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Areas\Members\old.Views\_ViewStart.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Areas\Merchants\Views\Home\CustomerOrder.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Areas\Members\old.Views\PurchaseOrder\Confirmation.cshtml" />
-    <Content Include="Areas\Members\old.Views\PurchaseOrder\Index.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Areas\Members\old.Views\Home\PaymentConfirmation.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Areas\Members\old.Views\Shared\_Layout.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Areas\Members\old.Views\Home\OrderConfirmation.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Areas\Members\old.Views\Admin\Index.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Areas\Merchants\Views\Shared\_Layout.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Areas\Merchants\Views\Home\SendPackage.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Areas\Merchants\Views\Registration\Index.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Areas\Members\old.Views\Home\MerchantRegistration.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Areas\Merchants\Views\Home\Detail.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Areas\Merchants\Views\Product\Index.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Areas\Merchants\Views\Product\Edit.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Areas\Merchants\Views\Product\Detail.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Areas\Merchants\Views\Product\Create.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Areas\Merchants\Views\Product\Delete.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Areas\Merchants\Views\Profil\Index.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Areas\Members\old.Views\Home\OrderDetail.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Areas\Members\old.Views\Shared\EditorTemplates\DateTime.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\Shared\EditorTemplates\Price.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Merchants\Views\Shared\EditorTemplates\Price.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Areas\Members\old.Views\Home\AddShippingAddress.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Areas\Members\old.Views\Home\EditShippingAddress.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Areas\Members\old.Views\Home\DeleteShippingAddress.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Areas\Members\old.Views\Shared\EditorTemplates\ZipCode.cshtml" />
+    <Content Include="Areas\Members\Views\UserProfile\AddShippingAddress.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\EditorTemplates\ZipCode.cshtml" />
@@ -1491,9 +1412,6 @@
     <Content Include="Areas\Management\Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Areas\Members\old.Views\Shared\_EmptyLayout.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Areas\Management\Views\MerchantRegistration\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -1503,10 +1421,6 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Areas\Merchants\Views\CustomerOrder\Index.cshtml" />
-    <Content Include="Areas\Merchants\Views\Shipping\Index.cshtml" />
-    <Content Include="Areas\Merchants\Views\Product\CreateProductAttribute.cshtml" />
-    <Content Include="Areas\Members\old.Views\Information\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Home\Index.cshtml" />
     <Content Include="Areas\Admin\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_Layout.cshtml" />
@@ -1532,6 +1446,17 @@
     <Content Include="Areas\Members\Views\Account\LogOn.cshtml" />
     <Content Include="Areas\Members\Views\Account\Register.cshtml" />
     <Content Include="Areas\Members\Views\Order\Process.cshtml" />
+    <Content Include="Areas\Members\Views\UserProfile\Index.cshtml" />
+    <Content Include="Areas\Members\Views\Shared\EditorTemplates\ZipCode.cshtml" />
+    <Content Include="Areas\Members\Views\Shared\EditorTemplates\DateTime.cshtml" />
+    <Content Include="Areas\Merchants\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\Merchants\Views\Home\Index.cshtml" />
+    <Content Include="Areas\Merchants\Views\Product\Index.cshtml" />
+    <Content Include="Areas\Merchants\Views\Profil\Index.cshtml" />
+    <Content Include="Areas\Merchants\Views\PartialView\ChangeMerchantName.cshtml" />
+    <Content Include="Areas\Merchants\Views\PartialView\ListMerchant.cshtml" />
+    <Content Include="Areas\Merchants\Views\CustomerOrder\Index.cshtml" />
+    <Content Include="Areas\Merchants\Views\Shipping\Index.cshtml" />
     <None Include="PlugIn\Angular\angular-animate.min.js.map" />
     <None Include="PlugIn\Angular\angular-aria.min.js.map" />
     <None Include="PlugIn\Angular\angular-cookies.min.js.map" />

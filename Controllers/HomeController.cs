@@ -11,7 +11,7 @@ namespace Todoku.Controllers
     {
         public ActionResult Index()
         {
-            if(TempData.Peek("DefaultSystemName") == null)TempData["DefaultSystemName"] = SystemSetting.Default_System_Name;
+            if (TempData.Peek("DefaultSystemName") == null) TempData["DefaultSystemName"] = SystemSetting.Default_System_Name;
             BusinessLayer db = new BusinessLayer();
             ViewBag.Categories = db.standardcodes.Where(x => x.ParentID == SCConstant.Kategori_Produk).OrderBy(x => x.StandardCodeName).ToList();
             return View(db.products.Take(10).ToList());

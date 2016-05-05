@@ -14,103 +14,18 @@ namespace Todoku.Areas.Merchants.Controllers
         //
         // GET: /Merchants/CustomerOrder/
 
-        public ActionResult Index(Int32 MerchantID)
+        public ActionResult Index()
         {
             BusinessLayer db = new BusinessLayer();
-            String OwnerID = Membership.GetUser().ProviderUserKey.ToString();
+            Int32 MerchantID = Convert.ToInt32(TempData.Peek("MerchantID"));
+            Int32 UserID = db.GetUserProfileID();
             List<CustomerOrder> cos = db.customerOrder
-                .Where(x => x.MerchantID == MerchantID && (x.RequestStatus == RequestStatus.Booked || x.RequestStatus == RequestStatus.ConfirmedByAdmin))
+                .Where(x => x.MerchantID == MerchantID && x.merchant.OwnerID == UserID && (x.RequestStatus == RequestStatus.Booked || x.RequestStatus == RequestStatus.ConfirmedByAdmin))
                 .ToList();
             List<Int32> Products = cos.Select(x => x.ProductID).ToList();
             List<ProductAttribute> productAtt = db.productAttributes.Where(x => !x.IsDeleted).ToList().Where(x => Products.Contains(x.ProductID)).ToList();
             ViewBag.ProductAtt = productAtt;
-            return PartialView(cos);
-        }
-
-        //
-        // GET: /Merchants/CustomerOrder/Details/5
-
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
-        //
-        // GET: /Merchants/CustomerOrder/Create
-
-        public ActionResult Create()
-        {
-            return View();
-        } 
-
-        //
-        // POST: /Merchants/CustomerOrder/Create
-
-        [HttpPost]
-        public ActionResult Create(FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add insert logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-        
-        //
-        // GET: /Merchants/CustomerOrder/Edit/5
- 
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        //
-        // POST: /Merchants/CustomerOrder/Edit/5
-
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
- 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        //
-        // GET: /Merchants/CustomerOrder/Delete/5
- 
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        //
-        // POST: /Merchants/CustomerOrder/Delete/5
-
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
- 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            return View(cos);
         }
 
         [HttpPost]
@@ -121,7 +36,6 @@ namespace Todoku.Areas.Merchants.Controllers
                 BusinessLayer db = new BusinessLayer();
                 CustomerOrder co = db.customerOrder.FirstOrDefault(x => x.CustomerOrderID == entity.CustomerOrderID);
                 co.RequestStatus = RequestStatus.ConfirmedByMerchant;
-                //co.pohd.DeliveryStatus = DeliveryStatus.Prepared;
                 db.Entry(co).State = EntityState.Modified;
 
                 ItemDeliveryHd deliveryHd = db.itemdeliveryhds.FirstOrDefault(x => x.MerchantID == co.MerchantID && x.OrderID == co.OrderID && x.DeliveryStatus == DeliveryStatus.Prepared);
@@ -149,14 +63,13 @@ namespace Todoku.Areas.Merchants.Controllers
                 delivDt.CreatedDate = DateTime.Now;
                 db.itemdeliverydts.Add(delivDt);
                 db.SaveChanges();
-
-                return Json(new { ok = true, message = "Success" });
+                TempData["SaveResult"] = Json(new { ok = true, message = "Data telah berhasil proses" });
+                return Json(new { ok = true, message = "Data telah berhasil proses" });
             }
             catch (Exception ex)
             {
-                return Json(new { ok = false, message = ex.Message });
+                return Json(new { ok = false, message = "Data tidak dapat diproses : " + ex.Message });
             }
-
         }
 
         [HttpPost]
@@ -170,11 +83,10 @@ namespace Todoku.Areas.Merchants.Controllers
 
                 PurchaseOrderDt podt = co.pohd.orderdetails.FirstOrDefault(x => x.OrderID == co.OrderID && x.cart.ProductID == co.ProductID && !x.IsDeleted);
                 podt.OrderStatus = OrderStatus.Void;
-
                 List<PurchaseReceiveDt> prdts = db.purchasereceivedts.Where(x => x.OrderID == co.pohd.OrderID).ToList();
-                if (prdts.Count() > 0) 
+                if (prdts.Count() > 0)
                 {
-                    foreach (PurchaseReceiveDt obj in prdts) 
+                    foreach (PurchaseReceiveDt obj in prdts)
                     {
                         obj.receive.RefundAmount += podt.cart.LineAmount;
 
@@ -182,17 +94,18 @@ namespace Todoku.Areas.Merchants.Controllers
                         //{
                         //    co.pohd.DeliveryStatus = DeliveryStatus.Void;
                         //}
+                        db.Entry(obj).State = EntityState.Modified;
                     }
-                    db.Entry(prdts).State = EntityState.Modified;
                 }
-                
+
                 db.Entry(co).State = EntityState.Modified;
                 db.SaveChanges();
-                return Json(new { ok = true, Status = "Success" });
+                TempData["SaveResult"] = Json(new { ok = true, message = "Data telah berhasil dihapus" });
+                return Json(new { ok = true, message = "Success" });
             }
             catch (Exception ex)
             {
-                return Json(new { ok = false, Status = ex.Message });
+                return Json(new { ok = false, message = ex.Message });
             }
         }
     }

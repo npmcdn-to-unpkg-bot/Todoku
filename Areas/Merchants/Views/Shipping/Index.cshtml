@@ -1,64 +1,124 @@
 ﻿@model List<Todoku.Models.ItemDeliveryHd>
-@{
-    ViewBag.Title = "Todoku";
-}
 
 <script type="text/javascript">
     $(function () {
-        $("body").on("click", ".txtProcess", function () {
-            $tr = $(this).closest('div');
-            var data = {
-                DeliveryID: $tr.find("#item_DeliveryID").val(),
-                ReceiptNumber: $tr.find("#item_ReceiptNumber").val()
-            };
-
-            OnSaveData('@Url.Content("~/Merchants/Home/ProcessPackage")', data, function () {
-                window.location.href = '@Url.Content("~/Merchants/Detail/")' + $tr.find("#item_MerchantID").val();
-            });
+        $("body").on("click", ".lnkProcess", function () {
+            $tr = $(this).closest('li');
+            if($tr.find("#txtReceiptNumber").val() != ""){
+                var data = {
+                    DeliveryID: $tr.find("#item_DeliveryID").val(),
+                    ReceiptNumber: $tr.find("#txtReceiptNumber").val()
+                };
+                var url = '@Url.Content("~/Merchants/Shipping/Process")';
+                OnSaveData(url,data,OnSaveSuccessRefreshPage, OnSaveFailed);
+            }
+            else
+            {
+                var result = {ok : false, message : "Harap masukkan nomor resi" };
+                OnSaveFailed(result);
+            }
         });
     });
+
+    function OnSaveSuccessRefreshPage(result){
+        if(result.ok)
+            window.location.reload();
+        else
+            OnSaveFailed(result);
+    }
+
+    function LoadOnSaveNotifHandle() {
+        var status = @Html.Raw(Json.Encode(TempData["SaveResult"]));
+        if(status != null){
+            OnSaveSuccess(status.Data);
+        }
+    }
+
+    function OnSaveSuccess(result) {
+        if (result.ok) {
+            $('#tmpl-success').tmpl(result).appendTo('#alert-container');
+        } else {
+            OnSaveFailed(result);
+        }
+    }
+
+    function OnSaveFailed(result) {
+        $('#tmpl-danger').tmpl(result).appendTo('#alert-container');
+    }
 </script>
 
-<h2>Pengiriman</h2>
+<h1 class="page-header">Pengiriman</h1>
 
-@foreach (var item in Model) 
-{ 
-    <div style="border:1px solid black;">
-        <table>
-            <tr>
-                <td>
-                    @Html.HiddenFor(x => item.DeliveryID)
-                    @Html.HiddenFor(x => item.MerchantID)
-                    @Html.LabelFor(x => item.pohd.OrderNo)
-                </td>
-                <td>:</td>
-                <td>@Html.DisplayFor(x => item.pohd.OrderNo)</td>
-            </tr>
-            <tr>
-                <td colspan="3">Alamat</td>
-            </tr>
-            <tr>
-                <td colspan="3">@Html.DisplayWithBreaksFor(x => item.Address)</td>
-            </tr>
-            <tr>
-                <td>@Html.LabelFor(x => item.ReceiptNumber)</td>
-                <td>:</td>
-                <td>@Html.EditorFor(x => item.ReceiptNumber)</td>
-            </tr>
-        </table>
-        <table>
-            @foreach (var obj in item.itemdeliverydts)
-            { <tr>
-                <td>@Html.LabelFor(x => obj.product.ProductName)</td>
-                <td>:</td>
-                <td>@Html.DisplayFor(x => obj.product.ProductName)</td>
-                    
-                <td>@Html.LabelFor(x => obj.Quantity)</td>
-                <td>:</td>
-                <td>@Html.DisplayFor(x => obj.Quantity) pcs</td>                    
-                </tr>
-            }
-        </table>
-        @Html.Button("Proses", new { @class = "txtProcess" })
-    </div>
-}
+<ul class="list-group">
+    @if (Model.Count() > 0)
+    {
+        foreach (var item in Model)
+        { 
+            <li class="list-group-item">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="col-md-3 nopadding">@Html.LabelFor(x => item.ReceiptNumber)</div>
+                                <div class="col-md-1 nopadding">:</div>
+                                <div class="col-md-8 nopadding">
+                                    <div class="col-md-6 nopadding">
+                                        <input type="text" class="form-control input-sm" id="txtReceiptNumber" name="ReceiptNumber" />
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="col-md-3 nopadding">
+                                    @Html.HiddenFor(x => item.DeliveryID)
+                                    @Html.HiddenFor(x => item.MerchantID)
+                                    @Html.LabelFor(x => item.pohd.OrderNo)
+                                </div>
+                                <div class="col-md-1 nopadding">:</div>
+                                <div class="col-md-8 nopadding">@Html.DisplayFor(x => item.pohd.OrderNo)</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="md-col-12"><label>Alamat</label></div>
+                            <div class="md-col-12">
+                                @Html.DisplayWithBreaksFor(x => item.Address)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12"><label>Barang</label></div>
+                    @foreach (var obj in item.itemdeliverydts)
+                    {
+                        <div class="col-md-12">
+                            <span class="glyphicon glyphicon-ok"></span>
+                            @Html.LabelFor(x => obj.product.ProductName)
+                            <span>:</span>
+                            @Html.DisplayFor(x => obj.product.ProductName)
+                            @Html.LabelFor(x => obj.Quantity)
+                            <span>:</span>
+                            @Html.DisplayFor(x => obj.Quantity) <span> Buah</span>
+                        </div>
+                    }
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <a href="#" class="lnkProcess">Proses</a>
+                        <div class="divider"></div>
+                        <a href="#">
+                            <span class="glyphicon glyphicon-print"></span> Print
+                        </a>
+                    </div>
+                </div>
+            </li>
+        }
+    }
+    else
+    {
+        <li class="list-group-item">
+            <center><h3>Tidak Ada Data</h3></center>
+        </li>
+    }
+<//ul>

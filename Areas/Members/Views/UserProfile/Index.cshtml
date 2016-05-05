@@ -1,0 +1,214 @@
+﻿@model Todoku.Models.UserProfile
+<script type="text/javascript">
+    function LoadOnSaveNotifHandle(){
+        var status = @Html.Raw(Json.Encode(TempData["SaveResult"]));
+        if(status != null){
+            OnSaveSuccess(status.Data);
+        }
+    }
+
+    function OnSaveSuccess(result) {
+        if (result.ok) {
+            $('#tmpl-success').tmpl(result).appendTo('#alert-container');
+        } else {
+            OnSaveFailed(result);
+        }
+    }
+
+    function OnSaveFailed(result) {
+        $('#tmpl-danger').tmpl(result).appendTo('#alert-container');
+    }
+</script>
+<ul class="nav nav-tabs">
+    <li class="active"><a data-toggle="tab" href="#menu1">Profil Pengguna</a></li>
+    <li><a data-toggle="tab" href="#menu2">Pengiriman</a></li>
+</ul>
+<div class="tab-content">
+    <div id="menu1" class="tab-pane fade in active">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="gap-md"></div>
+                <div id="alert-container"></div>
+            </div>
+        </div>
+        <div class="row">
+            <form name="form" class="form-horizontal" role="form" method="post" action="">
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="Prefix" class="control-label col-md-4">@Html.LabelFor(m => m.Prefix):</label>
+                                <div class="col-md-3">
+                                    @Html.DropDownList("Prefix", (SelectList)ViewBag.PrefixData, new { @class = "form-control input-sm" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="Fullname" class="control-label col-md-4">@Html.LabelFor(m => m.Fullname):</label>
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control input-sm" id="Fullname" name="Fullname" value="@Model.Fullname">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="DateOfBirth" class="control-label col-md-4">@Html.LabelFor(m => m.DateOfBirth):</label>
+                                <div class="col-md-4">
+                                    @Html.EditorFor(m => m.DateOfBirth)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="Gender" class="control-label col-md-4">@Html.LabelFor(m => m.Gender):</label>
+                                <div class="col-md-4">
+                                    @Html.DropDownList("Gender", (SelectList)ViewBag.GenderData, new { @class = "form-control input-sm" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label col-md-4" for="email">@Html.LabelFor(m => m.address.Email):</label>
+                                <div class="col-md-4">
+                                  <input type="email" class="form-control input-sm" id="address_email" name="address.Email" placeholder="Enter email" value="@Model.address.Email">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label col-md-4" for="email">@Html.LabelFor(m => m.address.Email2):</label>
+                                <div class="col-md-4">
+                                  <input type="email" class="form-control input-sm" id="address_email2" name="address.Email2" placeholder="Enter email" value="@Model.address.Email2">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label col-md-4" for="Phone">@Html.LabelFor(m => m.address.Phone):</label>
+                                <div class="col-md-4">
+                                  <input type="text" class="form-control input-sm" id="address_Phone" name="address.Phone" placeholder="Masukkan no telpon" value="@Model.address.Phone">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label col-md-4" for="Handphone">@Html.LabelFor(m => m.address.Handphone):</label>
+                                <div class="col-md-4">
+                                  <input type="text" class="form-control input-sm" id="address_Handphone" name="address.Handphone" placeholder="Masukkan no handphone" value="@Model.address.Handphone">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="Country" class="control-label col-md-4">@Html.LabelFor(m => m.address.Country):</label>
+                                <div class="col-md-4">
+                                    @Html.DropDownList("address.Country", (SelectList)ViewBag.Country, new { @class = "form-control input-sm" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="ZipCode" class="control-label col-md-4">@Html.LabelFor(m => m.address.ZipCode):</label>
+                                <div class="col-md-4">
+                                    @Html.EditorFor(m => m.address.ZipCode, "ZipCode")
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="Province" class="control-label col-md-4">@Html.LabelFor(m => m.address.Province):</label>
+                                <div class="col-md-4">
+                                    @Html.DropDownList("address.Province", (SelectList)ViewBag.Province, new { @class = "form-control input-sm" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="City" class="control-label col-md-4">@Html.LabelFor(m => m.address.City):</label>
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control input-sm" id="address_city" name="address.city" value="@Model.address.City">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="Address" class="control-label col-md-4">@Html.LabelFor(m => m.address.Address):</label>
+                                <div class="col-md-8">
+                                    <textarea type="text" class="form-control input-sm" id="address_Address" name="address.Address">@Model.address.Address</textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div class="col-md-4"></div>
+                                <div class="col-md-4">
+                                    <a href="JAVASCRIPT:form.submit()">Simpan</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div id="menu2" class="tab-pane fade">
+        <div class="gap-md"></div>
+        @Html.ActionLink("Tambah", "AddShippingAddress", "UserProfile", new { area = "Members" }, null)
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <colgroup>
+                    <col width="3%"/>
+                    <col width="20%" />
+                    <col width="20%" />
+                    <col />
+                    <col width="12%" />
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th><input type="checkbox"/></th>
+                        <th>Keterangan</th>
+                        <th style="text-align:center">Kota</th>
+                        <th style="text-align:center">Alamat</th>
+                        <th style="text-align:center"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.shippings.Count() > 0)
+                    {
+                        if (Model.shippings != null)
+                        {
+                            foreach (var item in Model.shippings)
+                            { 
+                            <tr>
+                                <td><input type="checkbox"/></td>
+                                <td>@item.AddressName</td>
+                                <td style="text-align:center">@item.City</td>
+                                <td>@item.Address</td>
+                                <td align="center">
+                                    <form name="@String.Format("{0}_{1}", "form",@item.ShippingID)" class="form-inline" role="form" method="post" action="@Url.Content("~/Members/UserProfile/Delete")">
+                                        @Html.ActionLink("Proses", "Process", "Order", new { area = "Members", id = item.ShippingID }, new { @class = "lnkProses" })
+                                        <div class="divider"></div>
+                                        <input type="hidden" name="id" value="@item.ShippingID" />
+                                        <a href="@String.Format("JAVASCRIPT:{0}_{1}.submit()", "form", @item.ShippingID)">Hapus</a>
+                                    </form>
+                                </td>
+                            </tr>
+                            }
+                        }
+                    }
+                    else
+                    {
+                        <tr style="height:50px;">
+                            <td colspan="5" style="vertical-align:middle;"><center>No Data to Display</center></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

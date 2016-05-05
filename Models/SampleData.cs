@@ -134,15 +134,15 @@ namespace Todoku.Models
                         new Menu{ MenuID = 8, DashboardID = 1, MenuName = "Informasi", Area = "SC0014.002", Path = "Members/Information/", Action = "Index", Controller = "Information", ParentID = 1, IsChildMenu = false, IsParent = false, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
 
                     new Menu{ MenuID = 9, DashboardID = 3, MenuName = "Toko", Path = "", Area = "SC0014.003", ParentID = null, IsChildMenu = false, IsParent = true, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
-                        new Menu{ MenuID = 10, DashboardID = 3, MenuName = "Pendaftaran", Area = "SC0014.003", Path = "Merchants/Registration", ParentID = 9, IsChildMenu = false, IsParent = false, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
-                        new Menu{ MenuID = 11, DashboardID = 3, MenuName = "Dashboard", Area = "SC0014.003", Path = "Merchants/", ParentID = 9, IsChildMenu = false, IsParent = false, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
-                            new Menu{ MenuID = 12, DashboardID = 3, MenuName = "Profil", Area = "SC0014.003", Path = "Merchants/Profil/Index", ParentID = 11, IsChildMenu = true, IsParent = false, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
-                            new Menu{ MenuID = 13, DashboardID = 3, MenuName = "Produk", Area = "SC0014.003", Path = "Merchants/Product/Index", ParentID = 11, IsChildMenu = true, IsParent = false, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
-                            new Menu{ MenuID = 14, DashboardID = 3, MenuName = "Order", Area = "SC0014.003", Path = "Merchants/CustomerOrder/Index", ParentID = 11, IsChildMenu = true, IsParent = false, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
-                            new Menu{ MenuID = 15, DashboardID = 3, MenuName = "Pengiriman", Area = "SC0014.003", Path = "Merchants/Shipping/Index", ParentID = 11, IsChildMenu = true, IsParent = false, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                        new Menu{ MenuID = 10, DashboardID = 1, MenuName = "Pendaftaran", Area = "SC0014.002", Path = "Merchants/Registration", Action = "Merchant", Controller= "Registration", ParentID = 9, IsChildMenu = false, IsParent = false, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                        new Menu{ MenuID = 11, DashboardID = 3, MenuName = "Overview", Area = "SC0014.003", Path = "Merchants/", ParentID = 9, IsChildMenu = false, IsParent = true, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                            new Menu{ MenuID = 12, DashboardID = 3, MenuName = "Profil", Area = "SC0014.003", Path = "Merchants/Profil/Index", Action = "Index", Controller= "Profil", ParentID = 11, IsChildMenu = true, IsParent = false, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                            new Menu{ MenuID = 13, DashboardID = 3, MenuName = "Produk", Area = "SC0014.003", Path = "Merchants/Product/Index", Action = "Index", Controller= "Product", ParentID = 11, IsChildMenu = true, IsParent = false, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                            new Menu{ MenuID = 14, DashboardID = 3, MenuName = "Order", Area = "SC0014.003", Path = "Merchants/CustomerOrder/Index", Action = "Index", Controller= "CustomerOrder", ParentID = 11, IsChildMenu = true, IsParent = false, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                            new Menu{ MenuID = 15, DashboardID = 3, MenuName = "Pengiriman", Area = "SC0014.003", Path = "Merchants/Shipping/Index", Action = "Index", Controller= "Shipping", ParentID = 11, IsChildMenu = true, IsParent = false, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
 
                     new Menu{ MenuID = 16, DashboardID = 4, MenuName = "Agen", Area = "SC0014.005", Path = "", ParentID = null, IsChildMenu = false, IsParent = true, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
-                        new Menu{ MenuID = 17, DashboardID = 4, MenuName = "Pendaftaran", Area = "SC0014.005", Path = "#", ParentID = 16, IsChildMenu = false, IsParent = false, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
+                        new Menu{ MenuID = 17, DashboardID = 1, MenuName = "Pendaftaran", Area = "SC0014.002", Path = "#", Action="Agen", Controller= "Registration", ParentID = 16, IsChildMenu = false, IsParent = false, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
 
                     new Menu{ MenuID = 18, DashboardID = 2, MenuName = "Admin", Area = "SC0014.006", Path = "/Admin/", Action= "Index", Controller = "Home", ParentID = null,  IsChildMenu = false, IsParent = true, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
                         new Menu{ MenuID = 19, DashboardID = 2, MenuName = "Konfirmasi", Area = "SC0014.006", Path = "", ParentID = 18,  IsChildMenu = false, IsParent = true, IsActive = true, CreatedBy = "sysadmin", CreatedDate = DateTime.Now},
@@ -433,11 +433,13 @@ namespace Todoku.Models
                 #region Cart
                 new List<Cart>
                 {
-                    new Cart{ CartID = 1, UserName = "ibnu", DiscountAmount = 0, DiscountInPercentage = 0, TotalAmount = 110000, ProductID =  1, Quantity = 1, ItemStatus = ItemStatus.Ordered, CreatedDate = DateTime.Now },
-                    new Cart{ CartID = 2, UserName = "ibnu", DiscountAmount = 0, DiscountInPercentage = 0, TotalAmount = 110000, ProductID =  2, Quantity = 1, ItemStatus = ItemStatus.Ordered, CreatedDate = DateTime.Now },
-                    new Cart{ CartID = 3, UserName = "ibnu", DiscountAmount = 0, DiscountInPercentage = 0, TotalAmount = 110000, ProductID =  1, Quantity = 1, ItemStatus = ItemStatus.Ordered, CreatedDate = DateTime.Now },
-                    new Cart{ CartID = 4, UserName = "ibnu", DiscountAmount = 0, DiscountInPercentage = 0, TotalAmount = 110000, ProductID =  2, Quantity = 1, ItemStatus = ItemStatus.Ordered, CreatedDate = DateTime.Now },
-                    new Cart{ CartID = 5, UserName = "ibnu", DiscountAmount = 0, DiscountInPercentage = 0, TotalAmount = 110000, ProductID =  1, Quantity = 1, ItemStatus = ItemStatus.Ordered, CreatedDate = DateTime.Now }
+                    new Cart{ CartID = 1, Username = "ibnu", DiscountAmount = 0, DiscountInPercentage = 0, TotalAmount = 110000, ProductID =  1, Quantity = 1, ItemStatus = ItemStatus.Ordered, CreatedDate = DateTime.Now },
+                    new Cart{ CartID = 2, Username = "ibnu", DiscountAmount = 0, DiscountInPercentage = 0, TotalAmount = 110000, ProductID =  2, Quantity = 1, ItemStatus = ItemStatus.Ordered, CreatedDate = DateTime.Now },
+                    new Cart{ CartID = 3, Username = "ibnu", DiscountAmount = 0, DiscountInPercentage = 0, TotalAmount = 110000, ProductID =  1, Quantity = 1, ItemStatus = ItemStatus.Ordered, CreatedDate = DateTime.Now },
+                    new Cart{ CartID = 4, Username = "ibnu", DiscountAmount = 0, DiscountInPercentage = 0, TotalAmount = 110000, ProductID =  2, Quantity = 1, ItemStatus = ItemStatus.Ordered, CreatedDate = DateTime.Now },
+                    new Cart{ CartID = 5, Username = "ibnu", DiscountAmount = 0, DiscountInPercentage = 0, TotalAmount = 110000, ProductID =  1, Quantity = 1, ItemStatus = ItemStatus.Ordered, CreatedDate = DateTime.Now },
+                    new Cart{ CartID = 6, Username = "ibnu", DiscountAmount = 0, DiscountInPercentage = 0, TotalAmount = 110000, ProductID =  2, Quantity = 1, ItemStatus = ItemStatus.Requested, CreatedDate = DateTime.Now },
+                    new Cart{ CartID = 7, Username = "ibnu", DiscountAmount = 0, DiscountInPercentage = 0, TotalAmount = 110000, ProductID =  1, Quantity = 1, ItemStatus = ItemStatus.Requested, CreatedDate = DateTime.Now }
                 }.ForEach(x => context.carts.Add(x));
                 #endregion
 
@@ -466,8 +468,8 @@ namespace Todoku.Models
                 {
                     new CustomerOrder { OrderID = 1, ProductID = 1, MerchantID = 1, Quantity = 1, CustomerID = 2, RequestStatus = RequestStatus.Booked },
                     new CustomerOrder { OrderID = 1, ProductID = 2, MerchantID = 1, Quantity = 1, CustomerID = 2, RequestStatus = RequestStatus.Booked },
-                    new CustomerOrder { OrderID = 2, ProductID = 3, MerchantID = 1, Quantity = 1, CustomerID = 2, RequestStatus = RequestStatus.Booked },
-                    new CustomerOrder { OrderID = 2, ProductID = 4, MerchantID = 1, Quantity = 1, CustomerID = 2, RequestStatus = RequestStatus.Booked },
+                    new CustomerOrder { OrderID = 2, ProductID = 1, MerchantID = 1, Quantity = 1, CustomerID = 2, RequestStatus = RequestStatus.Booked },
+                    new CustomerOrder { OrderID = 2, ProductID = 2, MerchantID = 1, Quantity = 1, CustomerID = 2, RequestStatus = RequestStatus.Booked },
                 }.ForEach(x => context.customerOrder.Add(x));
                 #endregion
 

@@ -78,7 +78,7 @@ namespace Todoku.Areas.Admin.Controllers
                         }
                         else 
                         {
-                            return Json(new { ok = false, message = "Please Insert Agent ID" });
+                            return Json(new { ok = false, Status = "Harap masukkan no agen" });
                         }
                     }
                 }
@@ -105,7 +105,7 @@ namespace Todoku.Areas.Admin.Controllers
                 }
 
                 db.SaveChanges();
-                return Json(new { ok = true, message = "Success" });
+                return Json(new { ok = true, message = "Data berhasil disimpan" });
             }
             catch (Exception ex)
             {

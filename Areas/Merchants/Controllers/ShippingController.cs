@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using Todoku.Models;
 using System.Web.Security;
+using Todoku.Models;
+using System.Data;
 
 namespace Todoku.Areas.Merchants.Controllers
 {
@@ -13,97 +14,35 @@ namespace Todoku.Areas.Merchants.Controllers
         //
         // GET: /Merchants/Shipping/
 
-        public ActionResult Index(Int32 MerchantID)
+        public ActionResult Index()
         {
             BusinessLayer db = new BusinessLayer();
             String OwnerID = Membership.GetUser().UserName;
+            Int32 MerchantID = Convert.ToInt32(TempData.Peek("MerchantID"));
             List<ItemDeliveryHd> itemdeliveryhds = db.itemdeliveryhds.Where(x => x.MerchantID == MerchantID && x.DeliveryStatus == DeliveryStatus.Prepared).ToList();
-            return PartialView(itemdeliveryhds);
+            return View(itemdeliveryhds);
         }
 
-        //
-        // GET: /Merchants/Shipping/Details/5
-
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
-        //
-        // GET: /Merchants/Shipping/Create
-
-        public ActionResult Create()
-        {
-            return View();
-        } 
-
-        //
-        // POST: /Merchants/Shipping/Create
-
-        [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public JsonResult Process(ItemDeliveryHd entity) 
         {
             try
             {
-                // TODO: Add insert logic here
-
-                return RedirectToAction("Index");
+                BusinessLayer db = new BusinessLayer();
+                ItemDeliveryHd itemDeliv = db.itemdeliveryhds.FirstOrDefault(x => x.DeliveryID == entity.DeliveryID);
+                if (itemDeliv != null)
+                {
+                    itemDeliv.DeliveryStatus = DeliveryStatus.Delivery;
+                    itemDeliv.ReceiptNumber = entity.ReceiptNumber;
+                    itemDeliv.LastUpdatedBy = Membership.GetUser().UserName;
+                    itemDeliv.LastUpdatedDate = DateTime.Now;
+                }
+                db.Entry(itemDeliv).State = EntityState.Modified;
+                db.SaveChanges();
+                return Json(new { ok = true, message = "Data telah berhasil diproses" });
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
-            }
-        }
-        
-        //
-        // GET: /Merchants/Shipping/Edit/5
- 
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        //
-        // POST: /Merchants/Shipping/Edit/5
-
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
- 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        //
-        // GET: /Merchants/Shipping/Delete/5
- 
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        //
-        // POST: /Merchants/Shipping/Delete/5
-
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
- 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
+                return Json(new { ok = false, message = "Data tidak dapat diproses : " + ex.Message });
             }
         }
     }

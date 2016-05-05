@@ -41,7 +41,7 @@
                              @{Html.RenderAction("Dashboard", "PartialView", new { area = "" });}
                         </li>
                         <li><a href="#">Settings</a></li>
-                        <li><a href="#">Profile</a></li>
+                        <li>@Html.ActionLink("Profile", "Index", "UserProfile", new { area = "Members" }, null)</li>
                         <li><a href="#">Help</a></li>
                     </ul>
                 </div>
@@ -50,7 +50,7 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-2 sidebar">
-                    @{Html.RenderAction("MenuInDashboard", "PartialView", new { area = "", DashboardID = TempData.Peek("DashboardID") });}
+                    @{Html.RenderAction("MenuInDashboard", "PartialView", new { area = "", DashboardID = TempData.Peek("DashboardID") != null ? TempData.Peek("DashboardID") : 0 });}
                 </div>
                 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
                     @RenderBody()

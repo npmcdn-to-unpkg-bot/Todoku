@@ -161,13 +161,18 @@
     });
 
     var url = window.location.origin + "/Todoku/Template/_global.tmpl.htm";
-    
+
     // Asynchronously load the template definition file.
     $.get(url, function (templates) {
 
         // Inject all those templates at the end of the document.
         $('body').append(templates);
-        $('.page-header').after('<div id="alert-container"></div>');
+        if ($(".page-header").length) {
+            $('.page-header').after('<div id="alert-container"></div>');
+        }
+        if (typeof (LoadOnSaveNotifHandle) != "undefined") {
+            LoadOnSaveNotifHandle();
+        };
     });
 })
 
@@ -258,7 +263,7 @@ function OpenDialog(prop) {
     $('#' + dialogID).data('dialogTitle', prop.DialogTitle).data('data', prop.Data).dialog("open");
 }
 
-function OnSaveData(url, data, func) {
+function OnSaveData1(url, data, func) {
     $.ajax({
         type: "POST",
         url: url,
@@ -273,7 +278,7 @@ function OnSaveData(url, data, func) {
     });
 }
 
-function OnSaveData1(url, data, func, err) {
+function OnSaveData(url, data, func, err) {
     $.ajax({
         type: "POST",
         url: url,

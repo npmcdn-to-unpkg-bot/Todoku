@@ -42,11 +42,34 @@
         });
 
         $('body').on('change', '.ShippingService', function () {
-            $('#hdnShippingSelectedValue').val($(this).val());
-            $('#ShippingCharges').val($(this).val().split('|')[1]);
             SetAddress();
         });
+
+        $('body').on('change', '.radioPackage',function(){
+            $('#hdnShippingSelectedValue').val($(this).val());
+            $('#ShippingCharges').val($(this).val().split('|')[1]);
+        });
+
+        $('body').on('click','.lnkProses', function(){
+            var url = "@Url.Content("~/Order/Confirmation")";
+            var bankID = $("input:radio[name=bank]").val();
+            var data = {OrderID : "@Model.OrderID", PaymentMehod : $("#PaymentMethod").val(), AgentID : $('#txtAgent').val(), Address : $('#address').val(), ShippingCharges : $('#ShippingCharges').val(), BankID : bankID  };
+            OnSaveData(url,data,OnSaveSuccess,OnSaveFailed);
+        });
     });
+
+    function OnSaveSuccess(result){
+        if(result.ok){
+            window.location.href = '@Url.Content("~/Members/Purchasing/Index")';
+        }else{
+            OnSaveFailed(result);
+        }
+    }
+
+    function OnSaveFailed(result){
+        $('#tmpl-danger').tmpl(result).appendTo('#alert-container');
+        //console.log(result);
+    }
 
     function SetAddress() {
         var url = "http://localhost:8081/rajaongkir/cost/";
@@ -70,10 +93,11 @@
     function SortByPrice(obj1,obj2)
     {
         return obj1.cost[0].value - obj2.cost[0].value;
-    };
+    }
 </script>
 <input type="hidden" id="hdnTotalWeight" value="@ViewBag.TotalWeight"/>
 <input type="hidden" id="hdnStoreAddress" value="@Model.merchant.address.RajaOngkir_City_ID"/>
+@Html.HiddenFor(model => Model.ShippingCharges)
 <div class="row">
     <div class="col-md-12">
         <div class="page-header">
@@ -149,7 +173,7 @@
             <div>
                 <label for="address">Agen:</label>
                 <a href="#" style="float:right;">Cari</a>
-                <input type="text" class="form-control"/>
+                <input type="text" class="form-control" id="txtAgent"/>
             </div>
             <div class="gap-sm"></div>
             <div>
@@ -163,13 +187,19 @@
         <div class="row nopadding">
             <div class="gap-sm"></div>
             <div class="form-group">
-                <label for="address">Transfer:</label>
+                <form class="form-inline">
+                    <div class="form-group">
+                        <label for="address">Pembayaran:</label>
+                        @Html.DropDownList("PaymentMethod", (SelectList)ViewBag.PaymentMethod, new { @class = "form-control input-sm" })
+                    </div>
+                </form>
+                <div class="gap-sm"></div>
                 <div class="list-group">
                     @foreach (var item in ((List<Todoku.Models.Bank>)ViewBag.Banks))
                     {
                         <div class="list-group-item">
                             <div class="row">
-                                <div class="col-md-1"><input type="radio" name="bank" /></div>
+                                <div class="col-md-1"><input type="radio" name="bank" value="@item.BankID" /></div>
                                 <div class="col-md-2"><label>@item.BankName</label></div>
                                 <div class="col-md-4"><label>A.N. @item.AccountName</label></div>
                                 <div class="col-md-5"><label>@item.AccountNo</label></div>
@@ -188,7 +218,7 @@
     <div class="col-md-12">
         @Html.ActionLink("Kembali", "Index")
         <div class="divider"></div>
-        @Html.ActionLink("Bayar", "Process", "Order", new { area = "Members" }, new { @class = "lnkProses" })
+        <a href="#" class="lnkProses">Bayar</a>
     </div>
 </div>
 <!-- Modal -->

@@ -15,24 +15,25 @@ namespace Todoku.Controllers
         {
             BusinessLayer db = new BusinessLayer();
             String Username = "";
-            
+
             if (User.Identity.IsAuthenticated)
             {
                 Username = Membership.GetUser().UserName;
                 String[] UserRoles = Roles.GetRolesForUser(Username);
                 List<DashboardInUserRole> diur = db.dashboardinuserroles.Where(x => UserRoles.Contains(x.UserRole.ToLower())).ToList();
-                Int32 DashboardID = diur.FirstOrDefault(x => x.IsDefault).DashboardID;
+                Dashboard dashboard = diur.FirstOrDefault(x => x.IsDefault).dashboard;
+                Int32 DashboardID = dashboard.DashboardID;
                 Menu menu = db.menus.FirstOrDefault(x => x.IsActive && x.IsParent && x.DashboardID == DashboardID);
-                ViewBag.DefaultPage = diur.FirstOrDefault().dashboard;
-                List<Cart> carts = db.carts.Where(x => x.UserName == Username && x.ItemStatus == ItemStatus.Requested).ToList();
+                ViewBag.DefaultPage = dashboard;
+                List<Cart> carts = db.carts.Where(x => x.Username == Username && x.ItemStatus == ItemStatus.Requested).ToList();
                 ViewData["CartQty"] = carts.Sum(x => x.Quantity);
             }
-            else 
+            else
             {
                 List<Cart> carts = AppSession.GetCartUsingCookie(this.HttpContext);
                 ViewData["CartQty"] = carts.Sum(x => x.Quantity);
             }
-            
+
             return PartialView();
         }
 
@@ -48,7 +49,7 @@ namespace Todoku.Controllers
             //{
             //    menus.Add(new Menu { MenuName = "Home", Path = "/" });
             //}
-            
+
             //String path = "";
             //foreach (string obj in arr.Skip(2))
             //{
@@ -79,7 +80,7 @@ namespace Todoku.Controllers
         }
 
         [ChildActionOnly]
-        public ActionResult AddToCart(Int32 ProductID) 
+        public ActionResult AddToCart(Int32 ProductID)
         {
             Cart cart = new Cart();
             cart.ProductID = ProductID;
@@ -88,7 +89,7 @@ namespace Todoku.Controllers
             List<ProductAttributeGroup> group = productAttribute.GroupBy(x => new { x.attgroup.GroupID, x.attgroup.GroupName }).Select(x => new ProductAttributeGroup { GroupID = x.Key.GroupID, GroupName = x.Key.GroupName }).ToList();
             ViewBag.ProductAttribute = productAttribute;
             ViewBag.GroupAttribute = group;
-            ViewBag.GroupAttributeInString = String.Join("|",group.Select(x => x.GroupID).ToList());
+            ViewBag.GroupAttributeInString = String.Join("|", group.Select(x => x.GroupID).ToList());
             return PartialView(cart);
         }
 
@@ -102,13 +103,14 @@ namespace Todoku.Controllers
             List<MenuInUserRole> miur = db.menuinuserrole.Where(x => uRoles.Contains(x.UserRole)).ToList();
 
             List<Menu> menus = db.menus.Where(x => x.IsActive == true && x.IsChildMenu == false).ToList().Where(x => miur.Select(s => s.MenuID).Contains(x.MenuID)).ToList();
-            
+
             return PartialView(menus);
         }
 
         [ChildActionOnly]
-        public ActionResult MenuInDashboard(Int32 DashboardID) 
+        public ActionResult MenuInDashboard(Int32? DashboardID)
         {
+            if (DashboardID == null) DashboardID = 0;
             BusinessLayer db = new BusinessLayer();
             String[] uRoles = Roles.GetRolesForUser();
 
@@ -122,7 +124,7 @@ namespace Todoku.Controllers
         }
 
         [ChildActionOnly]
-        public ActionResult Dashboard() 
+        public ActionResult Dashboard()
         {
             BusinessLayer db = new BusinessLayer();
             String[] roles = Roles.GetRolesForUser();
@@ -132,7 +134,7 @@ namespace Todoku.Controllers
         }
 
         [ChildActionOnly]
-        public ActionResult Pagination(Int32 Page = 0, Int32 Pages = 0, String PageAction = "", String PageController = "", String PageArea = "") 
+        public ActionResult Pagination(Int32 Page = 0, Int32 Pages = 0, String PageAction = "", String PageController = "", String PageArea = "")
         {
             Pagination pg = new Pagination();
             pg.Page = Page;

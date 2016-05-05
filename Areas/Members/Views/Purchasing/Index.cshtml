@@ -1,5 +1,84 @@
-﻿@{
-    ViewBag.Title = "Index";
-}
+﻿@model List<Todoku.Models.PurchaseReceiveHd>
+<script type="text/javascript">
+    $(function () {
+        $('body').on('click', ".btn", function () {
+            $div = $(this).closest('li');
+            var data = { ReceiveNo: $div.find('.keyField').val(), PayerName: $div.find('#item_PayerName').val(), SenderAccountNo: $div.find('#item_SenderAccountNo').val(), TransferAmount: $div.find('.txtNumber').val() }
+            var url = '@Url.Content("~/Purchasing/Confirm")';
+            OnSaveData(url, data, OnSaveSuccess, OnSaveFailed);
+        });
+    });
 
-<h2>Index</h2>
+    function OnSaveSuccess(result) {
+        if (result.ok) {
+            window.location.href = '@Url.Content("~/Members/Purchasing/Index")';
+        } else {
+            OnSaveFailed(result);
+        }
+    }
+
+    function OnSaveFailed(result) {
+        $('#tmpl-danger').tmpl(result).appendTo('#alert-container');
+    }
+</script>
+<h1 class="page-header">Konfirmasi Pembayaran</h1>
+    <ul class="list-group">
+        @if(@Model.Count() > 0)
+        {
+            foreach (var item in Model)
+            {
+                <li class="list-group-item">
+                    @Html.HiddenFor(model => item.ReceiveNo, new { @class="keyField" })
+                    <div class="row">
+                        <div class="col-md-2"><label>No. Pembayaran</label></div>
+                        <div class="col-md-1 nopadding">:</div>
+                        <div class="col-md-9 nopadding">@Html.DisplayFor(model => item.ReceiveNo)</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2">@Html.LabelFor(model => item.PayerName)</div>
+                        <div class="col-md-1 nopadding">:</div>
+                        <div class="col-md-9 nopadding">
+                            <div class="col-md-3 nopadding">
+                                <input type="text" id="item_PayerName" name="item.PayerName" value="@item.PayerName" class="form-control input-sm" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2">@Html.LabelFor(model => item.SenderAccountNo)</div>
+                        <div class="col-md-1 nopadding">:</div>
+                        <div class="col-md-9 nopadding">
+                            <div class="col-md-3 nopadding">
+                                <input type="text" id="item_SenderAccount" name="item.SenderAcount" value="@item.SenderAccountNo" class="form-control input-sm" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2"><label>Bank</label></div>
+                        <div class="col-md-1 nopadding">:</div>
+                        <div class="col-md-9 nopadding">@Html.DisplayFor(model => item.bank.BankName)</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2">@Html.LabelFor(model => item.TransferAmount)</div>
+                        <div class="col-md-1 nopadding">:</div>
+                        <div class="col-md-9 nopadding">
+                            <div class="col-md-2 nopadding">
+                                <input type="text" value="@item.TransferAmount" class="form-control input-sm txtNumber" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button type="button" class="btn btn-default btn-sm btnConfirm">Konfirmasi</button>
+                        </div>
+                    </div>
+                </li>
+            }
+        }
+        else
+        {
+            <li class="list-group-item">
+                <center><h3>Tidak Ada Data</h3></center>
+            </li>
+        }
+    </ul>
+    @{Html.RenderAction("Pagination", "PartialView", new { area = "", Page = ViewBag.Page, Pages = ViewBag.Pages, PageAction = "Index", PageController = "Purchasing", PageArea = "Members" });}

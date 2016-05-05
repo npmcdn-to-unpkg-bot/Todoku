@@ -168,6 +168,11 @@ namespace Todoku.Models
                         .WithMany()
                         .HasForeignKey(m => m.MerchantID)
                         .WillCascadeOnDelete(false);
+            modelBuilder.Entity<CustomerOrder>()
+                        .HasRequired(m => m.merchant)
+                        .WithMany()
+                        .HasForeignKey(m => m.MerchantID)
+                        .WillCascadeOnDelete(false);
         }
     }
 }
