@@ -6,14 +6,13 @@ using System.Web.Mvc;
 
 namespace Todoku.Areas.Agents.Controllers
 {
-    public class HomeController : Controller
+    public class DiscountController : Controller
     {
         //
-        // GET: /Agents/Home/
+        // GET: /Agents/Discount/
 
-        public ActionResult Index(Int32 DashboardID)
+        public ActionResult Index()
         {
-            TempData["DashboardID"] = DashboardID;
             return View();
         }
 

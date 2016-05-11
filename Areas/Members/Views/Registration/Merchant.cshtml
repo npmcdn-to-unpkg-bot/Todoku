@@ -1,0 +1,223 @@
+﻿@model Todoku.Models.MerchantRegistrationEntry
+
+<h1 class="page-header">Pendaftaran Toko</h1>
+
+<script type="text/javascript">
+    $(function () {
+        $('.lnkBrowse').click(function () {
+            $('#files').click();
+        });
+        
+        $('#files').change(function () {
+            var data = {files : $(this).context.files };
+            $("#tmpl-files").tmpl(data).appendTo(".lstFile ul");
+        });
+
+        var navListItems = $('div.setup-panel div a'), allWells = $('.setup-content'), allNextBtn = $('.nextBtn');
+        
+        allWells.hide();
+
+        navListItems.click(function (e) {
+            e.preventDefault();
+
+            var $target = $($(this).attr('href')),
+                $item = $(this);
+
+            if (!$item.hasClass('disabled')) {
+                navListItems.removeClass('btn-primary').addClass('btn-default');
+                $item.addClass('btn-primary');
+                allWells.hide();
+                $target.show();
+                $target.find('input:eq(0)').focus();
+            }
+        });
+
+        allNextBtn.click(function () {
+            var curStep = $(this).closest(".setup-content"),
+		    curStepBtn = curStep.attr("id"),
+		    nextStepWizard = $('div.setup-panel div a[href="#' + curStepBtn + '"]').parent().next().children("a"),
+		    curInputs = curStep.find("input[type='text'],input[type='url'],textarea[textarea]"),
+		    isValid = true;
+            $(".form-group").removeClass("has-error");
+            for (var i = 0; i < curInputs.length; i++) {
+                if (!curInputs[i].validity.valid) {
+                    isValid = false;
+                    $(curInputs[i]).closest(".form-group").addClass("has-error");
+                }
+            }
+            if (isValid) {
+                nextStepWizard.removeAttr('disabled').removeClass('disabled').click();
+            }
+        });
+
+        $('div.setup-panel div a.btn-primary').trigger('click');
+    });
+
+    function LoadOnSaveNotifHandle() {
+        var status = @Html.Raw(Json.Encode(TempData["SaveResult"]));
+        if(status != null){
+            OnSaveSuccess(status.Data);
+        }
+    }
+
+    function OnSaveSuccess(result) {
+        if (result.ok) {
+            $('#tmpl-success').tmpl(result).appendTo('#alert-container');
+        } else {
+            OnSaveFailed(result);
+        }
+    }
+
+    function OnSaveFailed(result) {
+        $('#tmpl-danger').tmpl(result).appendTo('#alert-container');
+    }
+</script>
+
+<script id="tmpl-files" type="text/x-jquery-tmpl">
+    {{each files}}
+        <li>
+            <label>File : ${name}</label>
+            <input type="hidden" name="sample[${$index}].Filename" value="${name}"><br/>
+            Nama Produk : <input type="text" name="sample[${$index}].ProductName" class="form-control" /><br/>
+            Deskripsi : <textarea type="text" name="sample[${$index}].ProductDescription" class="form-control"></textarea>
+        </li>
+    {{/each}}
+</script>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="stepwizard">
+            <div class="stepwizard-row setup-panel">
+                <div class="stepwizard-step">
+                    <a href="#step-1" type="button" class="btn btn-primary btn-circle">1</a>
+                    <p>Step 1</p>
+                </div>
+                <div class="stepwizard-step">
+                    <a href="#step-2" type="button" class="btn btn-default btn-circle disabled">2</a>
+                    <p>Step 2</p>
+                </div>
+                <div class="stepwizard-step">
+                    <a href="#step-3" type="button" class="btn btn-default btn-circle disabled">3</a>
+                    <p>Step 3</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-5">
+        <form role="form" class="form-horizontal" action="" method="post" enctype = "multipart/form-data">
+            <div class="row setup-content" id="step-1">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.merchant.MerchantName, new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @Html.TextBoxFor(m => m.merchant.MerchantName, new { @class = "form-control input-sm" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.merchant.address.Phone, new { @class = "control-label col-md-4" })
+                    <div class="col-md-6">
+                        @Html.TextBoxFor(m => m.merchant.address.Phone, new { @class = "form-control input-sm" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.merchant.address.Handphone, new { @class = "control-label col-md-4" })
+                    <div class="col-md-6">
+                        @Html.TextBoxFor(m => m.merchant.address.Handphone, new { @class = "form-control input-sm" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.merchant.address.Email, new { @class = "control-label col-md-4" })
+                    <div class="col-md-6">
+                        @Html.TextBoxFor(m => m.merchant.address.Email, new { @class = "form-control input-sm" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.merchant.address.Email2, new { @class = "control-label col-md-4" })
+                    <div class="col-md-6">
+                        @Html.TextBoxFor(m => m.merchant.address.Email2, new { @class = "form-control input-sm" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.merchant.Description, new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @Html.TextAreaFor(m => m.merchant.Description, new { @class = "form-control input-sm" })
+                    </div>
+                </div>
+                <button class="btn btn-primary nextBtn btn-sm pull-right" type="button" >Next</button>
+            </div>
+            <div class="row setup-content" id="step-2">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.merchant.address.Country, new { @class = "control-label col-md-4" })
+                    <div class="col-md-5">
+                        @Html.DropDownList("address.Country", (SelectList)ViewBag.Country, new { @class = "form-control input-sm" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.merchant.address.ZipCode, new { @class = "control-label col-md-4" })
+                    <div class="col-md-5">
+                        @Html.EditorFor(m => m.merchant.address.ZipCode, "ZipCode")
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.merchant.address.Province, new { @class = "control-label col-md-4" })
+                    <div class="col-md-5">
+                        @Html.TextBoxFor(m => m.merchant.address.Province, new { @class = "form-control input-sm" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.merchant.address.City, new { @class = "control-label col-md-4" })
+                    <div class="col-md-5">
+                        @Html.TextBoxFor(m => m.merchant.address.Province, new { @class = "form-control input-sm" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.merchant.address.Address, new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @Html.TextAreaFor(m => m.merchant.address.Address, new { @class = "form-control input-sm" })
+                    </div>
+                </div>
+                <button class="btn btn-primary nextBtn btn-sm pull-right" type="button" >Next</button>
+            </div>
+            <div class="row setup-content" id="step-3">
+                <div class="form-group">
+                    <label class="control-label col-md-4">Range Harga</label>
+                    <div class="col-md-8">
+                        <div class="col-md-5 nopadding">
+                            @Html.EditorFor(m => m.merchant.StartPrice, "Price")
+                        </div>
+                        <div class="col-md-2 nopadding" style="text-align:center">s/d</div>
+                        <div class="col-md-5 nopadding">
+                            @Html.EditorFor(m => m.merchant.EndPrice, "Price")
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="file" class="control-label col-md-4">File</label>
+                            <div class="col-md-8">
+                                <div class="input-group">
+                                    <input type="file" class="form-control" multiple name="files" id="files" style="display:none;" />
+                                    <input type="text" class="form-control" id="txtFile"/>
+                                    <div class="input-group-addon" style="cursor:pointer">
+                                        <span class="lnkBrowse glyphicon glyphicon-search"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-4"></div>
+                            <div class="col-md-8">
+                                <div class="gap-sm"></div>
+                                <label>Daftar File</label>
+                                <div class="lstFile">
+                                    <ul></ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary input-sm pull-right">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>

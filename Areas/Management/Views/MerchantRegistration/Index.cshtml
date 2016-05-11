@@ -1,57 +1,101 @@
 ﻿@model IEnumerable<Todoku.Models.MerchantRegistration>
+<script type="text/javascript">
+    $(function () {
+        $("body").on("click", '.lnkProses', function () {
+            $tr = $(this).closest('tr');
+            var data = { id: $tr.find(".RegistrationID").val() };
+            var url = '@Url.Content("~/Management/MerchantRegistration/Confirm")';
+            OnSaveData(url, data, OnSaveSuccessRefreshPage, OnSaveFailed);
+        });
+    });
 
-@{
-    ViewBag.Title = "Index";
-}
+    function OnSaveSuccessRefreshPage(result){
+        if(result.ok)
+            window.location.reload();
+        else
+            OnSaveFailed(result);
+    }
 
-<h2>Konfirmasi Pendaftaran</h2>
+    function LoadOnSaveNotifHandle() {
+        var status = @Html.Raw(Json.Encode(TempData["SaveResult"]));
+        if(status != null){
+            OnSaveSuccess(status.Data);
+        }
+    }
 
-<table class="grdView">
-    <colgroup>
-        <col width="120px" />
-        <col width="220px" />
-        <col width="220px" />
-        <col width="120px" />
-        <col />
-        <col width="150px" />
-    </colgroup>
-    <thead>
-        <tr>
-            <td>MerchantName</td>
-            <td>Pemilik</td>
-            <td>Alamat</td>
-            <td>Harga</td>
-            <td>Deskripsi</td>
-            <td></td>
-        </tr>
-    </thead>
+    function OnSaveSuccess(result) {
+        if (result.ok) {
+            $('#tmpl-success').tmpl(result).appendTo('#alert-container');
+        } else {
+            OnSaveFailed(result);
+        }
+    }
 
-@foreach (var item in Model) {
-    <tr valign="top">
-        <td>
-            @Html.DisplayFor(modelItem => item.MerchantName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.userprofile.Fullname)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.address.Address)
-        </td>
-        <td>@Html.DisplayFor(modelItem => item.StartPrice) s/d @Html.DisplayFor(modelItem => item.EndPrice)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Description)
-        </td>
-        <td align="center">
-            @using (Html.BeginForm("Confirm", "MerchantRegistration"))
-            {
-                @Html.Hidden("id", @item.RegistrationID)
-                <input type="submit" value="Confirm" />
-            }
-            @Html.ActionLink("Details", "Details", new { id = item.RegistrationID }) |
-            @Html.ActionLink("Delete", "Delete", new { id = item.RegistrationID })
-        </td>
-    </tr>
-}
+    function OnSaveFailed(result) {
+        $('#tmpl-danger').tmpl(result).appendTo('#alert-container');
+    }
+</script>
+<h1 class="page-header">Pendaftaran Toko</h1>
+
+<div class="table-responsive">
+    <table class="table table-striped">
+        <colgroup>
+            <col width="150px" />
+            <col width="150px" />
+            <col width="120px" />
+            <col />
+            <col width="220px" />
+        </colgroup>
+        <thead>
+            <tr>
+                <th>Toko</th>
+                <th>Pemilik</th>
+                <th>Harga</th>
+                <th>Deskripsi</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+             @if (Model.Count() > 0)
+             {
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.MerchantName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.userprofile.Fullname)
+                        </td>
+                        <td>@Html.DisplayFor(modelItem => item.StartPrice) s/d @Html.DisplayFor(modelItem => item.EndPrice)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Description)
+                        </td>
+                        <td align="center">
+                            @Html.Hidden("id", @item.RegistrationID, new { @class = "RegistrationID" } )
+                            <a href="#" class="lnkProses">Konfirmasi</a>
+                            <div class="divider"></div>
+                            <a href="#">Detail</a>
+                            <div class="divider"></div>
+                            <a href="#">Hapus</a>
+                        </td>
+                    </tr>
+                }
+             }
+             else
+             { 
+                <tr style="height:50px;">
+                    <td colspan="6" style="vertical-align:middle;"><center>No Data to Display</center></td>
+                </tr>
+             }
+        </tbody>
+    </table>
+</div>
+
+<table class="grdView" style="display:none;">
+    
+
+
 
 </table>

@@ -1,5 +1,115 @@
-﻿@{
-    ViewBag.Title = "Index";
-}
+﻿@model List<Todoku.Models.Product>
 
-<h2>Index</h2>
+<script type="text/javascript">
+    $(function () {
+        $('.lnkBrowse').click(function () {
+            $('#file').click();
+        });
+        $('#file').change(function () {
+            $('#txtFile').val($(this).val());
+        });
+    });
+
+    function LoadOnSaveNotifHandle() {
+        var status = @Html.Raw(Json.Encode(TempData["SaveResult"]));
+        if(status != null){
+            OnSaveSuccess(status.Data);
+        }
+    }
+
+    function OnSaveSuccess(result) {
+        if (result.ok) {
+            $('#tmpl-success').tmpl(result).appendTo('#alert-container');
+        } else {
+            OnSaveFailed(result);
+        }
+    }
+
+    function OnSaveFailed(result) {
+        $('#tmpl-danger').tmpl(result).appendTo('#alert-container');
+    }
+</script>
+
+<h1 class="page-header">Daftar Produk</h1>
+
+<div class="row">
+    <div class="col-md-12">
+        <label>Upload</label>
+        <form class="form-horizontal" role="form" enctype="multipart/form-data" method="post" action="@Url.Content("~/Merchants/Product/UploadFile")">
+            <div class="form-group">
+                <input type="hidden" name="MerchantID" value="@TempData.Peek("MerchantID")" />
+                <label for="file" class="control-label col-md-1">File :</label>
+                <div class="col-md-3 input-group">
+                    <input type="file" class="form-control" name="file" id="file" style="display:none;" />
+                    <input type="text" class="form-control" id="txtFile"/>
+                    <div class="input-group-addon" style="cursor:pointer">
+                        <span class="lnkBrowse glyphicon glyphicon-search"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-1"></div>
+                <div class="col-md-3 input-group">
+                    <button type="submit" class="btn btn-default btn-sm">Submit</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <a href="#">Tambah</a>
+    </div>
+    <div class="col-md-12">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <colgroup>
+                    <col width="100px" />
+                    <col width="250px" />
+                    <col width="150px" />
+                    <col />
+                    <col width="150px" />
+                    <col width="150px" />
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>Kode</th>
+                        <th>Nama</th>
+                        <th>Kategori</th>
+                        <th>Keterangan</th>
+                        <th>Harga</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Count() > 0)
+                    {
+                         foreach (var item in Model)
+                         { 
+                            <tr valign="top">
+                                <td>@item.ProductCode</td>
+                                <td>@item.ProductName</td>
+                                <td>@item.sccategory.StandardCodeName</td>
+                                <td>@Html.Raw(item.ShortDescription)</td>
+                                <td align="right">@Html.DisplayFor(model => item.detail.LineAmount)</td>
+                                <td align="center">
+                                    @Html.ActionLink("Edit", "Edit", "Product", new { id = @item.ProductID }, null)
+                                    <div class="divider"></div>
+                                    @Html.ActionLink("Hapus", "Delete", "Product", new { id = @item.ProductID }, null)
+                                </td>
+                            </tr>   
+                         }
+                    }
+                    else
+                    { 
+                        <tr style="height:50px;">
+                            <td colspan="6" style="vertical-align:middle;"><center>No Data to Display</center></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        @{Html.RenderAction("Pagination", "PartialView", new {area = "", Page = ViewBag.Page, Pages = ViewBag.Pages, PageAction = "Index", PageController = "Product", PageArea = "Merchants" });}
+    </div>
+</div>

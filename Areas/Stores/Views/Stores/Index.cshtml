@@ -5,11 +5,28 @@
 }
            
 <div id="Banner">
-    <img style="" src="@Url.Content("~/Content/Image/Banner/Banner-img.jpg")" alt="" />
+    <img style="height:275px; width:100%" src='@Url.Content("~/Uploads/todoku/Banner/Banner-img.jpg")' />
 </div>
-@{Html.RenderAction("Breadcrumbs", "PartialView", new {area = ""});}
+@*@{Html.RenderAction("Breadcrumbs", "PartialView", new {area = ""});}*@
+
+<div class="ProductList">
+    <div class="ContentTitle">Product List</div>
+    <div>
+        <ul>
+            @foreach (var item in (List<Todoku.Models.StandardCode>)ViewBag.Categories) 
+            { 
+                <li style="display:inline-block;">
+                    <div class="category">
+                        @Html.ActionLink(@item.StandardCodeName, "Index", "Stores", new { category = item.StandardCodeID }, new { area = "Stores" })
+                    </div>
+                </li>
+            }
+        </ul>
+    </div>
+</div>
+
 <div class="HotList">
-    <div class="ContentTitle">Hot List</div>
+    <div class="ContentTitle">Produk</div>
     @foreach (var obj in Model)
     { 
         @Html.DisplayFor(modelItem => obj)

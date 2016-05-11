@@ -1,0 +1,321 @@
+﻿@model Todoku.Models.Product
+
+<script type="text/javascript">
+    $(function () {
+        $('.lnkBrowse').click(function () {
+            $('#file').click();
+        });
+        
+        $('#file').change(function () {
+            $('#txtFile').val($(this).val());
+        });
+
+        $('.lnkProses').click(function () {
+            var data = {
+                ProductID: $('#ProductID').val(),
+                ProductCode: $('#ProductCode').val(),
+                ProductName: $('#ProductName').val(),
+                Category: $('#Category').val(),
+                ImgLink: $('#ImgLink').val(),
+                ShortDescription: $('#ShortDescription').val(),
+                detail: {
+                    Quantity: $('#detail_Quantity').val(),
+                    Weight: $('#detail_Weight').val(),
+                    Price: $('#detail_Price').val(),
+                    DiscountInPercentage: $('#detail_DiscountInPercentage').val(),
+                    DiscountInPercentage2: $('#detail_DiscountInPercentage2').val(),
+                    DiscountInPercentage3: 0,
+                    LineAmount: $('#detail_LineAmount').val()
+                }
+            };
+            var url = '@Url.Content("~/Merchants/Product/Edit")';
+            OnSaveData(url, data, OnSaveSuccess, OnSaveFailed);
+        });
+
+        $('.txtPrice ').change(function () {
+            CalculateTotal();
+        });
+
+        $('#detail_DiscountInPercentage').change(function () {
+            CalculateTotal();
+        });
+
+        $('#detail_DiscountInPercentage2').change(function () {
+            CalculateTotal();
+        });
+
+        $(".tblAttr").on("click",".Delete",function(){
+            var id = $(this).closest('tr').find('.keyField').val();
+            var data = {id : id};
+            var url = '@Url.Content("~/Merchants/Product/DeleteAttribute")';
+            OnSaveData(url, data, OnSaveSuccessRefreshPage, OnSaveFailed);
+        });
+    });
+    
+    function CalculateTotal() {
+        var price = parseFloat($('.txtPrice').val());
+        var discount1 = parseFloat($('#detail_DiscountInPercentage').val());
+        var discount2 = parseFloat($('#detail_DiscountInPercentage2').val());
+        var vatAmount = parseInt("@(Todoku.Models.SystemSetting.VATPercentage)");
+        var totalAmount = price * (1 - ((discount1 + discount2) / 100) + (discount1 * discount2) / 10000);
+        $('#txtVATAmount').val(totalAmount * vatAmount / 100);
+        $('#detail_LineAmount').val(parseFloat(totalAmount * (1 + vatAmount / 100)).toFixed(0));
+    }
+
+    function LoadOnSaveNotifHandle() {
+        var status = @Html.Raw(Json.Encode(TempData["SaveResult"]));
+        if(status != null){
+            OnSaveSuccess(status.Data);
+        }
+    }
+
+    function OnSaveSuccessRefreshPage(result){
+        if(result.ok)
+            window.location.reload();
+        else
+            OnSaveFailed(result);
+    }
+
+    function OnSaveSuccess(result) {
+        if (result.ok) {
+            if(typeof(result.msg_location) != "undefined")
+            {
+                $('#tmpl-success').tmpl(result).appendTo("#" + result.msg_location);
+            }
+            else
+            {
+                $('#tmpl-success').tmpl(result).appendTo('#alert-custom-container');
+            }
+            
+        } else {
+            OnSaveFailed(result);
+        }
+    }
+
+    function OnSaveFailed(result) {
+        $('#tmpl-danger').tmpl(result).appendTo('#alert-custom-container');
+    }
+</script>
+<h1 class="page-header">Edit Produk</h1>
+
+<ul class="nav nav-tabs">
+    <li class="active"><a data-toggle="tab" href="#menu1">Info Produk</a></li>
+    <li><a data-toggle="tab" href="#menu2">Deskripsi</a></li>
+    <li><a data-toggle="tab" href="#menu3">Lain-lain</a></li>
+</ul>
+<div class="tab-content">
+    <div id="menu1" class="tab-pane fade in active">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="gap-md"></div>
+                <div id="alert-custom-container"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <form name="form" class="form-horizontal" role="form" method="post" action="">
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    @Html.HiddenFor(model => model.ProductID)
+                                    @Html.LabelFor(model => model.ProductCode, new { @class = "control-label col-md-4" })
+                                    <div class="col-md-4">
+                                        @Html.TextBoxFor(model => model.ProductCode, new { @class = "form-control input-sm" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.ProductName, new { @class = "control-label col-md-4" })
+                                    <div class="col-md-4">
+                                        @Html.TextBoxFor(model => model.ProductName, new { @class = "form-control input-sm" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.Category, new { @class = "control-label col-md-4" })
+                                    <div class="col-md-4">
+                                        @Html.DropDownList("Category", (SelectList)ViewBag.DataCategory, new { @class = "form-control input-sm" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.ShortDescription, new { @class = "control-label col-md-4" })
+                                    <div class="col-md-6">
+                                        @Html.TextAreaFor(model => model.ShortDescription, new { @class = "form-control input-sm" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.detail.Quantity, new { @class = "control-label col-md-4" })
+                                    <div class="col-md-4">
+                                        @Html.TextBoxFor(model => model.detail.Quantity, new { @class = "form-control input-sm" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.detail.Weight, new { @class = "control-label col-md-4" })
+                                    <div class="col-md-4">
+                                        @Html.TextBoxFor(model => model.detail.Weight, new { @class = "form-control input-sm" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.detail.Price, new { @class = "control-label col-md-4" })
+                                    <div class="col-md-4">
+                                        @Html.TextBoxFor(model => model.detail.Price, new { @class = "txtPrice form-control input-sm number" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.detail.DiscountInPercentage, new { @class = "control-label col-md-4" })
+                                    <div class="col-md-4">
+                                        @Html.TextBoxFor(model => model.detail.DiscountInPercentage, new { @class = "form-control input-sm" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.detail.DiscountInPercentage2, new { @class = "control-label col-md-4" })
+                                    <div class="col-md-4">
+                                        @Html.TextBoxFor(model => model.detail.DiscountInPercentage2, new { @class = "form-control input-sm" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.detail.VATAmount, new { @class = "control-label col-md-4" })
+                                    <div class="col-md-4">
+                                        @Html.TextBoxFor(model => model.detail.VATAmount, new { id = "txtVATAmount", @class = "form-control input-sm number" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.detail.LineAmount, new { @class = "control-label col-md-4" })
+                                    <div class="col-md-4">
+                                        @Html.TextBoxFor(model => model.detail.LineAmount, new { @class = "form-control input-sm number" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-12">
+                <h3>Detail Produk</h3>
+                <div id="alert-custom-container-1"></div>
+            </div>
+            <div class="col-md-12">
+                @Html.ActionLink("Tambah", "CreateProductAttribute", "Product", new { ProductID = @Model.ProductID }, null)
+                <div class="table-responsive">
+                    <table class="table table-striped tblAttr">
+                        <colgroup>
+                            <col />
+                            <col width="120px" />
+                            <col width="120px" />
+                            <col width="120px" />
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th>Nama</th>
+                                <th>Group</th>
+                                <th>Stok</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if(@Model.attribute.Count() > 0)
+                            {
+                                foreach (var item in @Model.attribute.Where(x => !x.IsDeleted)) 
+                                { 
+                                    <tr>
+                                        <td>@item.AttributeName</td>
+                                        <td align="center">@item.attgroup.GroupName</td>
+                                        <td align="right">@item.Quantity</td>
+                                        <td align="center">
+                                            <input type="hidden" class="keyField" value="@item.AttributeID"/>
+                                            @Html.ActionLink("Edit", "EditProductAttribute", "Product", new { id = @item.AttributeID }, null) |
+                                            <a href="#" class="Delete">Delete</a>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr style="height:50px;">
+                                    <td colspan="4" style="vertical-align:middle;"><center>No Data to Display</center></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-md-12">
+                @Html.ActionLink("Kembali", "Index")
+                <div class="divider"></div>
+                <a href="#" class="lnkProses">Simpan</a>
+            </div>
+        </div>
+    </div>
+    <div id="menu2" class="tab-pane fade">
+        <div class="gap-sm"></div>
+        <ul class="nav nav-tabs">
+            <li class="active"><a data-toggle="tab" href="#sub-menu1">Deskripsi</a></li>
+            <li><a data-toggle="tab" href="#sub-menu2">Spesifikasi</a></li>
+        </ul>
+        <div class="tab-content">
+            <div id="sub-menu1" class="tab-pane fade in active">
+                @using (Html.BeginForm("SaveDescription", "Product", FormMethod.Post, new { name = "form1" }))
+                {
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h5><a href="JAVASCRIPT:form1.submit()">Save</a></h5>
+                        </div>
+                        <div class="col-md-12">
+                            @Html.HiddenFor(model => Model.ProductID)
+                            <textarea id="txtDescription" class="RichEditor" name="Description" rows="2" cols="2">@Model.Description</textarea>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div id="sub-menu2" class="tab-pane fade">
+                @using (Html.BeginForm("SaveSpesification", "Product", FormMethod.Post, new { name = "form2" }))
+                {
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h5><a href="JAVASCRIPT:form2.submit()">Save</a></h5>
+                        </div>
+                        <div class="col-md-12">
+                            @Html.HiddenFor(model => Model.ProductID)
+                            <textarea id="txtSpesification" class="RichEditor" name="Spesification" rows="2" cols="2">@Model.Spesification</textarea>
+                        </div>
+                    </div>
+                    
+                }
+            </div>
+        </div>
+    </div>
+    <div id="menu3" class="tab-pane fade">
+        <div class="gap-sm"></div>
+        <label for="file" class="control-label col-md-1">File :</label>
+        <div class="col-md-3 input-group">
+            <input type="file" class="form-control" name="file" id="file" style="display:none;" />
+            <input type="text" class="form-control" id="txtFile"/>
+            <div class="input-group-addon" style="cursor:pointer">
+                <span class="lnkBrowse glyphicon glyphicon-search"></span>
+            </div>
+        </div>
+    </div>
+</div>

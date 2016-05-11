@@ -77,6 +77,27 @@ namespace Todoku.Models
             return temp;
         }
 
+        public static List<T> SetPagination<T>(List<T> list, Int32 Rows, Int32 Page, ref Int32 Pages)
+        {
+            if (list.Count() % Rows == 0)
+            {
+                Pages = list.Count() / Rows;
+            }
+            else
+            {
+                Pages = list.Count() / Rows + 1;
+            }
+
+            if (list.Count() > 0)
+            {
+                return list.Skip((Page - 1) * Rows).Take(Rows).ToList();
+            }
+            else
+            {
+                return list;
+            }
+        }
+
         public static List<T> ConvertJsonObject<T>(Object[] list)
         {
 
@@ -95,16 +116,13 @@ namespace Todoku.Models
             String Format = String.Format("{0}/{1}", Code, DateTime.Now.ToString("yyyyMMdd"));
             switch(Code)
             {
-                case SystemSetting.AgentCode : 
-                    break;
-                case SystemSetting.MemberCode : 
-                    break;
                 case SystemSetting.MerchantCode : 
                     break;
                 case SystemSetting.RegisMerchantCode :
                     Count = db.merchantRegistrations.Where(x => x.RegistrationCode.Contains(Format)).Count() + 1;
                     break;
-                case SystemSetting.RegisAgenCode : 
+                case SystemSetting.RegisAgenCode :
+                    Count = db.agentRegistrations.Where(x => x.RegistrationCode.Contains(Format)).Count() + 1;
                     break;
             }
             
@@ -123,6 +141,8 @@ namespace Todoku.Models
         {
             return UploadFileValidation(file, null, extension);
         }
+
+        
     }
 
     public class DecimalModelBinder : DefaultModelBinder

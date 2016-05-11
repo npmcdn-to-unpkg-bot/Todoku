@@ -1,5 +1,130 @@
-﻿@{
-    ViewBag.Title = "Index";
-}
+﻿@model Todoku.Models.PurchaseOrderInformation
 
-<h2>Index</h2>
+<h1 class="page-header">Informasi</h1>
+
+<ul class="nav nav-tabs">
+  <li class="active"><a data-toggle="tab" href="#menu1">Informasi</a></li>
+  <li><a data-toggle="tab" href="#menu2">Riwayat Pembelian</a></li>
+</ul>
+
+<div class="tab-content">
+    <div id="menu1" class="tab-pane fade in active">
+        <div style="height:200px;">
+            <h2>Informasi Pemesanan</h2>
+            @if (Model.lstPurchaseOrder != null)
+            {
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <colgroup>
+                            <col width="80%"/>
+                            <col />
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th>Keterangan</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        @if (Model.lstPurchaseOrder.Count() > 0) 
+                        { 
+                            foreach (var item in Model.lstPurchaseOrder)
+                            { 
+                                <tr>
+                                    <td>@item.OrderNo</td>
+                                    <td>@item.ScOrderStatus.StandardCodeName</td>
+                                </tr>
+                            }
+                        }
+                        else
+                        { 
+                            <tr style="height:50px;">
+                                <td colspan="2" style="vertical-align:middle;"><center>No Data to Display</center></td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+            }
+        </div>
+        <div style="height:200px;">
+            <h2>Informasi Pembayaran</h2>
+            @if (Model.lstPurchaseReceive != null)
+            {
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <colgroup>
+                            <col width="80%"/>
+                            <col />
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th>Keterangan</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        @if (Model.lstPurchaseReceive.Count() > 0)
+                        {
+                            foreach (var item in Model.lstPurchaseReceive)
+                            { 
+                                <tr>
+                                    <td>@item.ReceiveNo</td>
+                                    <td>@item.ScReceiveStatus.StandardCodeName</td>
+                                </tr>
+                            }
+                        }
+                        else
+                        { 
+                            <tr style="height:50px;">
+                                <td colspan="2" style="vertical-align:middle;"><center>No Data to Display</center></td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+            }
+        </div>
+        <div style="height:200px;">
+            <h2>Informasi Pengiriman</h2>
+            @if (Model.lstItemDelivery != null)
+            {
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <colgroup>
+                            <col width="80%"/>
+                            <col />
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th>Keterangan</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        @if (Model.lstItemDelivery.Count() > 0)
+                        {
+                            foreach (var item in Model.lstItemDelivery)
+                            { 
+                                <tr>
+                                    <td>
+                                        Resi : @item.ReceiptNumber<br/>
+                                        @foreach (var obj in item.itemdeliverydts)
+                                        { 
+                                            @Html.Label("- " + obj.product.ProductName + " x " + obj.Quantity + " pcs")  <br/>
+                                        }
+                                    </td>
+                                    <td>
+                                        @item.ScDeliveryStatus.StandardCodeName
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        { 
+                            <tr style="height:50px;">
+                                <td colspan="2" style="vertical-align:middle;"><center>No Data to Display</center></td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+    <div id="menu2" class="tab-pane fade"></div>
+</div>

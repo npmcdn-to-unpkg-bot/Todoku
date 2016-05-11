@@ -53,8 +53,22 @@
         $('body').on('click','.lnkProses', function(){
             var url = "@Url.Content("~/Order/Confirmation")";
             var bankID = $("input:radio[name=bank]").val();
-            var data = {OrderID : "@Model.OrderID", PaymentMehod : $("#PaymentMethod").val(), AgentID : $('#txtAgent').val(), Address : $('#address').val(), ShippingCharges : $('#ShippingCharges').val(), BankID : bankID  };
+            var data = {OrderID : "@Model.OrderID", PaymentMehod : $("#PaymentMethod").val(), AgentID : $('#hdnAgentID').val(), Address : $('#address').val(), ShippingCharges : $('#ShippingCharges').val(), BankID : bankID  };
             OnSaveData(url,data,OnSaveSuccess,OnSaveFailed);
+        });
+
+        $('body').on('change','#txtAgent',function(){
+            url = window.location.origin + "/Todoku/Ajax/GetListObject/";
+            var filterExpression = 'AgentCode = "' + $(this).val() + '" && IsActive && !IsDeleted';
+            GetListObject(url, 'GetAgentList', filterExpression, null, null, function(result){
+                if(result.length > 0){
+                    $('#hdnAgentID').val(result[0].AgentID);
+                }
+                else
+                {
+                    $('#txtAgent').val('');
+                }
+            });
         });
     });
 
@@ -85,7 +99,7 @@
                 $("#ShippingPackage").text('');
                 result['rajaongkir'].results[0].costs.sort(SortByPrice);
                 $("#tmpl-shipping-package").tmpl(result).appendTo("#ShippingPackage");
-                $('.txtNumber').number( true, 0,',','.' );
+                $('.number').number( true, 0,',','.' );
             });
         });
     }
@@ -97,6 +111,7 @@
 </script>
 <input type="hidden" id="hdnTotalWeight" value="@ViewBag.TotalWeight"/>
 <input type="hidden" id="hdnStoreAddress" value="@Model.merchant.address.RajaOngkir_City_ID"/>
+<input type="hidden" id="hdnAgentID" value="" />
 @Html.HiddenFor(model => Model.ShippingCharges)
 <div class="row">
     <div class="col-md-12">

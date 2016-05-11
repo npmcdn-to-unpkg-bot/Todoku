@@ -1,5 +1,123 @@
-﻿@{
-    ViewBag.Title = "MerchantRegistration";
-}
+﻿@model List<Todoku.Models.MerchantRegistration>
+           
+<script type="text/javascript">
+    $(function () {
+        $("body").on("click", '.lnkProses', function () {
+            $tr = $(this).closest('li');
+            var data = { RegistrationID: $tr.find(".hdnMerchantID").val() };
+            var url = '@Url.Content("~/Admin/Registration/MerchantRegistration")';
+            OnSaveData(url, data, OnSaveSuccessRefreshPage, OnSaveFailed);
+        });
+    });
 
-<h2>MerchantRegistration</h2>
+    function OnSaveSuccessRefreshPage(result){
+        if(result.ok)
+            window.location.reload();
+        else
+            OnSaveFailed(result);
+    }
+
+    function LoadOnSaveNotifHandle() {
+        var status = @Html.Raw(Json.Encode(TempData["SaveResult"]));
+        if(status != null){
+            OnSaveSuccess(status.Data);
+        }
+    }
+
+    function OnSaveSuccess(result) {
+        if (result.ok) {
+            $('#tmpl-success').tmpl(result).appendTo('#alert-container');
+        } else {
+            OnSaveFailed(result);
+        }
+    }
+
+    function OnSaveFailed(result) {
+        $('#tmpl-danger').tmpl(result).appendTo('#alert-container');
+    }
+</script>
+<h1 class="page-header">Pendaftaran Toko</h1>
+<ul class="list-group">
+    @if (@Model.Count() > 0)
+    {
+        foreach (var item in Model)
+        {
+            <li class="list-group-item">
+                <div class="row">
+                    <div class="col-md-12">
+                        @Html.HiddenFor(x => item.RegistrationID, new { @class = "hdnMerchantID" })
+                        <label>@Html.DisplayFor(x => item.MerchantName)</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="row">
+                            <div class="col-md-4">Pemilik</div>
+                            <div class="col-md-1 nopadding">:</div>
+                            <div class="col-md-7 nopadding">@Html.DisplayFor(x => item.userprofile.Fullname)</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="row">
+                            <div class="col-md-4">Kota</div>
+                            <div class="col-md-1 nopadding">:</div>
+                            <div class="col-md-7 nopadding">@Html.DisplayFor(x => item.address.City)</div>  
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="row">
+                            <div class="col-md-4">Alamat</div>
+                            <div class="col-md-1 nopadding">:</div>
+                            <div class="col-md-7 nopadding">@Html.DisplayFor(x => item.address.Address)</div>  
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="row">
+                            <div class="col-md-4">Range Harga</div>
+                            <div class="col-md-1 nopadding">:</div>
+                            <div class="col-md-7 nopadding">@Html.DisplayFor(x => item.StartPrice) - @Html.DisplayFor(x => item.EndPrice)</div>  
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12"><label>Sample Produk</label></div>
+                </div>
+                <div class="row">
+                    @*@foreach (var img in item.details) 
+                    { 
+                        <div class="col-md-2">
+                            <img src='@Url.Content(@img.ImgLink)' data-src="holder.js/100x100" alt="Sampel Produk" style="max-height:100px; max-width:100px;" />
+                        </div>
+                    }*@
+                    @for (int i = 0; i < 6; i++)
+                    {
+                        <div style="display:inline-block; padding-left:15px;">
+                            <img data-src="holder.js/100x100" alt="Sampel Produk" class="img-thumbnail" />
+                        </div>
+                    }
+                </div>
+                <div class="gap-sm"></div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <a href="#" class="lnkProses">Konfirmasi</a>
+                        <div class="divider"></div>
+                        <a href="#">Batal</a>
+                    </div>
+                </div>
+            </li>
+        }
+    }
+    else 
+    { 
+        <li class="list-group-item">
+            <center><h3>Tidak Ada Data</h3></center>
+        </li>
+    }
+</ul>
+@{Html.RenderAction("Pagination", "PartialView", new {area = "", Page = ViewBag.Page, Pages = ViewBag.Pages, PageAction = "MerchantRegistration", PageController = "Registration", PageArea = "Admin" });}

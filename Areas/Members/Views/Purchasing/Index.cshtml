@@ -3,7 +3,7 @@
     $(function () {
         $('body').on('click', ".btn", function () {
             $div = $(this).closest('li');
-            var data = { ReceiveNo: $div.find('.keyField').val(), PayerName: $div.find('#item_PayerName').val(), SenderAccountNo: $div.find('#item_SenderAccountNo').val(), TransferAmount: $div.find('.txtNumber').val() }
+            var data = { ReceiveNo: $div.find('.keyField').val(), PayerName: $div.find('#item_PayerName').val(), SenderAccountNo: $div.find('#item_SenderAccountNo').val(), TransferAmount: $div.find('.number').val() }
             var url = '@Url.Content("~/Purchasing/Confirm")';
             OnSaveData(url, data, OnSaveSuccess, OnSaveFailed);
         });
@@ -62,7 +62,7 @@
                         <div class="col-md-1 nopadding">:</div>
                         <div class="col-md-9 nopadding">
                             <div class="col-md-2 nopadding">
-                                <input type="text" value="@item.TransferAmount" class="form-control input-sm txtNumber" />
+                                <input type="text" value="@item.TransferAmount" class="form-control input-sm number" />
                             </div>
                         </div>
                     </div>

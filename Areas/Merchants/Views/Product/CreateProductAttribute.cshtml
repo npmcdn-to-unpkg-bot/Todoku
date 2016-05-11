@@ -1,0 +1,60 @@
+﻿@model Todoku.Models.ProductAttribute
+
+<h1 class="page-header">Jenis Produk</h1>
+<div class="row">
+    <div class="col-md-7">
+        @using (Html.BeginForm("SaveAttribute", "Product", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal", name = "form" }))
+        {
+            <div class="form-group">
+                <div class="row">
+                    @Html.HiddenFor(model => model.ProductID)
+                    @Html.HiddenFor(model => model.AttributeID)
+                    @Html.LabelFor(model => model.AttributeName, new { @class = "control-label col-md-2" })
+                    <div class="col-md-4">
+                        @Html.TextBoxFor(model => model.AttributeName, new { @class = "form-control input-sm" })
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    @Html.LabelFor(model => model.imgLink, new { @class = "control-label col-md-2" })
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <input type="file" class="form-control" name="file" id="file" style="display:none;" />
+                            <input type="text" class="form-control" id="txtFile"/>
+                            <div class="input-group-addon" style="cursor:pointer">
+                                <span class="lnkBrowse glyphicon glyphicon-search"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    @Html.LabelFor(model => model.GroupID, new { @class = "control-label col-md-2" })
+                    <div class="col-md-4">
+                    @Html.DropDownList("GroupID", (SelectList)ViewBag.GroupData, new { @class = "form-control input-sm" })
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    @Html.LabelFor(model => model.Quantity, new { @class = "control-label col-md-2" })
+                    <div class="col-md-4">
+                        @Html.TextBoxFor(model => model.Quantity, new { @class = "form-control input-sm" })
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-4">
+                        @Html.ActionLink("Kembali", "Edit", "Product", new { id = Model.ProductID }, null)
+                        <div class="divider"></div>
+                        <a href="JAVASCRIPT:form.submit()">Simpan</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

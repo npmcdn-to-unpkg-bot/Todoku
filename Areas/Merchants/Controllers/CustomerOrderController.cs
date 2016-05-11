@@ -62,6 +62,11 @@ namespace Todoku.Areas.Merchants.Controllers
                 delivDt.CreatedBy = Membership.GetUser().UserName;
                 delivDt.CreatedDate = DateTime.Now;
                 db.itemdeliverydts.Add(delivDt);
+
+                Product product = db.products.Find(co.ProductID);
+                product.detail.Quantity -= co.Quantity;
+                db.Entry(product).State = EntityState.Modified;
+
                 db.SaveChanges();
                 TempData["SaveResult"] = Json(new { ok = true, message = "Data telah berhasil proses" });
                 return Json(new { ok = true, message = "Data telah berhasil proses" });

@@ -107,7 +107,7 @@ namespace Todoku.Models
         public const String Admin = "Administrator";
         public const String MerchantOwner = "MerchantOwner";
         public const String Member = "Member";
-        public const String Agen = "Agen";
+        public const String Agent = "Agent";
         public const String SystemAdministrator = "SystemAdministrator";
     }
 
@@ -148,6 +148,7 @@ namespace Todoku.Models
         public const String Status_Pengiriman = "SC0011";
         public const String Panggilan = "SC0012";
         public const String Status_Penerimaan = "SC0013";
+        public const String Tipe_Agen = "SC0016";
     }
 
     #region System Setting

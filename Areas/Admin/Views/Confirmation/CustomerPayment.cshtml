@@ -4,24 +4,21 @@
     $(function () {
         $('body').on('click', ".lnkProses", function () {
             $data = $(this).closest("tr");
+            var url = '@Url.Content("~/Admin/Confirmation/CustomerPaymentConfirmed")';
             var arr = new Array();
             var count = 0;
-            $(this).closest("tr").find('.AgentID').each(function () {
-                var d = { OrderID: $('.OrderID').eq(count).val(), AgentID: $(this).val() };
+
+            $data.find('.hdnAgentID').each(function () {
+                var d = { OrderID: $data.find('.OrderID').eq(count).val(), AgentID: $(this).val() };
+                console.log(d);
                 arr.push(d);
                 count++;
             });
             var data = { ReceiveID: $data.find(".keyField").val(), lstAgentID: arr };
-            OnSaveData1('@Url.Content("~/Admin/Confirmation/CustomerPaymentConfirmed")', data, function (result) {
-                if (result.ok) {
-                    window.location.href = '@Url.Content("~/Admin/Confirmation/CustomerPayment")';
-                } else {
-                    $('#tmpl-danger').tmpl(result).appendTo('#alert-container');
-                }
-            }, function (result) {
-                $('#tmpl-danger').tmpl(result).appendTo('#alert-container');
-            });
+            
+            OnSaveData(url, data, OnSaveSuccessRefreshPage, OnSaveFailed);
         });
+
         $('body').on('click', ".lnkVoid", function () {
             $data = $(this).closest("div");
             var arr = new Array();
@@ -36,7 +33,48 @@
                 window.location.href = '@Url.Content("~/Admin/Confirmation/CustomerPayment")';
             });
         });
+
+        $('body').on('change', '.txtAgent', function () {
+            url = window.location.origin + "/Todoku/Ajax/GetListObject/";
+            var filterExpression = 'AgentCode = "' + $(this).val() + '" && IsActive && !IsDeleted';
+            $txt = $(this);
+            GetListObject(url, 'GetAgentList', filterExpression, null, null, function (result) {
+                console.log(result);
+                if (result.length > 0) {
+                    $div = $txt.closest('div');
+                    $div.find('.hdnAgentID').val(result[0].AgentID);
+                }
+                else {
+                    $txt.val('');
+                }
+            });
+        });
     });
+
+    function OnSaveSuccessRefreshPage(result){
+        if(result.ok)
+            window.location.reload();
+        else
+            OnSaveFailed(result);
+    }
+
+    function LoadOnSaveNotifHandle() {
+        var status = @Html.Raw(Json.Encode(TempData["SaveResult"]));
+        if(status != null){
+            OnSaveSuccess(status.Data);
+        }
+    }
+    function OnSaveSuccess(result) {
+        if (result.ok) {
+            $('#tmpl-success').tmpl(result).appendTo('#alert-container');
+        } else {
+            OnSaveFailed(result);
+        }
+    }
+
+    function OnSaveFailed(result) {
+        $('#tmpl-danger').tmpl(result).appendTo('#alert-container');
+    }
 </script>
 <h1 class="page-header">Pembayaran</h1>
 <div class="table-responsive">
@@ -95,13 +133,14 @@
                                         @Html.HiddenFor(model => prdt.OrderID, new { @class = "OrderID" })
                                         @if (prdt.order.AgentID == null)
                                         { 
-                                            <input type="text" class="form-control input-sm AgentID" placeholder="Masukkan Kode Agen" />
+                                            <input type="text" class="form-control input-sm txtAgent" placeholder="Masukkan Kode Agen" />
+                                            <input type="hidden" class="hdnAgentID" value="" />
                                             <a href="#">Cari</a>
                                         }
                                         else
                                         { 
-                                            <input type="text" style="display:none;" class="form-control input-sm AgentID" placeholder="Masukkan Kode Agen" value="@prdt.order.AgentID" />
-                                            <label>@prdt.order.AgentID</label>
+                                            <input type="hidden" class="hdnAgentID" value="@prdt.order.AgentID" />
+                                            <label>@prdt.order.agent.AgentCode</label>
                                         }
                                     </div>
                                 }

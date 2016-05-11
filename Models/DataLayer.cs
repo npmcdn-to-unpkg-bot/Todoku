@@ -8,23 +8,6 @@ using System.Web.Mvc;
 namespace Todoku.Models
 {
     #region General Class
-    public class StandardCode
-    {
-        [Key]
-        public String StandardCodeID { get; set; }
-        public String StandardCodeName { get; set; }
-        public String Alias { get; set; }
-        public Boolean IsParent { get; set; }
-        public String ParentID { get; set; }
-        public String CreatedBy { get; set; }
-        public DateTime CreatedDate { get; set; }
-        public String LastUpdatedBy { get; set; }
-        public DateTime? LastUpdatedDate { get; set; }
-
-        List<StandardCode> childs { get; set; }
-        StandardCode parent { get; set; }
-    }
-
     public class ChangePasswordModel
     {
         [Required]
@@ -59,6 +42,16 @@ namespace Todoku.Models
         public Boolean RememberMe { get; set; }
     }
 
+    public class Pagination
+    {
+        public String Action { get; set; }
+        public String Controller { get; set; }
+        public String Area { get; set; }
+        public Int32 Page { get; set; }
+        public Int32 Pages { get; set; }
+        public Int32 Rows { get; set; }
+    }
+
     public class RegisterModel
     {
         [Required]
@@ -91,76 +84,26 @@ namespace Todoku.Models
 
         public UserProfile userprofile { get; set; }
     }
+
+    public class StandardCode
+    {
+        [Key]
+        public String StandardCodeID { get; set; }
+        public String StandardCodeName { get; set; }
+        public String Alias { get; set; }
+        public Boolean IsParent { get; set; }
+        public String ParentID { get; set; }
+        public String CreatedBy { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public String LastUpdatedBy { get; set; }
+        public DateTime? LastUpdatedDate { get; set; }
+
+        List<StandardCode> childs { get; set; }
+        StandardCode parent { get; set; }
+    }
     #endregion
 
     #region Class
-
-    public class ShippingAddresses 
-    {
-        [Key]
-        public Int32 ShippingID { get; set; }
-
-        [Display(Name = "Keterangan")]
-        public String AddressName { get; set; }
-
-        public Int32 UserProfileID { get; set; }
-        
-        [DataType(DataType.MultilineText)]
-        [Display(Name = "Alamat")]
-        public String Address { get; set; }
-
-        [DataType(DataType.PhoneNumber)]
-        [Display(Name = "No. Telp.")]
-        //[RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "No. telp. tidak benar")]
-        public String Phone { get; set; }
-
-        [DataType(DataType.PhoneNumber)]
-        [Display(Name = "No. Hp.")]
-        public String Handphone { get; set; }
-
-        [Display(Name = "Negara")]
-        public String Country { get; set; }
-
-        [Display(Name = "Kota")]
-        public String City { get; set; }
-        public Int32 RajaOngkir_City_ID { get; set; }
-
-        [Display(Name = "Provinsi")]
-        public String Province { get; set; }
-        public Int32 RajaOngkir_Province_ID { get; set; }
-
-        [DataType(DataType.EmailAddress)]
-        [Display(Name = "Email")]
-        [RegularExpression(@"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}", ErrorMessage = "Email is is not valid.")]
-        public string Email { get; set; }
-
-        [DataType(DataType.EmailAddress)]
-        [Display(Name = "Email Alternatif")]
-        [RegularExpression(@"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}", ErrorMessage = "Email is is not valid.")]
-        public string Email2 { get; set; }
-
-        [Display(Name = "Kode Pos")]
-        public String ZipCode { get; set; }
-
-        public Boolean IsDeleted { get; set; }
-
-        public String CreatedBy { get; set; }
-
-        [DataType(DataType.DateTime)]
-        public DateTime CreatedDate { get; set; }
-
-        public String LastUpdatedBy { get; set; }
-
-        [DataType(DataType.DateTime)]
-        public DateTime? LastUpdatedDate { get; set; }
-
-        [ForeignKey("UserProfileID")]
-        public virtual UserProfile userprofile { get; set; }
-
-        [ForeignKey("Province")]
-        public virtual StandardCode ScProvince { get; set; }
-    }
-
     public class Addresses
     {
         [Key]
@@ -224,6 +167,101 @@ namespace Todoku.Models
 
     }
 
+    public class Agent
+    {
+        [Key]
+        public Int32 AgentID { get; set; }
+
+        [Display(Name = "Kode Agen")]
+        public String AgentCode { get; set; }
+
+        public Int32 UserID { get; set; }
+
+        public String AddressCode { get; set; }
+
+        [Display(Name = "Tipe Agen")]
+        public String AgentType { get; set; }
+
+        [DataType(DataType.Date)]
+        [Display(Name = "Tgl. Bergabung")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd MMM yyyy}")]
+        public DateTime JoinDate { get; set; }
+
+        public Boolean IsActive { get; set; }
+
+        public Boolean IsDeleted { get; set; }
+
+        public String CreatedBy { get; set; }
+
+        public DateTime CreatedDate { get; set; }
+
+        public String LastUpdatedBy { get; set; }
+
+        public DateTime? LastUpdatedDate { get; set; }
+
+        [ForeignKey("UserID")]
+        public virtual UserProfile profile { get; set; }
+
+        [ForeignKey("AgentType")]
+        public virtual StandardCode scAgentType { get; set; }
+    }
+
+    public class AgentDiscountSetting
+    {
+        [Key]
+        public Int32 SettingID { get; set; }
+
+        public Int32 AgentID { get; set; }
+
+        public Int32? ProductID { get; set; }
+
+        public Decimal DiscountAmount { get; set; }
+
+        public Boolean IsDeleted { get; set; }
+
+        public String CreatedBy { get; set; }
+
+        public DateTime CreatedDate { get; set; }
+
+        public String LastUpdatedBy { get; set; }
+
+        public DateTime? LastUpdatedDate { get; set; }
+    }
+
+    public class AgentRegistration 
+    {
+        [Key]
+        public Int32 RegistrationID { get; set; }
+
+        public String RegistrationCode { get; set; }
+
+        [Display(Name = "Tgl. Registrasi")]
+        public DateTime RegistrationDate { get; set; }
+
+        public Int32 UserID { get; set; }
+
+        public String AgentType { get; set; }
+
+        [Display(Name = "Status")]
+        public String RegistrationStatus { get; set; }
+
+        public Boolean IsDeleted { get; set; }
+
+        public String CreatedBy { get; set; }
+
+        public DateTime CreatedDate { get; set; }
+
+        public String LastUpdatedBy { get; set; }
+
+        public DateTime? LastUpdatedDate { get; set; }
+
+        [ForeignKey("UserID")]
+        public virtual UserProfile profile { get; set; }
+
+        [ForeignKey("AgentType")]
+        public virtual StandardCode scAgentType { get; set; }
+    }
+
     public class Bank
     {
         [Key]
@@ -256,9 +294,80 @@ namespace Todoku.Models
 
     }
 
-    public class Dashboard
+    public class Cart
     {
         [Key]
+        public Int32 CartID { get; set; }
+
+        public String Username { get; set; }
+
+        public Int32 ProductID { get; set; }
+
+        public String Attributes { get; set; }
+
+        [DataType(DataType.Currency)]
+        [DisplayFormat(DataFormatString = "{0:c}")]
+        public Decimal TotalAmount { get; set; }
+
+        [Display(Name = "Jumlah")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:0.##}")]
+        public Int32 Quantity { get; set; }
+
+        public Int32 DiscountInPercentage { get; set; }
+
+        public Decimal DiscountAmount { get; set; }
+
+        [DataType(DataType.Currency)]
+        [DisplayFormat(DataFormatString = "{0:c}")]
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        public Decimal LineAmount { get { return TotalAmount * ((100 - DiscountInPercentage) / 100) * Quantity; } }
+
+        public String ItemStatus { get; set; }
+
+        [DataType(DataType.DateTime)]
+        public DateTime CreatedDate { get; set; }
+
+        [ForeignKey("ProductID")]
+        public virtual Product product { get; set; }
+    }
+
+    public class CustomerOrder
+    {
+        [Key]
+        public Int32 CustomerOrderID { get; set; }
+
+        public Int32 MerchantID { get; set; }
+
+        public Int32 OrderID { get; set; }
+
+        public Int32 CustomerID { get; set; }
+
+        public Int32 ProductID { get; set; }
+
+        public String Attributes { get; set; }
+
+        [Display(Name = "Jumlah")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:0.##}")]
+        public Int32 Quantity { get; set; }
+
+        public String RequestStatus { get; set; }
+
+        [ForeignKey("OrderID")]
+        public virtual PurchaseOrderHd pohd { get; set; }
+
+        [ForeignKey("CustomerID")]
+        public virtual UserProfile customer { get; set; }
+
+        [ForeignKey("ProductID")]
+        public virtual Product product { get; set; }
+
+        [ForeignKey("MerchantID")]
+        public virtual Merchant merchant { get; set; }
+    }
+
+    public class Dashboard
+    {
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
         public Int32 DashboardID { get; set; }
         
         public String DashboardName { get; set; }
@@ -310,6 +419,443 @@ namespace Todoku.Models
 
         [ForeignKey("DashboardID")]
         public virtual Dashboard dashboard { get; set; }
+    }
+
+    public class ItemDeliveryDt
+    {
+        [Key]
+        public Int32 DeliveryDtID { get; set; }
+
+        public Int32 DeliveryID { get; set; }
+
+        public Int32 ProductID { get; set; }
+
+        public String Attributes { get; set; }
+
+        [Display(Name = "Jumlah")]
+        public Int32 Quantity { get; set; }
+
+        public Boolean IsDeleted { get; set; }
+
+        public String CreatedBy { get; set; }
+
+        [DataType(DataType.DateTime)]
+        public DateTime CreatedDate { get; set; }
+
+        public String LastUpdatedBy { get; set; }
+
+        [DataType(DataType.DateTime)]
+        public DateTime? LastUpdatedDate { get; set; }
+
+        [ForeignKey("DeliveryID")]
+        public virtual ItemDeliveryHd itemdeliveryhd { get; set; }
+
+        [ForeignKey("ProductID")]
+        public virtual Product product { get; set; }
+    }
+
+    public class ItemDeliveryHd
+    {
+        [Key]
+        public Int32 DeliveryID { get; set; }
+
+        [Display(Name = "No. Resi")]
+        public String ReceiptNumber { get; set; }
+
+        public Int32 OrderID { get; set; }
+
+        [DataType(DataType.Date)]
+        [Display(Name = "Tanggal")]
+        public DateTime DeliveryDate { get; set; }
+
+        public Int32 MerchantID { get; set; }
+
+        public Int32 CustomerID { get; set; }
+
+        [DataType(DataType.MultilineText)]
+        [Display(Name = "Alamat")]
+        public String Address { get; set; }
+
+        public Decimal DeliveryCost { get; set; }
+
+        public Decimal InsuranceCost { get; set; }
+
+        public String DeliveryStatus { get; set; }
+
+        public String CreatedBy { get; set; }
+
+        public DateTime CreatedDate { get; set; }
+
+        public String LastUpdatedBy { get; set; }
+
+        public DateTime? LastUpdatedDate { get; set; }
+
+        [ForeignKey("OrderID")]
+        public virtual PurchaseOrderHd pohd { get; set; }
+
+        [ForeignKey("MerchantID")]
+        public virtual Merchant merchant { get; set; }
+
+        [ForeignKey("CustomerID")]
+        public virtual UserProfile customer { get; set; }
+
+        public virtual List<ItemDeliveryDt> itemdeliverydts { get; set; }
+
+        [ForeignKey("DeliveryStatus")]
+        public virtual StandardCode ScDeliveryStatus { get; set; }
+    }
+
+    public class Menu
+    {
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
+        public Int32 MenuID { get; set; }
+
+        public String MenuName { get; set; }
+
+        public Int32 DashboardID { get; set; }
+
+        [DataType(DataType.Url)]
+        public String Path { get; set; }
+
+        public String Action { get; set; }
+
+        public String Controller { get; set; }
+
+        public String Area { get; set; }
+
+        public Int32? ParentID { get; set; }
+
+        public Boolean IsChildMenu { get; set; }
+
+        public Boolean IsParent { get; set; }
+
+        public Boolean IsActive { get; set; }
+
+        public String CreatedBy { get; set; }
+
+        [DataType(DataType.DateTime)]
+        public DateTime CreatedDate { get; set; }
+
+        public String LastUpdatedBy { get; set; }
+
+        [DataType(DataType.DateTime)]
+        public DateTime? LastUpdatedDate { get; set; }
+
+        [ForeignKey("ParentID")]
+        public Menu parent { get; set; }
+
+        [ForeignKey("DashboardID")]
+        public Dashboard dashboard { get; set; }
+
+        [ForeignKey("Area")]
+        public virtual StandardCode scmenuarea { get; set; }
+
+        public virtual List<Menu> childs { get; set; }
+    }
+
+    public class MenuInUserRole
+    {
+        [Key]
+        [Column(Order = 1)]
+        public String UserRole { get; set; }
+        [Key]
+        [Column(Order = 2)]
+        public Int32 MenuID { get; set; }
+
+        public String CreatedBy { get; set; }
+
+        [DataType(DataType.DateTime)]
+        public DateTime CreatedDate { get; set; }
+
+        public String LastUpdatedBy { get; set; }
+
+        [DataType(DataType.DateTime)]
+        public DateTime? LastUpdatedDate { get; set; }
+
+        public virtual Menu menu { get; set; }
+    }
+
+    public class MemberHistory
+    {
+        [Key]
+        public Int32 HistoryID { get; set; }
+
+        [Display(Name = "Nama")]
+        public String ProductName { get; set; }
+
+        [Display(Name = "Gambar")]
+        [DataType(DataType.ImageUrl)]
+        public String ImgLink { get; set; }
+
+        [Display(Name = "Jumlah")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:0.##}")]
+        public Int32 Quantity { get; set; }
+
+        [Display(Name = "Total")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:c}")]
+        public Decimal LineAmount { get; set; }
+
+        public Boolean IsDeleted { get; set; }
+
+        public String CreatedBy { get; set; }
+
+        [DataType(DataType.DateTime)]
+        public DateTime CreatedDate { get; set; }
+
+        public String LastUpdatedBy { get; set; }
+
+        [DataType(DataType.DateTime)]
+        public DateTime? LastUpdatedDate { get; set; }
+    }
+
+    public class MerchantRegistration
+    {
+        [Key]
+        public Int32 RegistrationID { get; set; }
+
+        public String RegistrationCode { get; set; }
+
+        [Display(Name = "Nama")]
+        public String MerchantName { get; set; }
+
+        public String AddressCode { get; set; }
+
+        [Display(Name = "Pemilik")]
+        public Int32 OwnerID { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:c}")]
+        public Decimal StartPrice { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:c}")]
+        public Decimal EndPrice { get; set; }
+
+        [Display(Name = "Tgl. Registrasi")]
+        public DateTime RegistrationDate { get; set; }
+
+        [Display(Name = "Status")]
+        public String RegistrationStatus { get; set; }
+
+        [DataType(DataType.MultilineText)]
+        [Display(Name = "Deskripsi")]
+        public String Description { get; set; }
+
+        public Boolean IsDeleted { get; set; }
+
+        public String CreatedBy { get; set; }
+
+        public DateTime CreatedDate { get; set; }
+
+        public String LastUpdatedBy { get; set; }
+
+        public DateTime? LastUpdatedDate { get; set; }
+
+        [ForeignKey("AddressCode")]
+        public virtual Addresses address { get; set; }
+
+        [ForeignKey("OwnerID")]
+        public virtual UserProfile userprofile { get; set; }
+
+        [ForeignKey("RegistrationStatus")]
+        public virtual StandardCode ScRegisStatus { get; set; }
+
+        public virtual List<MerchantRegistrationDetail> details { get; set; }
+    }
+
+    public class MerchantRegistrationDetail
+    {
+        [Key]
+        public Int32 DetailID { get; set; }
+
+        public Int32 RegistrationID { get; set; }
+
+        public String ProductName { get; set; }
+
+        [DataType(DataType.ImageUrl)]
+        [Display(Name = "Gambar")]
+        public String ImgLink { get; set; }
+
+        [DataType(DataType.MultilineText)]
+        [Display(Name = "Deskripsi")]
+        public String Description { get; set; }
+
+        public Boolean IsDeleted { get; set; }
+
+        public String CreatedBy { get; set; }
+
+        public DateTime CreatedDate { get; set; }
+
+        public String LastUpdatedBy { get; set; }
+
+        public DateTime? LastUpdatedDate { get; set; }
+
+        [ForeignKey("RegistrationID")]
+        public virtual MerchantRegistration registration { get; set; }
+    }
+
+    public class Merchant
+    {
+        [Key]
+        public Int32 MerchantID { get; set; }
+
+        [Display(Name = "Kode")]
+        public String MerchantCode { get; set; }
+
+        [Display(Name = "Nama")]
+        public String MerchantName { get; set; }
+
+        [Display(Name = "Status")]
+        public Boolean IsActive { get; set; }
+
+        [Display(Name = "Pemilik")]
+        public Int32 OwnerID { get; set; }
+
+        public String AddressCode { get; set; }
+
+        [DataType(DataType.MultilineText)]
+        [Display(Name = "Deskripsi")]
+        public String Description { get; set; }
+
+        [DataType(DataType.ImageUrl)]
+        [Display(Name = "Logo")]
+        public String Logo { get; set; }
+
+        [DataType(DataType.Date)]
+        [Display(Name = "Tgl. Bergabung")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd MMM yyyy}")]
+        public DateTime JoinDate { get; set; }
+
+        public Boolean IsDeleted { get; set; }
+
+        public String CreatedBy { get; set; }
+
+        [DataType(DataType.DateTime)]
+        public DateTime CreatedDate { get; set; }
+
+        public String LastUpdatedBy { get; set; }
+
+        [DataType(DataType.DateTime)]
+        public DateTime? LastUpdatedDate { get; set; }
+
+
+        [ForeignKey("AddressCode")]
+        public virtual Addresses address { get; set; }
+
+        [ForeignKey("OwnerID")]
+        public virtual UserProfile userprofile { get; set; }
+    }
+
+    public class Product
+    {
+        [Key]
+        public Int32 ProductID { get; set; }
+
+        public Int32 ProductDetailID { get; set; }
+
+        [Display(Name = "Kode")]
+        public String ProductCode { get; set; }
+
+        [Display(Name = "Produk")]
+        public String ProductName { get; set; }
+
+        [Display(Name = "Kategori")]
+        public String Category { get; set; }
+
+        [Display(Name = "Toko")]
+        public Int32 MerchantID { get; set; }
+
+        [DataType(DataType.ImageUrl)]
+        [Display(Name = "Link")]
+        public String ImgLink { get; set; }
+
+        [DataType(DataType.MultilineText)]
+        [Display(Name = "Spesifikasi")]
+        [AllowHtml]
+        public String Spesification { get; set; }
+
+        [DataType(DataType.MultilineText)]
+        [Display(Name = "Deskripsi Pendek")]
+        public String ShortDescription { get; set; }
+
+        [DataType(DataType.MultilineText)]
+        [Display(Name = "Deskripsi")]
+        [AllowHtml]
+        public String Description { get; set; }
+
+        public Boolean IsDeleted { get; set; }
+
+        public String CreatedBy { get; set; }
+
+        public DateTime CreatedDate { get; set; }
+
+        public String LastUpdatedBy { get; set; }
+
+        public DateTime? LastUpdatedDate { get; set; }
+
+        [ForeignKey("MerchantID")]
+        public virtual Merchant merchant { get; set; }
+
+        [ForeignKey("ProductDetailID")]
+        public virtual ProductDt detail { get; set; }
+
+        [ForeignKey("Category")]
+        public virtual StandardCode sccategory { get; set; }
+
+        public virtual List<ProductAttribute> attribute { get; set; }
+    }
+
+    public class ProductAttributeGroup
+    {
+        [Key]
+        public Int32 GroupID { get; set; }
+
+        public String GroupName { get; set; }
+
+        public Boolean IsDeleted { get; set; }
+
+        public String CreatedBy { get; set; }
+
+        public DateTime CreatedDate { get; set; }
+
+        public String LastUpdatedBy { get; set; }
+
+        public DateTime? LastUpdatedDate { get; set; }
+    }
+
+    public class ProductAttribute
+    {
+        [Key]
+        public Int32 AttributeID { get; set; }
+
+        public Int32 ProductID { get; set; }
+
+        [Display(Name = "Nama")]
+        public String AttributeName { get; set; }
+
+        [DataType(DataType.ImageUrl)]
+        [Display(Name = "Gambar")]
+        public String imgLink { get; set; }
+
+        [Display(Name = "Group")]
+        public Int32 GroupID { get; set; }
+
+        [Display(Name = "Stok")]
+        public Int32? Quantity { get; set; }
+
+        public Boolean IsDeleted { get; set; }
+
+        public String CreatedBy { get; set; }
+
+        public DateTime CreatedDate { get; set; }
+
+        public String LastUpdatedBy { get; set; }
+
+        public DateTime? LastUpdatedDate { get; set; }
+
+        [ForeignKey("ProductID")]
+        public virtual Product product { get; set; }
+
+        [ForeignKey("GroupID")]
+        public virtual ProductAttributeGroup attgroup { get; set; }
     }
 
     public class ProductDt
@@ -389,491 +935,28 @@ namespace Todoku.Models
 
     }
 
-    public class Product
+    public class ProductReview
     {
         [Key]
-        public Int32 ProductID { get; set; }
-
-        public Int32 ProductDetailID { get; set; }
-
-        [Display(Name = "Kode")]
-        public String ProductCode { get; set; }
-        
-        [Display(Name="Produk")]
-        public String ProductName { get; set; }
-        
-        [Display(Name = "Kategori")]
-        public String Category { get; set; }
-
-        [Display(Name = "Toko")]
-        public Int32 MerchantID { get; set; }
-
-        [DataType(DataType.ImageUrl)]
-        [Display(Name = "Link")]
-        public String ImgLink { get; set; }
-
-        [DataType(DataType.MultilineText)]
-        [Display(Name = "Spesifikasi")]
-        [AllowHtml]
-        public String Spesification { get; set; }
-
-        [DataType(DataType.MultilineText)]
-        [Display(Name = "Deskripsi Pendek")]
-        public String ShortDescription { get; set; }
-
-        [DataType(DataType.MultilineText)]
-        [Display(Name = "Deskripsi")]
-        [AllowHtml]
-        public String Description { get; set; }
-
-        public Boolean IsDeleted { get; set; }
-
-        public String CreatedBy { get; set; }
-
-        public DateTime CreatedDate { get; set; }
-
-        public String LastUpdatedBy { get; set; }
-
-        public DateTime? LastUpdatedDate { get; set; }
-
-        [ForeignKey("MerchantID")]
-        public virtual Merchant merchant { get; set; }
-
-        [ForeignKey("ProductDetailID")]
-        public virtual ProductDt detail { get; set; }
-
-        [ForeignKey("Category")]
-        public virtual StandardCode sccategory { get; set; }
-
-        public virtual List<ProductAttribute> attribute { get; set; }
-    }
-
-    public class ProductAttribute
-    {
-        [Key]
-        public Int32 AttributeID { get; set; }
+        public Int32 ReviewID { get; set; }
 
         public Int32 ProductID { get; set; }
 
-        [Display(Name="Nama")]
-        public String AttributeName { get; set; }
+        public Int32 UserID { get; set; }
 
-        [DataType(DataType.ImageUrl)]
-        [Display(Name = "Gambar")]
-        public String imgLink { get; set; }
+        public DateTime ReviewDate { get; set; }
 
-        [Display(Name = "Group")]
-        public Int32 GroupID { get; set; }
+        public Int32 ParentID { get; set; }
 
-        [Display(Name = "Stok")]
-        public Int32? Quantity { get; set; }
+        public String Remarks { get; set; }
 
         public Boolean IsDeleted { get; set; }
 
         public String CreatedBy { get; set; }
 
         public DateTime CreatedDate { get; set; }
-
-        public String LastUpdatedBy { get; set; }
-
-        public DateTime? LastUpdatedDate { get; set; }
-
-        [ForeignKey("ProductID")]
-        public virtual Product product { get; set; }
-
-        [ForeignKey("GroupID")]
-        public virtual ProductAttributeGroup attgroup { get; set; }
     }
 
-    public class ProductAttributeGroup 
-    {
-        [Key]
-        public Int32 GroupID { get; set; }
-
-        public String GroupName { get; set; }
-
-        public Boolean IsDeleted { get; set; }
-
-        public String CreatedBy { get; set; }
-
-        public DateTime CreatedDate { get; set; }
-
-        public String LastUpdatedBy { get; set; }
-
-        public DateTime? LastUpdatedDate { get; set; }
-    }
-
-    public class Menu
-    {
-        [Key]
-        public Int32 MenuID { get; set; }
-        
-        public String MenuName { get; set; }
-
-        public Int32 DashboardID { get; set; }
-
-        [DataType(DataType.Url)]
-        public String Path { get; set; }
-        
-        public String Action { get; set; }
-        
-        public String Controller { get; set; }
-        
-        public String Area { get; set; }
-        
-        public Int32? ParentID { get; set; }
-        
-        public Boolean IsChildMenu { get; set; }
-        
-        public Boolean IsParent { get; set; }
-        
-        public Boolean IsActive { get; set; }
-        
-        public String CreatedBy { get; set; }
-        
-        [DataType(DataType.DateTime)]
-        public DateTime CreatedDate { get; set; }
-        
-        public String LastUpdatedBy { get; set; }
-        
-        [DataType(DataType.DateTime)]
-        public DateTime? LastUpdatedDate { get; set; }
-
-        [ForeignKey("ParentID")]
-        public Menu parent { get; set; }
-
-        [ForeignKey("DashboardID")]
-        public Dashboard dashboard { get; set; }
-
-        [ForeignKey("Area")]
-        public virtual StandardCode scmenuarea { get; set; }
-
-        public virtual List<Menu> childs { get; set; }
-    }
-
-    public class MenuInUserRole 
-    {
-        [Key]
-        [Column(Order=1)]
-        public String UserRole { get; set; }
-        [Key]
-        [Column(Order = 2)]
-        public Int32 MenuID { get; set; }
-
-        public String CreatedBy { get; set; }
-        
-        [DataType(DataType.DateTime)]
-        public DateTime CreatedDate { get; set; }
-        
-        public String LastUpdatedBy { get; set; }
-
-        [DataType(DataType.DateTime)]
-        public DateTime? LastUpdatedDate { get; set; }
-
-        public virtual Menu menu { get; set; }
-    }
-
-    public class Merchant
-    {
-        [Key]
-        public Int32 MerchantID { get; set; }
-        
-        [Display(Name = "Kode")]
-        public String MerchantCode { get; set; }
-        
-        [Display(Name = "Nama")]
-        public String MerchantName { get; set; }
-        
-        [Display(Name = "Status")]
-        public Boolean IsActive { get; set; }
-
-        [Display(Name = "Pemilik")]
-        public Int32 OwnerID { get; set; }
-
-        public String AddressCode { get; set; }
-
-        [DataType(DataType.MultilineText)]
-        [Display(Name = "Deskripsi")]
-        public String Description { get; set; }
-
-        [DataType(DataType.ImageUrl)]
-        [Display(Name = "Logo")]
-        public String Logo { get; set; }
-
-        [DataType(DataType.Date)]
-        [Display(Name = "Tgl. Bergabung")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd MMM yyyy}")]
-        public DateTime JoinDate { get; set; }
-
-        public Boolean IsDeleted { get; set; }
-
-        public String CreatedBy { get; set; }
-
-        [DataType(DataType.DateTime)]
-        public DateTime CreatedDate { get; set; }
-
-        public String LastUpdatedBy { get; set; }
-
-        [DataType(DataType.DateTime)]
-        public DateTime? LastUpdatedDate { get; set; }
-
-
-        [ForeignKey("AddressCode")]
-        public virtual Addresses address { get; set; }
-
-        [ForeignKey("OwnerID")]
-        public virtual UserProfile userprofile { get; set; }
-    }
-
-    //public class MerchantDetail 
-    //{
-    //    public Int32 DetailID { get; set; }
-
-    //}
-
-    public class MerchantRegistration
-    { 
-        [Key]
-        public Int32 RegistrationID { get; set;}
-
-        public String RegistrationCode { get; set; }
-
-        [Display(Name = "Nama")]
-        public String MerchantName { get; set;}
-
-        public String AddressCode { get; set; }
-
-        [Display(Name = "Pemilik")]
-        public Int32 OwnerID { get; set; }
-
-        [DisplayFormat(DataFormatString = "{0:c}")]
-        public Decimal StartPrice { get; set; }
-
-        [DisplayFormat(DataFormatString = "{0:c}")]
-        public Decimal EndPrice { get; set; }
-
-        [Display(Name = "Tgl. Registrasi")]
-        public DateTime RegistrationDate { get; set; }
-
-        [Display(Name = "Status")]
-        public String RegistrationStatus { get; set; }
-
-        [DataType(DataType.MultilineText)]
-        [Display(Name = "Deskripsi")]
-        public String Description { get; set; }
-
-        public Boolean IsDeleted { get; set; }
-
-        public String CreatedBy { get; set; }
-
-        public DateTime CreatedDate { get; set; }
-
-        public String LastUpdatedBy { get; set; }
-
-        public DateTime? LastUpdatedDate { get; set; }
-
-        [ForeignKey("AddressCode")]
-        public virtual Addresses address { get; set; }
-
-        [ForeignKey("OwnerID")]
-        public virtual UserProfile userprofile { get; set; }
-
-        [ForeignKey("RegistrationStatus")]
-        public virtual StandardCode ScRegisStatus { get; set; }
-
-        public virtual List<MerchantRegistrationDetail> details { get; set; }
-    }
-
-    public class MerchantRegistrationDetail
-    {
-        [Key]
-        public Int32 DetailID { get; set; }
-
-        public Int32 RegistrationID { get; set; }
-
-        public String ProductName { get; set; }
-
-        [DataType(DataType.ImageUrl)]
-        [Display(Name = "Gambar")]
-        public String ImgLink { get; set; }
-        
-        [DataType(DataType.MultilineText)]
-        [Display(Name = "Deskripsi")]
-        public String Description { get; set; }
-
-        public Boolean IsDeleted { get; set; }
-
-        public String CreatedBy { get; set; }
-        
-        public DateTime CreatedDate { get; set; }
-        
-        public String LastUpdatedBy { get; set; }
-        
-        public DateTime? LastUpdatedDate { get; set; }
-
-        [ForeignKey("RegistrationID")]
-        public virtual MerchantRegistration registration { get; set; }
-    }
-
-    public class UserProfile
-    {
-        [Key]
-        public Int32 UserProfileID { get; set; }
-
-        public String UserName { get; set; }
-
-        [Display(Name="Panggilan")]
-        public String Prefix { get; set; }
-
-        [Display(Name="Nama Lengkap")]
-        public String Fullname { get; set; }
-
-        [Display(Name = "Jenis Kelamin")]
-        public String Gender { get; set; }
-
-        [DataType(DataType.Date)]
-        [Display(Name = "Tanggal Lahir")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd MMM yyyy}")]
-        public DateTime DateOfBirth { get; set; }
-
-        public String AddressCode { get; set; }
-
-        public Boolean IsDeleted { get; set; }
-
-        public String CreatedBy { get; set; }
-
-        [DataType(DataType.DateTime)]
-        public DateTime CreatedDate { get; set; }
-
-        public String LastUpdatedBy { get; set; }
-
-        [DataType(DataType.DateTime)]
-        public DateTime? LastUpdatedDate { get; set; }
-
-        [ForeignKey("AddressCode")]
-        public virtual Addresses address { get; set; }
-
-        public virtual List<ShippingAddresses> shippings { get; set; }
-    }
-
-    public class Cart
-    {
-        [Key]
-        public Int32 CartID { get; set; }
-        
-        public String Username { get; set; }
-
-        public Int32 ProductID { get; set; }
-
-        public String Attributes { get; set; }
-
-        [DataType(DataType.Currency)]
-        [DisplayFormat(DataFormatString = "{0:c}")]
-        public Decimal TotalAmount { get; set; }
-
-        [Display(Name="Jumlah")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:0.##}")]
-        public Int32 Quantity { get; set; }
-
-        public Int32 DiscountInPercentage { get; set; }
-
-        public Decimal DiscountAmount { get; set; }
-
-        [DataType(DataType.Currency)]
-        [DisplayFormat(DataFormatString = "{0:c}")]
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-        public Decimal LineAmount { get { return TotalAmount * ((100 - DiscountInPercentage) / 100) * Quantity; } }
-        
-        public String ItemStatus { get; set; }
-        
-        [DataType(DataType.DateTime)]
-        public DateTime CreatedDate { get; set; }
-
-        [ForeignKey("ProductID")]
-        public virtual Product product { get; set; }
-    }
-
-    public class PurchaseOrderHd
-    {
-        [Key]
-        public Int32 OrderID { get; set; }
-
-        [Display(Name="No. Transaksi")]
-        public String OrderNo { get; set; }
-        
-        public Int32 CustomerID { get; set; }
-        
-        [Display(Name="Agen")]
-        public Int32? AgentID { get; set; }
-
-        [Display(Name = "Toko")]
-        public Int32 MerchantID { get; set; }
-
-        [DataType(DataType.Date)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd MMM yyyy}")]
-        public DateTime OrderDate { get; set; }
-
-        [DataType(DataType.Date)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd MMM yyyy}")]
-        public DateTime ValidUntil { get; set; }
-        
-        [Display(Name="Cara Pembayaran")]
-        public String PaymentMehod { get; set; }
-        
-        [DataType(DataType.Currency)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:C}")]
-        [Display(Name = "Total Transaksi")]
-        public Decimal TotalAmount { get; set; }
-
-        [DataType(DataType.Currency)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:C}")]
-        [Display(Name = "Ongkos Kirim")]
-        public Decimal ShippingCharges { get; set; }
-
-        [DataType(DataType.Currency)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:C}")]
-        [Display(Name = "Biaya Asuransi")]
-        public Decimal InsuranceCharges { get; set; }
-
-        [DataType(DataType.Currency)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:C}")]
-        [Display(Name = "Total Keseluruhan")]
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-        public Decimal LineAmount { get { return TotalAmount + ShippingCharges + InsuranceCharges; }}
-
-        public String OrderStatus { get; set; }
-
-        [DataType(DataType.MultilineText)]
-        [Display(Name = "Alamat")]
-        public String Address { get; set; }
-
-        public Boolean IsDeleted { get; set; }
-
-        public String CreatedBy { get; set; }
-
-        [DataType(DataType.DateTime)]
-        public DateTime CreatedDate { get; set; }
-
-        public String LastUpdatedBy { get; set; }
-        
-        [DataType(DataType.DateTime)]
-        public DateTime? LastUpdatedDate { get; set; }
-
-        [ForeignKey("CustomerID")]
-        public virtual UserProfile customer { get; set; }
-
-        public virtual List<PurchaseOrderDt> orderdetails { get; set; }
-
-        [ForeignKey("AgentID")]
-        public virtual UserProfile agent { get; set; }
-
-        [ForeignKey("MerchantID")]
-        public virtual Merchant merchant { get; set; }
-
-        [ForeignKey("OrderStatus")]
-        public virtual StandardCode ScOrderStatus { get; set; }
-    }
-    
     public class PurchaseOrderDt
     { //calon mau dirubah strukturnya
         [Key]
@@ -896,23 +979,134 @@ namespace Todoku.Models
 
         [ForeignKey("OrderID")]
         public virtual PurchaseOrderHd order { get; set; }
-        
+
         [ForeignKey("CartID")]
         public virtual Cart cart { get; set; }
     }
 
-    public class PurchaseReceiveHd 
+    public class PurchaseOrderHd
+    {
+        [Key]
+        public Int32 OrderID { get; set; }
+
+        [Display(Name = "No. Transaksi")]
+        public String OrderNo { get; set; }
+
+        public Int32 CustomerID { get; set; }
+
+        [Display(Name = "Agen")]
+        public Int32? AgentID { get; set; }
+
+        [Display(Name = "Toko")]
+        public Int32 MerchantID { get; set; }
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd MMM yyyy}")]
+        public DateTime OrderDate { get; set; }
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd MMM yyyy}")]
+        public DateTime ValidUntil { get; set; }
+
+        [Display(Name = "Cara Pembayaran")]
+        public String PaymentMehod { get; set; }
+
+        [DataType(DataType.Currency)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:C}")]
+        [Display(Name = "Total Transaksi")]
+        public Decimal TotalAmount { get; set; }
+
+        [DataType(DataType.Currency)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:C}")]
+        [Display(Name = "Ongkos Kirim")]
+        public Decimal ShippingCharges { get; set; }
+
+        [DataType(DataType.Currency)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:C}")]
+        [Display(Name = "Biaya Asuransi")]
+        public Decimal InsuranceCharges { get; set; }
+
+        [DataType(DataType.Currency)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:C}")]
+        [Display(Name = "Total Keseluruhan")]
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        public Decimal LineAmount { get { return TotalAmount + ShippingCharges + InsuranceCharges; } }
+
+        public String OrderStatus { get; set; }
+
+        [DataType(DataType.MultilineText)]
+        [Display(Name = "Alamat")]
+        public String Address { get; set; }
+
+        public Boolean IsDeleted { get; set; }
+
+        public String CreatedBy { get; set; }
+
+        [DataType(DataType.DateTime)]
+        public DateTime CreatedDate { get; set; }
+
+        public String LastUpdatedBy { get; set; }
+
+        [DataType(DataType.DateTime)]
+        public DateTime? LastUpdatedDate { get; set; }
+
+        [ForeignKey("CustomerID")]
+        public virtual UserProfile customer { get; set; }
+
+        public virtual List<PurchaseOrderDt> orderdetails { get; set; }
+
+        [ForeignKey("AgentID")]
+        public virtual Agent agent { get; set; }
+
+        [ForeignKey("MerchantID")]
+        public virtual Merchant merchant { get; set; }
+
+        [ForeignKey("OrderStatus")]
+        public virtual StandardCode ScOrderStatus { get; set; }
+    }
+
+    public class PurchaseReceiveDt
+    {
+        [Key]
+        public Int32 ReceiveDtID { get; set; }
+
+        public Int32 ReceiveID { get; set; }
+
+        public Int32 OrderID { get; set; }
+
+        public Decimal TotalAmount { get; set; }
+
+        public Boolean IsDeleted { get; set; }
+
+        [DataType(DataType.DateTime)]
+        public String CreatedBy { get; set; }
+
+        public DateTime CreatedDate { get; set; }
+
+        [DataType(DataType.DateTime)]
+        public String LastUpdatedBy { get; set; }
+
+        public DateTime? LastUpdatedDate { get; set; }
+
+        [ForeignKey("ReceiveID")]
+        public virtual PurchaseReceiveHd receive { get; set; }
+
+        [ForeignKey("OrderID")]
+        public virtual PurchaseOrderHd order { get; set; }
+    }
+
+    public class PurchaseReceiveHd
     {
         [Key]
         public Int32 ReceiveID { get; set; }
-        
-        [Display(Name="No. Penerimaan")]
+
+        [Display(Name = "No. Penerimaan")]
         public String ReceiveNo { get; set; }
 
         [DataType(DataType.Date)]
         [Display(Name = "Tanggal Terima")]
         public DateTime ReceiveDate { get; set; }
-        
+
         public Int32 CustomerID { get; set; }
 
         [DataType(DataType.Currency)]
@@ -955,12 +1149,12 @@ namespace Todoku.Models
         public String ReceiveStatus { get; set; }
 
         public String CreatedBy { get; set; }
-        
+
         [DataType(DataType.DateTime)]
         public DateTime CreatedDate { get; set; }
-        
+
         public String LastUpdatedBy { get; set; }
-        
+
         [DataType(DataType.DateTime)]
         public DateTime? LastUpdatedDate { get; set; }
 
@@ -972,166 +1166,53 @@ namespace Todoku.Models
         [ForeignKey("ReceiveStatus")]
         public virtual StandardCode ScReceiveStatus { get; set; }
     }
-    
-    public class PurchaseReceiveDt 
+
+    public class ShippingAddresses
     {
         [Key]
-        public Int32 ReceiveDtID { get; set; }
-        
-        public Int32 ReceiveID { get; set; }
-        
-        public Int32 OrderID { get; set; }
-        
-        public Decimal TotalAmount { get; set; }
+        public Int32 ShippingID { get; set; }
 
-        public Boolean IsDeleted { get; set; }
+        [Display(Name = "Keterangan")]
+        public String AddressName { get; set; }
 
-        [DataType(DataType.DateTime)]
-        public String CreatedBy { get; set; }
+        public Int32 UserProfileID { get; set; }
 
-        public DateTime CreatedDate { get; set; }
-        
-        [DataType(DataType.DateTime)]
-        public String LastUpdatedBy { get; set; }
-        
-        public DateTime? LastUpdatedDate { get; set; }
-
-        [ForeignKey("ReceiveID")]
-        public virtual PurchaseReceiveHd receive { get; set; }
-
-        [ForeignKey("OrderID")]
-        public virtual PurchaseOrderHd order { get; set; }
-    }
-
-    public class CustomerOrder 
-    {
-        [Key]
-        public Int32 CustomerOrderID { get; set; }
-
-        public Int32 MerchantID { get; set; }
-        
-        public Int32 OrderID { get; set; }
-        
-        public Int32 CustomerID { get; set; }
-
-        public Int32 ProductID { get; set; }
-
-        public String Attributes { get; set; }
-
-        [Display(Name="Jumlah")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:0.##}")]
-        public Int32 Quantity { get; set; }
-        
-        public String RequestStatus { get; set; }
-
-        [ForeignKey("OrderID")]
-        public virtual PurchaseOrderHd pohd { get; set; }
-
-        [ForeignKey("CustomerID")]
-        public virtual UserProfile customer { get; set; }
-
-        [ForeignKey("ProductID")]
-        public virtual Product product { get; set; }
-
-        [ForeignKey("MerchantID")]
-        public virtual Merchant merchant { get; set; }
-    }
-
-    public class MemberHistory 
-    {
-        [Key]
-        public Int32 HistoryID { get; set; }
-        
-        [Display(Name="Nama")]
-        public String ProductName { get; set; }
-        
-        [Display(Name="Gambar")]
-        [DataType(DataType.ImageUrl)]
-        public String ImgLink { get; set; }
-
-        [Display(Name="Jumlah")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:0.##}")]
-        public Int32 Quantity { get; set; }
-        
-        [Display(Name = "Total")]
-        [DisplayFormat(ApplyFormatInEditMode=true, DataFormatString="{0:c}")]
-        public Decimal LineAmount { get; set; }
-
-        public Boolean IsDeleted { get; set; }
-
-        public String CreatedBy { get; set; }
-
-        [DataType(DataType.DateTime)]
-        public DateTime CreatedDate { get; set; }
-
-        public String LastUpdatedBy { get; set; }
-
-        [DataType(DataType.DateTime)]
-        public DateTime? LastUpdatedDate { get; set; }
-    }
-
-    public class ItemDeliveryHd
-    {
-        [Key]
-        public Int32 DeliveryID { get; set; }
-
-        [Display(Name="No. Resi")]
-        public String ReceiptNumber { get; set; }
-
-        public Int32 OrderID { get; set; }
-
-        [DataType(DataType.Date)]
-        [Display(Name="Tanggal")]
-        public DateTime DeliveryDate { get; set; }
-        
-        public Int32 MerchantID { get; set; }
-        
-        public Int32 CustomerID { get; set; }
-        
         [DataType(DataType.MultilineText)]
         [Display(Name = "Alamat")]
         public String Address { get; set; }
 
-        public Decimal DeliveryCost { get; set; }
+        [DataType(DataType.PhoneNumber)]
+        [Display(Name = "No. Telp.")]
+        //[RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "No. telp. tidak benar")]
+        public String Phone { get; set; }
 
-        public Decimal InsuranceCost { get; set; }
+        [DataType(DataType.PhoneNumber)]
+        [Display(Name = "No. Hp.")]
+        public String Handphone { get; set; }
 
-        public String DeliveryStatus { get; set; }
+        [Display(Name = "Negara")]
+        public String Country { get; set; }
 
-        public String CreatedBy { get; set; }
-        
-        public DateTime CreatedDate { get; set; }
+        [Display(Name = "Kota")]
+        public String City { get; set; }
+        public Int32 RajaOngkir_City_ID { get; set; }
 
-        public String LastUpdatedBy { get; set; }
-        
-        public DateTime? LastUpdatedDate { get; set; }
+        [Display(Name = "Provinsi")]
+        public String Province { get; set; }
+        public Int32 RajaOngkir_Province_ID { get; set; }
 
-        [ForeignKey("OrderID")]
-        public virtual PurchaseOrderHd pohd { get; set; }
+        [DataType(DataType.EmailAddress)]
+        [Display(Name = "Email")]
+        [RegularExpression(@"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}", ErrorMessage = "Email is is not valid.")]
+        public string Email { get; set; }
 
-        [ForeignKey("MerchantID")]
-        public virtual Merchant merchant { get; set; }
+        [DataType(DataType.EmailAddress)]
+        [Display(Name = "Email Alternatif")]
+        [RegularExpression(@"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}", ErrorMessage = "Email is is not valid.")]
+        public string Email2 { get; set; }
 
-        [ForeignKey("CustomerID")]
-        public virtual UserProfile customer { get; set; }
-
-        public virtual List<ItemDeliveryDt> itemdeliverydts { get; set; }
-
-        [ForeignKey("DeliveryStatus")]
-        public virtual StandardCode ScDeliveryStatus { get; set; }
-    }
-
-    public class ItemDeliveryDt
-    {
-        [Key]
-        public Int32 DeliveryDtID { get; set; }
-        
-        public Int32 DeliveryID { get; set; }
-        
-        public Int32 ProductID { get; set; }
-        
-        [Display(Name="Jumlah")]
-        public Int32 Quantity { get; set; }
+        [Display(Name = "Kode Pos")]
+        public String ZipCode { get; set; }
 
         public Boolean IsDeleted { get; set; }
 
@@ -1145,11 +1226,67 @@ namespace Todoku.Models
         [DataType(DataType.DateTime)]
         public DateTime? LastUpdatedDate { get; set; }
 
-        [ForeignKey("DeliveryID")]
-        public virtual ItemDeliveryHd itemdeliveryhd { get; set; }
+        [ForeignKey("UserProfileID")]
+        public virtual UserProfile userprofile { get; set; }
 
-        [ForeignKey("ProductID")]
-        public virtual Product product { get; set; }
+        [ForeignKey("Province")]
+        public virtual StandardCode ScProvince { get; set; }
+    }
+
+    public class TransactionHistory
+    {
+        [Key]
+        public Int32 HistoryID { get; set; }
+        public Int32? UserID { get; set; }
+        public String UserType { get; set; }
+        public String TransactionType { get; set; }
+        public Decimal Start { get; set; }
+        public Decimal? In { get; set; }
+        public Decimal? Out { get; set; }
+        public Decimal? End { get; set; }
+        public String Remarks { get; set; }
+        public DateTime CreatedDate { get; set; }
+    }
+
+    public class UserProfile
+    {
+        [Key]
+        public Int32 UserProfileID { get; set; }
+
+        public String UserName { get; set; }
+
+        [Display(Name = "Panggilan")]
+        public String Prefix { get; set; }
+
+        [Display(Name = "Nama Lengkap")]
+        public String Fullname { get; set; }
+
+        [Display(Name = "Jenis Kelamin")]
+        public String Gender { get; set; }
+
+        [DataType(DataType.Date)]
+        [Display(Name = "Tanggal Lahir")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd MMM yyyy}")]
+        public DateTime DateOfBirth { get; set; }
+
+        public String AddressCode { get; set; }
+
+        public Boolean IsDeleted { get; set; }
+
+        public String CreatedBy { get; set; }
+
+        [DataType(DataType.DateTime)]
+        public DateTime CreatedDate { get; set; }
+
+        public String LastUpdatedBy { get; set; }
+
+        [DataType(DataType.DateTime)]
+        public DateTime? LastUpdatedDate { get; set; }
+
+        [ForeignKey("AddressCode")]
+        public virtual Addresses address { get; set; }
+
+        public virtual List<ShippingAddresses> shippings { get; set; }
     }
 
     public class ZipCode
@@ -1188,25 +1325,11 @@ namespace Todoku.Models
     #endregion
 
     #region Custom Class
-    public class SampleProduct 
+    public class MerchantRegistrationEntry
     {
-        public Int32 RegistrationID { get; set; }
-        public String ProductName { get; set; }
-        public String ProductDescription { get; set; }
-        public HttpPostedFileBase file { get; set; }
-        public Decimal StartPrice { get; set; }
-        public Decimal EndPrice { get; set; }
-    }
-
-    public class PurchaseOrderConfirmation 
-    {
-        public Int32 OrderID { get; set; }
-        public String OrderNo { get; set;}
-        public String PaymentMehod {get; set;}
-        public Int32? AgentID {get;set;}
-        public String Address {get;set;}
-        public Decimal ShippingCharges {get;set;}
-        public Int32 BankID {get;set;}
+        public MerchantRegistration merchant { get; set; }
+        public List<HttpPostedFileBase> files { get; set; }
+        public List<SampleProduct> sample { get; set; }
     }
 
     public class PaymentConfirmation 
@@ -1229,6 +1352,17 @@ namespace Todoku.Models
         public Int32? Quantity { get; set; }
     }
 
+    public class PurchaseOrderConfirmation
+    {
+        public Int32 OrderID { get; set; }
+        public String OrderNo { get; set; }
+        public String PaymentMehod { get; set; }
+        public Int32 AgentID { get; set; }
+        public String Address { get; set; }
+        public Decimal ShippingCharges { get; set; }
+        public Int32 BankID { get; set; }
+    }
+
     public class PurchaseOrderInformation 
     {
         public List<PurchaseOrderHd> lstPurchaseOrder { get; set; }
@@ -1236,30 +1370,11 @@ namespace Todoku.Models
         public List<ItemDeliveryHd> lstItemDelivery { get; set; }
     }
 
-    public class Pagination 
+    public class SampleProduct
     {
-        public String Action { get; set; }
-        public String Controller { get; set; }
-        public String Area { get; set; }
-        public Int32 Page { get; set; }
-        public Int32 Pages { get; set; }
-        public Int32 Rows { get; set; }
-    }
-
-    public class MyViewModel
-    {
-        public String SelectedOrderId { get; set; }
-        public SelectList OrderTemplates { get; set; }
-
-        // Other properties you need in your view
-    }
-    #endregion
-
-    #region View Controller
-    public class CartView 
-    {
-        public List<Cart> carts { get; set; }
-        public String jsonCarts { get; set; }
+        public String ProductName { get; set; }
+        public String ProductDescription { get; set; }
+        public String filename { get; set; }
     }
     #endregion
 }

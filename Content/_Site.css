@@ -73,3 +73,8 @@ a.a-font-black:hover
   display: inline-block;
   vertical-align: bottom;
 }
+
+.number
+{
+    text-align:right;
+}

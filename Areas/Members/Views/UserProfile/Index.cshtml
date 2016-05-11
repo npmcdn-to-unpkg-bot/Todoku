@@ -22,6 +22,8 @@
 <ul class="nav nav-tabs">
     <li class="active"><a data-toggle="tab" href="#menu1">Profil Pengguna</a></li>
     <li><a data-toggle="tab" href="#menu2">Pengiriman</a></li>
+    <li><a data-toggle="tab" href="#menu3" style="@(!Roles.GetRolesForUser().Contains(Todoku.Models.UserRole.Agent) ? "display:none;" : "")">Agen</a></li>
+        
 </ul>
 <div class="tab-content">
     <div id="menu1" class="tab-pane fade in active">
@@ -210,5 +212,28 @@
                 </tbody>
             </table>
         </div>
+    </div>
+    <div id="menu3" class="tab-pane fade">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="gap-md"></div>
+                @{Todoku.Models.Agent agent = ViewBag.Agent != null ? ViewBag.Agent : new Todoku.Models.Agent();}
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-4">@Html.LabelFor(m => agent.AgentCode, new { @class = "pull-right" })</div>
+                        <div class="col-md-6 nopadding">@agent.AgentCode</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">@Html.LabelFor(m => agent.AgentType, new { @class = "pull-right" })</div>
+                        <div class="col-md-6 nopadding">@(agent.scAgentType != null ? agent.scAgentType.StandardCodeName : "")</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">@Html.LabelFor(m => agent.JoinDate, new { @class = "pull-right" })</div>
+                        <div class="col-md-6 nopadding">@Html.DisplayFor(m => agent.JoinDate)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
     </div>
 </div>

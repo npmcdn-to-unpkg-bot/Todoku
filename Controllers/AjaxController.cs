@@ -15,25 +15,29 @@ namespace Todoku.Controllers
         {
             Type elementType = Type.GetType("Todoku.Models.BusinessLayer");
             Dictionary<String, String> param = new Dictionary<String, String>();
-            if(filterExpression != "")
+            List<Type> types = new List<Type>();
+            if (filterExpression != "") {
                 param.Add("filterExpression", filterExpression);
-            if (GroupBy != "")
-                param.Add("GroupBy", GroupBy);
-            if (OrderBy != "")
-                param.Add("OrderBy", OrderBy);
-
-            List<MethodInfo> lstMi = elementType.GetMethods().Where(x => x.Name == String.Format("{0}", method)).ToList();
-            
-            foreach (KeyValuePair<String, String> obj in param) 
-            {
-                lstMi = lstMi.Where(x => x.GetParameters().Any(s => s.Name.Contains(obj.Key))).ToList();
+                types.Add(typeof(String));
             }
 
-            if (lstMi != null)
+            if (GroupBy != "") 
+            {
+                param.Add("GroupBy", GroupBy);
+                types.Add(typeof(String));
+            }
+
+            if (OrderBy != "") {
+                types.Add(typeof(String));
+                param.Add("OrderBy", OrderBy);
+            }
+
+            MethodInfo mi = typeof(BusinessLayer).GetMethod(method, BindingFlags.Instance | BindingFlags.Public, null, types.ToArray(), null);
+
+            if (mi != null)
             {
                 try
                 {
-                    MethodInfo mi = lstMi[0];
                     ParameterInfo[] parameters = mi.GetParameters();
                     List<Object> obj = new List<Object>();
                     foreach (ParameterInfo pi in parameters)

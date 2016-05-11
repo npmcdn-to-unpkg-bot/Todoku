@@ -33,7 +33,9 @@ namespace Todoku.Controllers
                 List<Cart> carts = AppSession.GetCartUsingCookie(this.HttpContext);
                 ViewData["CartQty"] = carts.Sum(x => x.Quantity);
             }
-
+            List<StandardCode> categories = db.standardcodes.Where(x => x.ParentID == SCConstant.Kategori_Produk).OrderBy(x => x.StandardCodeName).ToList();
+            categories.Insert(0, new StandardCode { StandardCodeID = "", StandardCodeName = "Semua Kategori" });
+            ViewBag.Categories = categories;
             return PartialView();
         }
 

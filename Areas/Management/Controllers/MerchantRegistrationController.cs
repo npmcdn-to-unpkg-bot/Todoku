@@ -108,7 +108,7 @@ namespace Todoku.Areas.Management.Controllers
         }
 
         [HttpPost]
-        public ActionResult Confirm(int id)
+        public JsonResult Confirm(int id)
         {
             try
             {
@@ -138,12 +138,13 @@ namespace Todoku.Areas.Management.Controllers
                 }
 
                 db.SaveChanges();
-                return RedirectToAction("index");
+                TempData["SaveResult"] = Json(new { ok = true, message = "Data berhasil dikonfirmasi" });
+                return Json(new { ok = true });
             }
             catch (Exception ex)
             {
-                String errMessage = ex.Message;
-                return RedirectToAction("index");
+                TempData["SaveResult"] = Json(new { ok = false, message = "Data tidak berhasil dikonfirmasi : " + ex.Message });
+                return Json(new { ok = false, message = "Data tidak berhasil dikonfirmasi : " + ex.Message });
             }
         }
     }

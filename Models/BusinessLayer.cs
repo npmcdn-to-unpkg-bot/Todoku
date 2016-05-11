@@ -13,35 +13,72 @@ namespace Todoku.Models
     {
         #region Database
         public DbSet<Addresses> addresses { get; set; }
-        public DbSet<ShippingAddresses> ShippingAddresses { get; set; }
+        public DbSet<Agent> agents { get; set; }
+        public DbSet<AgentRegistration> agentRegistrations { get; set; }
+        public DbSet<AgentDiscountSetting> agentDiscountSettings { get; set; }
         public DbSet<Bank> banks { get; set; }
-        public DbSet<ProductAttributeGroup> productAttributeGroups { get; set; }
-        public DbSet<ProductAttribute> productAttributes { get; set; }
-        public DbSet<Product> products { get; set; }
+        public DbSet<Cart> carts { get; set; }
+        public DbSet<CustomerOrder> customerOrder { get; set; }
         public DbSet<Dashboard> dashboards { get; set; }
         public DbSet<DashboardInUserRole> dashboardinuserroles { get; set; }
-        public DbSet<Menu> menus { get; set; }
-        public DbSet<MenuInUserRole> menuinuserrole { get; set; }
-        public DbSet<UserProfile> userprofiles { get; set; }
-        public DbSet<StandardCode> standardcodes { get; set; }
-        public DbSet<Cart> carts { get; set; }
-        public DbSet<PurchaseOrderHd> purchaseorderhds { get; set; }
-        public DbSet<PurchaseOrderDt> purchaseorderdts { get; set; }
-        public DbSet<PurchaseReceiveHd> purchasereceivehds { get; set; }
-        public DbSet<PurchaseReceiveDt> purchasereceivedts { get; set; }
-        public DbSet<Merchant> merchants { get; set; }
-        public DbSet<MerchantRegistration> merchantRegistrations { get; set; }
-        public DbSet<MerchantRegistrationDetail> merchantRegistrationDetails { get; set; }
-        public DbSet<ProductDt> productsDetails { get; set; }
-        public DbSet<CustomerOrder> customerOrder { get; set; }
-        public DbSet<MemberHistory> memberHistory { get; set; }
-        public DbSet<ItemDeliveryHd> itemdeliveryhds { get; set; }
         public DbSet<ItemDeliveryDt> itemdeliverydts { get; set; }
+        public DbSet<ItemDeliveryHd> itemdeliveryhds { get; set; }
+        public DbSet<MenuInUserRole> menuinuserrole { get; set; }
+        public DbSet<Menu> menus { get; set; }
+        public DbSet<MerchantRegistrationDetail> merchantRegistrationDetails { get; set; }
+        public DbSet<MemberHistory> memberHistory { get; set; }
+        public DbSet<MerchantRegistration> merchantRegistrations { get; set; }
+        public DbSet<Merchant> merchants { get; set; }
+        public DbSet<Product> products { get; set; }
+        public DbSet<ProductAttributeGroup> productAttributeGroups { get; set; }
+        public DbSet<ProductAttribute> productAttributes { get; set; }
+        public DbSet<ProductDt> productDetails { get; set; }
+        public DbSet<ProductReview> productReviews { get; set; }
+        public DbSet<PurchaseOrderDt> purchaseorderdts { get; set; }
+        public DbSet<PurchaseOrderHd> purchaseorderhds { get; set; }
+        public DbSet<PurchaseReceiveDt> purchasereceivedts { get; set; }
+        public DbSet<PurchaseReceiveHd> purchasereceivehds { get; set; }
+        public DbSet<ShippingAddresses> ShippingAddresses { get; set; }
+        public DbSet<StandardCode> standardcodes { get; set; }
+        public DbSet<TransactionHistory> transactionHistories { get; set; }
+        public DbSet<UserProfile> userprofiles { get; set; }
         public DbSet<ZipCode> zipcodes { get; set; }
         #endregion
 
         #region Ajax
-        #region Shipping Address GetShippingAddressList
+        #region Agent
+        public List<Agent> GetAgentList(String filterExpression)
+        {
+            return this.agents.Where(filterExpression).ToList().Select(x => new Agent 
+            { 
+                AgentID = x.AgentID,
+                AgentCode = x.AgentCode,
+                AgentType = x.AgentType,
+                AddressCode = x.AddressCode,
+                IsActive = x.IsActive,
+                IsDeleted = x.IsDeleted
+            }).ToList();
+        }
+
+        public List<Agent> GetAgentList(String filterExpression, String OrderBy)
+        {
+            IQueryable<Agent> temp = this.agents.Where(filterExpression);
+            if (OrderBy != null && OrderBy != "")
+            {
+                temp = temp.OrderBy(OrderBy);
+            }
+            return temp.ToList();
+        }
+
+        public IQueryable GetAgentList(String filterExpression = "", String GroupBy = "", String OrderBy = "")
+        {
+            if (filterExpression == "") filterExpression = "1 = 1";
+            if (OrderBy == "") OrderBy = GroupBy + "ASC";
+            return this.agents.Where(filterExpression).GroupBy(GroupBy, GroupBy).Select(String.Format("new (Key as {0})", GroupBy));
+        }
+        #endregion
+
+        #region Shipping Address
         public List<ShippingAddresses> GetShippingAddressList(String filterExpression)
         {
             return this.ShippingAddresses.Where(filterExpression).ToList().Select(x => new ShippingAddresses

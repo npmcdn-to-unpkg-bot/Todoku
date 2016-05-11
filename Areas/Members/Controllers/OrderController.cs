@@ -107,12 +107,12 @@ namespace Todoku.Areas.Members.Controllers
 
                 db.SaveChanges();
                 //return View(obj);
-                return Json(new { ok = true, Status = "Success" });
+                return Json(new { ok = true, message = "Success" });
             }
             catch (Exception ex)
             {
                 //return RedirectToAction("index", "PurchaseOrder", new { OrderNo = entity.OrderNo });
-                return Json(new { ok = false, Status = ex.Message });
+                return Json(new { ok = false, message = ex.Message });
             }
         }
     }

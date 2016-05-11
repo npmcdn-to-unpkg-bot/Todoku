@@ -23,25 +23,11 @@ namespace Todoku.Areas.Admin.Controllers
         {
             BusinessLayer db = new BusinessLayer();
             List<PurchaseReceiveHd> prhd = db.purchasereceivehds.Where(x => x.ReceiveStatus == ReceiveStatus.PayedByCustomer).ToList();
-            if (prhd.Count() % Rows == 0)
-            {
-                ViewBag.Pages = prhd.Count() / Rows;
-            }
-            else 
-            {
-                ViewBag.Pages = prhd.Count() / Rows + 1;
-            }
-            
-            ViewBag.Page = 0;
-            if (prhd.Count() > 0)
-            {
-                ViewBag.Page = Page;
-                return View(prhd.Skip((Page - 1) * Rows).Take(Rows).ToList());
-            }
-            else 
-            {
-                return View(prhd);
-            }
+            Int32 Pages = 0;
+            prhd = Method.SetPagination(prhd, Rows, Page, ref Pages);
+            ViewBag.Pages = Pages;
+            ViewBag.Page = Page;
+            return View(prhd);
         }
 
         [HttpPost]

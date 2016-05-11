@@ -44,7 +44,7 @@
         console.log(err);
     }
 
-    $('.txtNumber').number(true, 2, ',', '.');
+    $('.number').number(true, 2, ',', '.');
 
     $('body').on('click', '.btnSearchZipCode', function () {
         var url = window.location.origin + "/Todoku/Ajax/GetListObject/";

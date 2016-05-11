@@ -45,7 +45,8 @@ namespace Todoku.Areas.Members.Controllers
 
             return View(lst);
         }
-
+        
+        [HttpPost]
         public JsonResult Confirm(PurchaseReceiveHd entity)
         {
             try

@@ -19,6 +19,10 @@ namespace Todoku.Areas.Members.Controllers
             BusinessLayer db = new BusinessLayer();
             String Username = Membership.GetUser().UserName;
             UserProfile userprofile = db.userprofiles.Include("shippings").FirstOrDefault(x => x.UserName == Username);
+            Agent agent = db.agents.FirstOrDefault(x => !x.IsDeleted && x.IsActive && x.UserID == userprofile.UserProfileID);
+            
+            if(agent != null) ViewBag.Agent = agent;
+            
             List<StandardCode> sc = db.standardcodes.Where(x => x.ParentID == SCConstant.Jenis_Kelamin ||
                 x.ParentID == SCConstant.Provinsi ||
                 x.ParentID == SCConstant.Negara ||

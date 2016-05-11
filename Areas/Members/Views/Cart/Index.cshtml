@@ -52,9 +52,12 @@
 <div class="row">
     <div class="col-md-8">
         <div class="col-md-6">
-            <form action="@Url.Content("~/Members/Cart/Process")" method="post" name="form">
-                <a href="javascript:form.submit()">Bayar Transaksi Ini</a>
-            </form>
+            @if (Model.Count() > 0) 
+            { 
+                <form action="@Url.Content("~/Members/Cart/Process")" method="post" name="form">
+                    <a href="javascript:form.submit()">Bayar Transaksi Ini</a>
+                </form>
+            }
         </div>
         <div class="col-md-6"><h3 style="margin-top:0px; margin-right:0px; float:right;">Total: @ViewBag.TotalAmount.ToString("c")</h3></div>
     </div>
