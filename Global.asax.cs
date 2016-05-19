@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using Todoku.Models;
+using System.Data.Entity;
 
 namespace Todoku
 {
@@ -34,12 +35,12 @@ namespace Todoku
         protected void Application_Start()
         {
             //System.Data.Entity.Database.SetInitializer<Todoku.Models.BusinessLayer>(null);
-            System.Data.Entity.Database.SetInitializer(new SampleData());
+            Database.SetInitializer(new SampleData());
             AreaRegistration.RegisterAllAreas();
 
             ModelBinders.Binders.Add(typeof(decimal), new DecimalModelBinder());
             ModelBinders.Binders.Add(typeof(decimal?), new DecimalModelBinder());
-            
+
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
         }

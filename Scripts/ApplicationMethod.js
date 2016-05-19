@@ -46,112 +46,112 @@
 
     $('.number').number(true, 2, ',', '.');
 
-    $('body').on('click', '.btnSearchZipCode', function () {
-        var url = window.location.origin + "/Todoku/Ajax/GetListObject/";
-        var buttons = {
-            "Pilih": function () {
-                var id = $('#hdnSelectedValue').val();
-                GetListObject(url, 'GetZipCodeList', "ZipID = " + id, null, null, function (result) {
-                    $('#ZipCode').val(result[0].ZipNumber).trigger("change");
-                    $('#Province').val(result[0].Province).trigger("change");
-                    $('#City').val(result[0].Regency).trigger("change");
-                    //                    var text = $('#Address').val() + " Kel. " + result[0].SubDistrict + " Kec. " + result[0].District;
-                    //                    $('#Address').val(text).trigger("change");
+//    $('body').on('click', '.btnSearchZipCode', function () {
+//        var url = window.location.origin + "/Todoku/Ajax/GetListObject/";
+//        var buttons = {
+//            "Pilih": function () {
+//                var id = $('#hdnSelectedValue').val();
+//                GetListObject(url, 'GetZipCodeList', "ZipID = " + id, null, null, function (result) {
+//                    $('#ZipCode').val(result[0].ZipNumber).trigger("change");
+//                    $('#Province').val(result[0].Province).trigger("change");
+//                    $('#City').val(result[0].Regency).trigger("change");
+//                    //                    var text = $('#Address').val() + " Kel. " + result[0].SubDistrict + " Kec. " + result[0].District;
+//                    //                    $('#Address').val(text).trigger("change");
 
-                    $('#address_ZipCode').val(result[0].ZipNumber).trigger("change");
-                    $('#address_Province').val(result[0].Province).trigger("change");
-                    $('#address_City').val(result[0].Regency).trigger("change");
-                    //                    text = $('#address_Address').val() + " Kel. " + result[0].SubDistrict + " Kec. " + result[0].District;
-                    //                    $('#address_Address').val(text).trigger("change");
-                });
-                $('#hdnSelectedValue').val("");
-                $(this).dialog("close");
-            },
-            "Batal": function () { $('#hdnSelectedValue').val(""); $(this).dialog("close"); }
-        }
-        var provinceVal = "SC0002.006";
-        GetListObject(url, 'GetStandardCodeList', 'ParentID == "SC0002"', "", "StandardCodeName ASC", function (result) {
-            var dtProvinces = result;
-            $('#hdnDtProvince').val(result);
-            GetListObject(url, 'GetZipCodeList', 'Province == "' + provinceVal + '"', "Regency", null, function (result) {
-                var dtRegency = result;
-                $('#hdnDtRegency').val(result);
-                GetListObject(url, 'GetZipCodeList', 'Regency == "' + dtRegency[0].Regency + '"', "District", null, function (result) {
-                    var dtDistrict = result;
-                    GetListObject(url, 'GetZipCodeList', 'District == "' + dtDistrict[0].District + '"', null, null, function (result) {
-                        var data = { combobox: dtProvinces, ProvinceVal: provinceVal, cboRegency: dtRegency, RegencyVal: "", cboDistrict: dtDistrict, DistrictVal: "", lstZipCode: result };
-                        OpenDialog({
-                            DialogTitle: "Kode Pos",
-                            DialogID: "ZipCodeDialog",
-                            Data: data,
-                            Template: "ZipCodeTemplate",
-                            buttons: buttons
-                        });
-                    });
-                });
-            })
-        });
-    });
+//                    $('#address_ZipCode').val(result[0].ZipNumber).trigger("change");
+//                    $('#address_Province').val(result[0].Province).trigger("change");
+//                    $('#address_City').val(result[0].Regency).trigger("change");
+//                    //                    text = $('#address_Address').val() + " Kel. " + result[0].SubDistrict + " Kec. " + result[0].District;
+//                    //                    $('#address_Address').val(text).trigger("change");
+//                });
+//                $('#hdnSelectedValue').val("");
+//                $(this).dialog("close");
+//            },
+//            "Batal": function () { $('#hdnSelectedValue').val(""); $(this).dialog("close"); }
+//        }
+//        var provinceVal = "SC0002.006";
+//        GetListObject(url, 'GetStandardCodeList', 'ParentID == "SC0002"', "", "StandardCodeName ASC", function (result) {
+//            var dtProvinces = result;
+//            $('#hdnDtProvince').val(result);
+//            GetListObject(url, 'GetZipCodeList', 'Province == "' + provinceVal + '"', "Regency", null, function (result) {
+//                var dtRegency = result;
+//                $('#hdnDtRegency').val(result);
+//                GetListObject(url, 'GetZipCodeList', 'Regency == "' + dtRegency[0].Regency + '"', "District", null, function (result) {
+//                    var dtDistrict = result;
+//                    GetListObject(url, 'GetZipCodeList', 'District == "' + dtDistrict[0].District + '"', null, null, function (result) {
+//                        var data = { combobox: dtProvinces, ProvinceVal: provinceVal, cboRegency: dtRegency, RegencyVal: "", cboDistrict: dtDistrict, DistrictVal: "", lstZipCode: result };
+//                        OpenDialog({
+//                            DialogTitle: "Kode Pos",
+//                            DialogID: "ZipCodeDialog",
+//                            Data: data,
+//                            Template: "ZipCodeTemplate",
+//                            buttons: buttons
+//                        });
+//                    });
+//                });
+//            })
+//        });
+//    });
 
-    $('body').on('change', '.cboProvince', function () {
-        var url = window.location.origin + "/Todoku/Ajax/GetListObject/";
-        var provinceVal = $(this).val();
-        GetListObject(url, 'GetStandardCodeList', 'ParentID == "SC0002"', "", "StandardCodeName ASC", function (result) {
-            var dtProvinces = result;
-            GetListObject(url, 'GetZipCodeList', 'Province == "' + provinceVal + '"', "Regency", null, function (result) {
-                var dtRegency = result;
-                GetListObject(url, 'GetZipCodeList', 'Regency == "' + dtRegency[0].Regency + '" && Province == "' + provinceVal + '"', "District", null, function (result) {
-                    var dtDistrict = result;
-                    GetListObject(url, 'GetZipCodeList', 'District == "' + dtDistrict[0].District + '" && Regency == "' + dtRegency[0].Regency + '" && Province == "' + provinceVal + '"', null, null, function (result) {
-                        var data = { combobox: dtProvinces, ProvinceVal: provinceVal, cboRegency: dtRegency, RegencyVal: dtRegency[0].Regency, cboDistrict: dtDistrict, DistrictVal: "", lstZipCode: result };
-                        $('#ZipCodeDialog').text(""); // empty dialog content
-                        $('#ZipCodeTemplate').tmpl(data).appendTo('#ZipCodeDialog');
-                    });
-                });
-            })
-        });
-    });
+//    $('body').on('change', '.cboProvince', function () {
+//        var url = window.location.origin + "/Todoku/Ajax/GetListObject/";
+//        var provinceVal = $(this).val();
+//        GetListObject(url, 'GetStandardCodeList', 'ParentID == "SC0002"', "", "StandardCodeName ASC", function (result) {
+//            var dtProvinces = result;
+//            GetListObject(url, 'GetZipCodeList', 'Province == "' + provinceVal + '"', "Regency", null, function (result) {
+//                var dtRegency = result;
+//                GetListObject(url, 'GetZipCodeList', 'Regency == "' + dtRegency[0].Regency + '" && Province == "' + provinceVal + '"', "District", null, function (result) {
+//                    var dtDistrict = result;
+//                    GetListObject(url, 'GetZipCodeList', 'District == "' + dtDistrict[0].District + '" && Regency == "' + dtRegency[0].Regency + '" && Province == "' + provinceVal + '"', null, null, function (result) {
+//                        var data = { combobox: dtProvinces, ProvinceVal: provinceVal, cboRegency: dtRegency, RegencyVal: dtRegency[0].Regency, cboDistrict: dtDistrict, DistrictVal: "", lstZipCode: result };
+//                        $('#ZipCodeDialog').text(""); // empty dialog content
+//                        $('#ZipCodeTemplate').tmpl(data).appendTo('#ZipCodeDialog');
+//                    });
+//                });
+//            })
+//        });
+//    });
 
-    $('body').on('change', '.cboRegency', function () {
-        var url = window.location.origin + "/Todoku/Ajax/GetListObject/";
-        var provinceVal = $(this).closest('table').find('.cboProvince').val();
-        var regencyVal = $(this).val();
-        GetListObject(url, 'GetStandardCodeList', 'ParentID == "SC0002"', "", "StandardCodeName ASC", function (result) {
-            var dtProvinces = result;
-            GetListObject(url, 'GetZipCodeList', 'Province == "' + provinceVal + '"', "Regency", null, function (result) {
-                var dtRegency = result;
-                GetListObject(url, 'GetZipCodeList', 'Regency == "' + regencyVal + '" && Province == "' + provinceVal + '"', "District", null, function (result) {
-                    var dtDistrict = result;
-                    GetListObject(url, 'GetZipCodeList', 'District == "' + dtDistrict[0].District + '" && Regency == "' + regencyVal + '" && Province == "' + provinceVal + '"', null, null, function (result) {
-                        var data = { combobox: dtProvinces, ProvinceVal: provinceVal, cboRegency: dtRegency, RegencyVal: regencyVal, cboDistrict: dtDistrict, DistrictVal: "", lstZipCode: result };
-                        $('#ZipCodeDialog').text(""); // empty dialog content
-                        $('#ZipCodeTemplate').tmpl(data).appendTo('#ZipCodeDialog');
-                    });
-                });
-            })
-        });
-    });
+//    $('body').on('change', '.cboRegency', function () {
+//        var url = window.location.origin + "/Todoku/Ajax/GetListObject/";
+//        var provinceVal = $(this).closest('table').find('.cboProvince').val();
+//        var regencyVal = $(this).val();
+//        GetListObject(url, 'GetStandardCodeList', 'ParentID == "SC0002"', "", "StandardCodeName ASC", function (result) {
+//            var dtProvinces = result;
+//            GetListObject(url, 'GetZipCodeList', 'Province == "' + provinceVal + '"', "Regency", null, function (result) {
+//                var dtRegency = result;
+//                GetListObject(url, 'GetZipCodeList', 'Regency == "' + regencyVal + '" && Province == "' + provinceVal + '"', "District", null, function (result) {
+//                    var dtDistrict = result;
+//                    GetListObject(url, 'GetZipCodeList', 'District == "' + dtDistrict[0].District + '" && Regency == "' + regencyVal + '" && Province == "' + provinceVal + '"', null, null, function (result) {
+//                        var data = { combobox: dtProvinces, ProvinceVal: provinceVal, cboRegency: dtRegency, RegencyVal: regencyVal, cboDistrict: dtDistrict, DistrictVal: "", lstZipCode: result };
+//                        $('#ZipCodeDialog').text(""); // empty dialog content
+//                        $('#ZipCodeTemplate').tmpl(data).appendTo('#ZipCodeDialog');
+//                    });
+//                });
+//            })
+//        });
+//    });
 
-    $('body').on('change', '.cboDistrict', function () {
-        var url = window.location.origin + "/Todoku/Ajax/GetListObject/";
-        var provinceVal = $(this).closest('table').find('.cboProvince').val();
-        var regencyVal = $(this).closest('table').find('.cboRegency').val();
-        var districtVal = $(this).val();
-        GetListObject(url, 'GetStandardCodeList', 'ParentID == "SC0002"', "", "StandardCodeName ASC", function (result) {
-            var dtProvinces = result;
-            GetListObject(url, 'GetZipCodeList', 'Province == "' + provinceVal + '"', "Regency", null, function (result) {
-                var dtRegency = result;
-                GetListObject(url, 'GetZipCodeList', 'Regency == "' + regencyVal + '" && Province == "' + provinceVal + '"', "District", null, function (result) {
-                    var dtDistrict = result;
-                    GetListObject(url, 'GetZipCodeList', 'District == "' + districtVal + '" && Regency == "' + regencyVal + '" && Province == "' + provinceVal + '"', null, null, function (result) {
-                        var data = { combobox: dtProvinces, ProvinceVal: provinceVal, cboRegency: dtRegency, RegencyVal: regencyVal, cboDistrict: dtDistrict, DistrictVal: districtVal, lstZipCode: result };
-                        $('#ZipCodeDialog').text(""); // empty dialog content
-                        $('#ZipCodeTemplate').tmpl(data).appendTo('#ZipCodeDialog');
-                    });
-                });
-            })
-        });
-    });
+//    $('body').on('change', '.cboDistrict', function () {
+//        var url = window.location.origin + "/Todoku/Ajax/GetListObject/";
+//        var provinceVal = $(this).closest('table').find('.cboProvince').val();
+//        var regencyVal = $(this).closest('table').find('.cboRegency').val();
+//        var districtVal = $(this).val();
+//        GetListObject(url, 'GetStandardCodeList', 'ParentID == "SC0002"', "", "StandardCodeName ASC", function (result) {
+//            var dtProvinces = result;
+//            GetListObject(url, 'GetZipCodeList', 'Province == "' + provinceVal + '"', "Regency", null, function (result) {
+//                var dtRegency = result;
+//                GetListObject(url, 'GetZipCodeList', 'Regency == "' + regencyVal + '" && Province == "' + provinceVal + '"', "District", null, function (result) {
+//                    var dtDistrict = result;
+//                    GetListObject(url, 'GetZipCodeList', 'District == "' + districtVal + '" && Regency == "' + regencyVal + '" && Province == "' + provinceVal + '"', null, null, function (result) {
+//                        var data = { combobox: dtProvinces, ProvinceVal: provinceVal, cboRegency: dtRegency, RegencyVal: regencyVal, cboDistrict: dtDistrict, DistrictVal: districtVal, lstZipCode: result };
+//                        $('#ZipCodeDialog').text(""); // empty dialog content
+//                        $('#ZipCodeTemplate').tmpl(data).appendTo('#ZipCodeDialog');
+//                    });
+//                });
+//            })
+//        });
+//    });
 
     $('body').on('click', 'table.SelectMode tr', function () {
         $('table.SelectMode tr').removeClass("selected");

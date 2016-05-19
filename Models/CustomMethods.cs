@@ -12,6 +12,7 @@ using System.Web.UI;
 using System.Web.Mvc.Html;
 using Todoku.Models;
 using System.Web.Routing;
+using Newtonsoft.Json;
 
 namespace Todoku.Models
 {
@@ -159,6 +160,38 @@ namespace Todoku.Models
 
 namespace System.Web.Mvc 
 {
+    public class JsonNetResult : JsonResult
+    {
+        public JsonNetResult(Object Data, JsonRequestBehavior JsonRequestBehavior) 
+        {
+            this.Data = Data;
+            this.JsonRequestBehavior = JsonRequestBehavior;
+        }
+
+        public override void ExecuteResult(ControllerContext context)
+        {
+            if (context == null)
+                throw new ArgumentNullException("context");
+            
+            if (this.JsonRequestBehavior == JsonRequestBehavior.DenyGet && string.Equals(context.HttpContext.Request.HttpMethod, "GET", StringComparison.OrdinalIgnoreCase))
+                throw new InvalidOperationException("JSON GET is not allowed");
+
+            var response = context.HttpContext.Response;
+
+            response.ContentType = !String.IsNullOrEmpty(ContentType) ? ContentType : "application/json";
+
+            if (ContentEncoding != null)
+                response.ContentEncoding = ContentEncoding;
+
+            // If you need special handling, you can call another form of SerializeObject below
+            var serializedObject = JsonConvert.SerializeObject(Data, Formatting.Indented, new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
+            response.Write(serializedObject);
+        }
+    }
+
     public static class HtmlButtonExtension
     {
         public static MvcHtmlString Button(this HtmlHelper helper,

@@ -25,6 +25,12 @@ namespace Todoku.Controllers
             {
                 param.Add("GroupBy", GroupBy);
                 types.Add(typeof(String));
+
+                if (OrderBy == "") 
+                {
+                    param.Add("OrderBy", OrderBy);
+                    types.Add(typeof(String));
+                }
             }
 
             if (OrderBy != "") {

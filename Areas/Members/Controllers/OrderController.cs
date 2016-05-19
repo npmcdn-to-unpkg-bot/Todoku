@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using Todoku.Models;
 using System.Web.Security;
 using System.Data;
+using Newtonsoft.Json;
 
 namespace Todoku.Areas.Members.Controllers
 {
@@ -75,7 +76,7 @@ namespace Todoku.Areas.Members.Controllers
             {
                 PurchaseOrderHd obj = db.purchaseorderhds.FirstOrDefault(x => x.OrderID == entity.OrderID || x.OrderNo == entity.OrderNo);
                 obj.PaymentMehod = entity.PaymentMehod;
-                obj.AgentID = entity.AgentID;
+                if (entity.AgentID != 0) obj.AgentID = entity.AgentID;
                 obj.Address = entity.Address;
                 obj.ShippingCharges = entity.ShippingCharges;
                 obj.OrderStatus = OrderStatus.Order;
@@ -115,5 +116,74 @@ namespace Todoku.Areas.Members.Controllers
                 return Json(new { ok = false, message = ex.Message });
             }
         }
+
+        [HttpPost]
+        public JsonResult Void(Int32 id) 
+        {
+            try
+            {
+                BusinessLayer db = new BusinessLayer();
+                PurchaseOrderHd obj = db.purchaseorderhds.Find(id);
+                obj.OrderStatus = OrderStatus.Void;
+                db.Entry(obj).State = EntityState.Modified;
+                db.SaveChanges();
+                return Json(new { ok = true, Message = "Data berhasil dihapus"});
+            }
+            catch (Exception ex) 
+            {
+                return Json(new { ok = false, Message = "Data gagal dihapus : " + ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public JsonResult VoidAll(List<Int32> list) 
+        {
+            JsonResult json = null;
+            try
+            {
+                foreach (Int32 id in list) 
+                {
+                    json = Void(id);
+                }
+            }
+            catch (Exception ex) 
+            {
+                return Json(new { ok = false, Message = "Data gagal dihapus : " + ex.Message });
+            }
+            return json;
+        }
+
+        public ActionResult ProcessAll(String list)
+        {
+            ViewBag.ListID = list;
+            return View();
+        }
+
+        #region AJAX Request
+        public JsonResult GetPurchaseOrderHdList(List<Int32> list = null)
+        {
+            BusinessLayer db = new BusinessLayer();
+            Int32 UserID = db.GetUserProfileID();
+            List<PurchaseOrderHd> lst = null;
+            if (list == null)
+                lst = db.purchaseorderhds.Where(x => x.CustomerID == UserID && x.OrderStatus == OrderStatus.Open).ToList();
+            else
+                lst = db.purchaseorderhds.Where(x => x.CustomerID == UserID && x.OrderStatus == OrderStatus.Open && list.Any(s => s == x.OrderID)).ToList();
+            return new JsonNetResult(lst, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult GetBankList()
+        {
+            BusinessLayer db = new BusinessLayer();
+            List<Bank> lst = db.banks.Where(x => !x.IsDeleted).ToList();
+            return new JsonNetResult(lst, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult GetShippingAddressList() 
+        { 
+            BusinessLayer db = new BusinessLayer();
+            Int32 UserID = db.GetUserProfileID();
+            List<ShippingAddresses> lst = db.ShippingAddresses.Where(x => !x.IsDeleted && x.UserProfileID == UserID).ToList();
+            return new JsonNetResult(lst, JsonRequestBehavior.AllowGet);
+        }
+        #endregion
     }
 }

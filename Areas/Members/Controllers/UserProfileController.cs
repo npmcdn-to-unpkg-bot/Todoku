@@ -28,6 +28,7 @@ namespace Todoku.Areas.Members.Controllers
                 x.ParentID == SCConstant.Negara ||
                 x.ParentID == SCConstant.Panggilan
                 ).ToList();
+
             if (userprofile != null)
             {
                 ViewBag.GenderData = new SelectList(sc.Where(x => x.ParentID == SCConstant.Jenis_Kelamin), "StandardCodeID", "StandardCodeName", userprofile.Gender);
@@ -82,8 +83,8 @@ namespace Todoku.Areas.Members.Controllers
         {
             BusinessLayer db = new BusinessLayer();
             List<StandardCode> sc = db.standardcodes.Where(x => x.ParentID == SCConstant.Provinsi || x.ParentID == SCConstant.Negara).ToList();
-            ViewBag.Province = new SelectList(sc.Where(x => x.ParentID == SCConstant.Provinsi), "StandardCodeID", "StandardCodeName");
-            ViewBag.Country = new SelectList(sc.Where(x => x.ParentID == SCConstant.Negara), "StandardCodeID", "StandardCodeName");
+            ViewBag.DataProvince = new SelectList(sc.Where(x => x.ParentID == SCConstant.Provinsi), "StandardCodeID", "StandardCodeName");
+            ViewBag.DataCountry = new SelectList(sc.Where(x => x.ParentID == SCConstant.Negara), "StandardCodeID", "StandardCodeName");
             Dictionary<String, String> DictProvince = new Dictionary<String, String>();
             foreach (StandardCode s in sc.Where(x => x.ParentID == SCConstant.Provinsi)) DictProvince.Add(s.StandardCodeName, s.Alias);
             ViewBag.provinces = Json(DictProvince);
@@ -101,18 +102,76 @@ namespace Todoku.Areas.Members.Controllers
                 entity.CreatedDate = DateTime.Now;
                 db.ShippingAddresses.Add(entity);
                 db.SaveChanges();
+                TempData["SaveResult"] = Json(new { ok = true, message = "Data berhasil disimpan" });
                 return RedirectToAction("index");
             }
             catch (Exception ex)
             {
                 TempData["SaveResult"] = Json(new { ok = false, message = "Data tidak dapat disimpan : " + ex.Message });
                 List<StandardCode> sc = db.standardcodes.Where(x => x.ParentID == SCConstant.Provinsi || x.ParentID == SCConstant.Negara).ToList();
-                ViewBag.Province = new SelectList(sc.Where(x => x.ParentID == SCConstant.Provinsi), "StandardCodeID", "StandardCodeName");
-                ViewBag.Country = new SelectList(sc.Where(x => x.ParentID == SCConstant.Negara), "StandardCodeID", "StandardCodeName");
+                ViewBag.DataProvince = new SelectList(sc.Where(x => x.ParentID == SCConstant.Provinsi), "StandardCodeID", "StandardCodeName");
+                ViewBag.DataCountry = new SelectList(sc.Where(x => x.ParentID == SCConstant.Negara), "StandardCodeID", "StandardCodeName");
                 Dictionary<String, String> DictProvince = new Dictionary<String, String>();
                 foreach (StandardCode s in sc.Where(x => x.ParentID == SCConstant.Provinsi)) DictProvince.Add(s.StandardCodeName, s.Alias);
                 ViewBag.provinces = Json(DictProvince);
                 return View(entity);
+            }
+        }
+
+        public ActionResult EditShippingAddress(Int32 id)
+        {
+            BusinessLayer db = new BusinessLayer();
+            ShippingAddresses shipping = db.ShippingAddresses.Find(id);
+            List<StandardCode> sc = db.standardcodes.Where(x => x.ParentID == SCConstant.Provinsi || x.ParentID == SCConstant.Negara).ToList();
+            ViewBag.DataProvince = new SelectList(sc.Where(x => x.ParentID == SCConstant.Provinsi), "StandardCodeID", "StandardCodeName", shipping.Province);
+            ViewBag.DataCountry = new SelectList(sc.Where(x => x.ParentID == SCConstant.Negara), "StandardCodeID", "StandardCodeName", shipping.Country);
+            Dictionary<String, String> DictProvince = new Dictionary<String, String>();
+            foreach (StandardCode s in sc.Where(x => x.ParentID == SCConstant.Provinsi)) DictProvince.Add(s.StandardCodeName, s.Alias);
+            ViewBag.provinces = Json(DictProvince);
+            return View(shipping);
+        }
+
+        [HttpPost, ActionName("EditShippingAddress")]
+        public ActionResult EditShippingAddress(ShippingAddresses entity)
+        {
+            BusinessLayer db = new BusinessLayer();
+            try
+            {
+                Int32 UserID = db.GetUserProfileID();
+                ShippingAddresses obj = db.ShippingAddresses.FirstOrDefault(x => x.ShippingID == entity.ShippingID && x.UserProfileID == UserID);
+                if (obj != null)
+                {
+                    obj.AddressName = entity.AddressName;
+                    obj.ZipCode = entity.ZipCode;
+                    obj.Country = entity.Country;
+                    obj.Province = entity.Province;
+                    obj.RajaOngkir_Province_ID = entity.RajaOngkir_Province_ID;
+                    obj.City = entity.City;
+                    obj.RajaOngkir_City_ID = entity.RajaOngkir_City_ID;
+                    obj.Address = entity.Address;
+                    obj.Email = entity.Email;
+                    obj.Email2 = entity.Email2;
+                    obj.Phone = entity.Phone;
+                    obj.Handphone = entity.Handphone;
+                    obj.LastUpdatedBy = Membership.GetUser().UserName;
+                    obj.LastUpdatedDate = DateTime.Now;
+                    db.Entry(obj).State = EntityState.Modified;
+                    db.SaveChanges();
+                    TempData["SaveResult"] = Json(new { ok = true, message = "Data berhasil disimpan" });
+                }
+                else 
+                {
+                    TempData["SaveResult"] = Json(new { ok = false, message = "User tidak ditemukan" });
+                }
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                TempData["SaveResult"] = Json(new { ok = false, message = "Data tidak dapat disimpan : " + ex.Message });
+                List<StandardCode> sc = db.standardcodes.Where(x => x.ParentID == SCConstant.Provinsi || x.ParentID == SCConstant.Negara).ToList();
+                ViewBag.DataProvince = new SelectList(sc.Where(x => x.ParentID == SCConstant.Provinsi), "StandardCodeID", "StandardCodeName");
+                ViewBag.DataCountry = new SelectList(sc.Where(x => x.ParentID == SCConstant.Negara), "StandardCodeID", "StandardCodeName");
+                return View();
             }
         }
 

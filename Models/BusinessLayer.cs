@@ -145,6 +145,17 @@ namespace Todoku.Models
         {
             return this.standardcodes.Where(filterExpression).ToList();
         }
+
+        public List<StandardCode> GetStandardCodeList(String filterExpression, String OrderBy)
+        {
+            IQueryable<StandardCode> temp = this.standardcodes.Where(filterExpression);
+            if (OrderBy != null && OrderBy != "")
+            {
+                temp = temp.OrderBy(OrderBy);
+            }
+            return temp.ToList();
+        }
+
         public List<StandardCode> GetStandardCodeList(String filterExpression, String GroupBy, String OrderBy)
         {
             IQueryable<StandardCode> temp = this.standardcodes.Where(filterExpression);

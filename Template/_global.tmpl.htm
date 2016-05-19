@@ -22,3 +22,76 @@
         <strong>Danger!</strong> ${message}
     </div>
 </script>
+<script id="tmpl-zipcode" type="text/x-jquery-tmpl">
+    <input type="hidden" id="hdnSelectedValue" value=""/>
+    <div class="row">
+        <div class="col-md-7">
+            <label class="control-label col-md-4">Provinsi</label>
+            <div class="col-md-7">
+                <select class="cboProvince form-control input-sm">
+                    {{each cboProvince}}
+                        <option value="${StandardCodeID}" {{if ProvinceVal == StandardCodeID}} selected="selected"{{/if}}>${StandardCodeName}</option>
+                    {{/each}}
+                </select>
+                            
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-7">
+            <label class="control-label col-md-4">Kab / Kota</label>
+            <div class="col-md-7">
+                <select class="cboRegency form-control input-sm">
+                    {{each cboRegency}}
+                        <option value="${Regency}" {{if RegencyVal == Regency}} selected="selected"{{/if}}>${Regency}</option>
+                    {{/each}}
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-7">
+            <label class="control-label col-md-4">Kecamatan</label>
+            <div class="col-md-7">
+                <select class="cboDistrict form-control input-sm">
+                    {{each cboDistrict}}
+                        <option value="${District}" {{if DistrictVal == District}} selected="selected"{{/if}}>${District}</option>
+                    {{/each}}
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive" style="overflow-y:auto; height:275px;">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Kode Pos</th>
+                            <th>Kelurahan</th>
+                            <th>Kecamatan</th>
+                            <th>Kabupaten / Kota</th>
+                            <th>Provinsi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{each lstZipCode}}
+                            <tr>
+                                <td>
+                                    <div class="radio">
+                                        <input type="hidden" class="keyField" value="${ZipID}" />
+                                        <label><input type="radio" name="rdoZip" class="rdoZip">${ZipNumber}</label>
+                                    </div>
+                                </td>
+                                <td>${SubDistrict}</td>
+                                <td>${District}</td>
+                                <td>${Regency}</td>
+                                <td>${ScProvince.StandardCodeName}</td>
+                            </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</script>

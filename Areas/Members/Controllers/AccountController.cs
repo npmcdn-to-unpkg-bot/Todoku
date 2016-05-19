@@ -60,6 +60,8 @@ namespace Todoku.Areas.Members.Controllers
                             up.UserName = model.UserName;
                             up.Gender = Gender.Laki_Laki;
                             up.DateOfBirth = DateTime.Now;
+                            up.CreatedBy = model.UserName;
+                            up.CreatedDate = DateTime.Now;
 
                             up.address = new Addresses();
                             String Code = String.Format("{0}{1}{2}{3}", SystemSetting.MemberCode, DateTime.Now.Year, DateTime.Now.Month.ToString("00"), DateTime.Now.Day.ToString("00"));
@@ -70,6 +72,9 @@ namespace Todoku.Areas.Members.Controllers
                             up.address.City = null;
                             up.address.Province = null;
                             up.address.Country = null;
+                            up.address.Email = model.Email;
+                            up.address.CreatedBy = model.UserName;
+                            up.address.CreatedDate = DateTime.Now;
                             db.userprofiles.Add(up);
                             db.SaveChanges();
                         }
@@ -78,7 +83,7 @@ namespace Todoku.Areas.Members.Controllers
                             String errMessage = ex.Message;
                             ModelState.AddModelError("", errMessage);
                             Membership.DeleteUser(model.UserName);
-                            return View(up);
+                            return View(model);
                         }
                         
                         FormsAuthentication.SetAuthCookie(model.UserName, false /* createPersistentCookie */);

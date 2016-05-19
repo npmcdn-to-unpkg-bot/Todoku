@@ -1,0 +1,175 @@
+﻿<script src="@Url.Content("~/Areas/Members/Scripts/OrderController.js")" type="text/javascript"></script>
+<div ng-controller="ProcessAllController" ng-init='Init("@Url.Content("~/")", "@ViewBag.ListID")'>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="stepwizard">
+                <div class="stepwizard-row setup-panel">
+                    <div class="stepwizard-step">
+                        <a href="#step-1" type="button" class="btn btn-primary btn-circle">1</a>
+                        <p>Pembayaran</p>
+                    </div>
+                    <div class="stepwizard-step">
+                        <a href="#step-2" type="button" class="btn btn-default btn-circle disabled">2</a>
+                        <p>Konfirmasi</p>
+                    </div>
+                    <div class="stepwizard-step">
+                        <a href="#step-3" type="button" class="btn btn-default btn-circle disabled">3</a>
+                        <p>Summary</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="row setup-content" id="step-1">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-2"><label>Nomor</label></div>
+                            <div class="col-md-1"><label>:</label></div>
+                            <div class="col-md-9 nopadding"><label>{{model.OrderNo}}</label></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2"><label>Tanggal</label></div>
+                            <div class="col-md-1"><label>:</label></div>
+                            <div class="col-md-9 nopadding"><label>{{model.OrderDate | date:'dd MMM yyyy'}}</label></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2"><label>Total</label></div>
+                            <div class="col-md-1"><label>:</label></div>
+                            <div class="col-md-9 nopadding"><label>Rp{{model.LineAmount | number:2}}</label></div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-2"><label>Toko</label></div>
+                            <div class="col-md-1"><label>:</label></div>
+                            <div class="col-md-9 nopadding"><label>{{model.merchant.MerchantName}}</label></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2"><label>Kurir</label></div>
+                            <div class="col-md-1"><label>:</label></div>
+                            <div class="col-md-9 nopadding">
+                                <input type="radio" name="radioCourier_{{model.OrderID}}" class="ShippingService" value="jne" checked><label>&nbsp;JNE</label></input>
+                                <input type="radio" name="radioCourier_{{model.OrderID}}" class="ShippingService" value="pos" ><label>&nbsp;POS</label></input>
+                                <input type="radio" name="radioCourier_{{model.OrderID}}" class="ShippingService" value="tiki" ><label>&nbsp;TIKI</label></input>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="row nopadding">
+                            <div class="list-group">
+                                <div class="list-group-item" ng-repeat="item in model.orderdetails">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <img data-src="holder.js/80x80" class="img-thumbnail">
+                                        </div>
+                                        <div class="col-md-8 nopadding">
+                                            <h5 style="margin-bottom:0px;"><strong>{{item.cart.product.ProductName}}</strong></h5>
+                                            <div class="row">
+                                                <div class="col-md-2">Pesan</div>
+                                                <div class="col-md-1">:</div>
+                                                <div class="col-md-9">{{item.cart.TotalAmount}} x {{item.cart.Quantity}} Buah</div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-2">Total</div>
+                                                <div class="col-md-1">:</div>
+                                                <div class="col-md-9">{{item.cart.LineAmount}}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>    
+                            </div>
+                            <div style="text-align:center;">
+                                <ul class="pagination">
+                                    <li class = 'page-item' ng-repeat="x in list">
+                                        <a href="#" ng-click="ChangeData($index)">{{$index + 1 * 1}}</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="row nopadding">
+                            <div>
+                                <label for="address">Agen:</label>
+                                <a href="#" style="float:right;">Cari</a>
+                                <input type="text" class="form-control" id="txtAgent" />
+                            </div>
+                            <div class="gap-sm"></div>
+                            <div>
+                                <label for="address">Alamat:</label>
+                                <a href="#" style="float:right;" data-toggle="modal" id="ShippingAddress" data-target="#ShippingModal">Cari</a>
+                                <textarea class="form-control" rows="4" ng-model="Address" readonly></textarea>
+                            </div>
+                        </div>
+                        <div class="row nopadding">
+                            <div class="gap-sm"></div>
+                            <div class="form-group">
+                                <form class="form-inline">
+                                    <div class="form-group">
+                                        <label for="address">Pembayaran:</label>
+                                    </div>
+                                </form>
+                                <div class="gap-sm"></div>
+                                <div class="list-group">
+                                    <div class="list-group-item" ng-repeat="item in Banks">
+                                        <div class="row">
+                                            <div class="col-md-1"><input type="radio" name="bank" value="{{item.BankID}}" /></div>
+                                            <div class="col-md-2"><label>{{item.BankName}}</label></div>
+                                            <div class="col-md-4"><label>A.N. {{item.AccountName}}</label></div>
+                                            <div class="col-md-5"><label>{{item.AccountNo}}</label></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6" style="height:500px; overflow-y:auto; overflow-x:hidden">
+                        <div class="list-group" id="ShippingPackage"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <a href="#" class="lnkProses">Bayar</a>
+                    </div>
+                </div>
+            </div>
+            <div class="row setup-content" id="step-2" ng-hide="true">
+                test 123
+            </div>
+            <div class="row setup-content" id="step-3" ng-hide="true">
+                test 345
+            </div>
+        </div>
+    </div>
+    <div id="ShippingModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Alamat Pengiriman</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="list-group" ng-repeat="x in ShippingAddresses">
+                        <a href="#" class="list-group-item" ng-click="ChangeAddressData($index)">
+                            <label>{{x.AddressName}}</label>
+                            <div class="row">
+                                <div class="col-md-6">Provinsi : {{x.ScProvince.StandardCodeName}}</div>
+                                <div class="col-md-6">Kota : {{x.City}}</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">Alamat : {{x.Address}}</div>
+                                <div class="col-md-6">Kode Pos : {{x.ZipCode}}</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" ng-click="SetAddress()" data-dismiss="modal">Pilih</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

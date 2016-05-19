@@ -133,7 +133,7 @@
                             <div class="form-group">
                                 <label for="City" class="control-label col-md-4">@Html.LabelFor(m => m.address.City):</label>
                                 <div class="col-md-4">
-                                    <input type="text" class="form-control input-sm" id="address_city" name="address.city" value="@Model.address.City">
+                                    <input type="text" class="form-control input-sm" id="address_City" name="address.City" value="@Model.address.City">
                                 </div>
                             </div>
                         </div>
@@ -193,7 +193,7 @@
                                 <td>@item.Address</td>
                                 <td align="center">
                                     <form name="@String.Format("{0}_{1}", "form",@item.ShippingID)" class="form-inline" role="form" method="post" action="@Url.Content("~/Members/UserProfile/Delete")">
-                                        @Html.ActionLink("Proses", "Process", "Order", new { area = "Members", id = item.ShippingID }, new { @class = "lnkProses" })
+                                        @Html.ActionLink("Edit", "EditShippingAddress", "UserProfile", new { area = "Members", id = item.ShippingID }, null)
                                         <div class="divider"></div>
                                         <input type="hidden" name="id" value="@item.ShippingID" />
                                         <a href="@String.Format("JAVASCRIPT:{0}_{1}.submit()", "form", @item.ShippingID)">Hapus</a>

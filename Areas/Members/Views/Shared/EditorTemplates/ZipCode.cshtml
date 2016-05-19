@@ -1,8 +1,85 @@
 ﻿@model String
+<script type="text/javascript">
+    $(function () {
+        $('#btnSrchZipCode').click(function () {
+            RefreshZipTemplate("SC0002.001", "", "");
+        });
+
+        $('body').on('change', '.cboProvince', function () {
+            RefreshZipTemplate($(this).val(), "", "");
+        });
+
+        $('body').on('change', '.cboRegency', function () {
+            RefreshZipTemplate($('.cboProvince').val(), $(this).val(), "");
+        });
+
+        $('body').on('change', '.cboDistrict', function () {
+            RefreshZipTemplate($('.cboProvince').val(), $('.cboRegency').val(), $(this).val());
+        });
+
+        $('body').on('change', '.rdoZip', function () {
+            var id = $(this).closest('tr').find('.keyField').val();
+            $('#hdnSelectedValue').val(id);
+        });
+
+        $('.btnSelect').click(function () {
+            var url = window.location.origin + "/Todoku/Ajax/GetListObject/";
+            var id = $('#hdnSelectedValue').val();
+            GetListObject(url, 'GetZipCodeList', "ZipID = " + id, null, null, function (result) {
+                $('#ZipCode').val(result[0].ZipNumber).trigger("change");
+                $('#Province').val(result[0].Province).trigger("change");
+                $('#City').val(result[0].Regency).trigger("change");
+
+                $('#address_ZipCode').val(result[0].ZipNumber).trigger("change");
+                $('#address_Province').val(result[0].Province).trigger("change");
+                $('#address_City').val(result[0].Regency).trigger("change");
+            });
+            $('#hdnSelectedValue').val("");
+        });
+    });
+
+    function RefreshZipTemplate(provinceVal, regencyVal, districtVal) {
+        var url = window.location.origin + "/Todoku/Ajax/GetListObject/";
+        if (provinceVal == "") provinceVal = "SC0002.006";
+        GetListObject(url, 'GetStandardCodeList', 'ParentID == "SC0002"', "", "StandardCodeName ASC", function (result) {
+            var dtProvinces = result;
+            GetListObject(url, 'GetZipCodeList', 'Province == "' + provinceVal + '"', "Regency", null, function (result) {
+                var dtRegency = result;
+                if (regencyVal == "") regencyVal = dtRegency[0].Regency;
+                GetListObject(url, 'GetZipCodeList', 'Regency == "' + regencyVal + '" && Province == "' + provinceVal + '"', "District", null, function (result) {
+                    var dtDistrict = result;
+                    if (districtVal == "") districtVal = dtDistrict[0].District;
+                    GetListObject(url, 'GetZipCodeList', 'District == "' + districtVal + '" && Regency == "' + regencyVal + '" && Province == "' + provinceVal + '"', null, null, function (result) {
+                        var data = { cboProvince: dtProvinces, ProvinceVal: provinceVal, cboRegency: dtRegency, RegencyVal: regencyVal, cboDistrict: dtDistrict, DistrictVal: districtVal, lstZipCode: result };
+                        $(".modal-body").html('');
+                        $('#tmpl-zipcode').tmpl(data).appendTo(".modal-body");
+                    });
+                });
+            })
+        });
+    }
+</script>
 <div class="form-inline input-group">
     <input type="text" id="@ViewData.TemplateInfo.HtmlFieldPrefix.Replace('.','_')" name="@ViewData.TemplateInfo.HtmlFieldPrefix" class="form-control input-sm" value="@Model">
-    <div class="input-group-addon" style="cursor:pointer">
-        <span class="glyphicon glyphicon-search"></span>
+    <span class = "input-group-btn">
+        <button class = "btn btn-default input-sm" type="button" id="btnSrchZipCode" data-toggle="modal" data-target="#modal-zipcode">
+            <span class="glyphicon glyphicon-search"></span>
+        </button>
+    </span>
+</div>
+<div class="modal fade" id="modal-zipcode" role="dialog">
+    <div class="modal-dialog" style="width:800px;">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Kode Pos</h4>
+            </div>
+            <div class="modal-body"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btnSelect" data-dismiss="modal">Pilih</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
     </div>
 </div>
-

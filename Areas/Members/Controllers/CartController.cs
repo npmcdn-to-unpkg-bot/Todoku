@@ -44,6 +44,86 @@ namespace Todoku.Areas.Members.Controllers
             return RedirectToAction("index");
         }
 
+        [HttpPost]
+        public JsonResult AddToCart(Cart cart)
+        {
+            BusinessLayer db = new BusinessLayer();
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    String UserName = "";
+                    Product product = db.products.Find(cart.ProductID);
+
+                    if (User.Identity.IsAuthenticated)
+                    {
+                        UserName = Membership.GetUser().UserName;
+                        Cart entity = db.carts.FirstOrDefault(x => x.Username == UserName && x.ProductID == cart.ProductID && x.Attributes == cart.Attributes && x.ItemStatus == ItemStatus.Requested);
+                        if (entity == null)
+                        {
+                            entity = new Cart();
+                            entity.ProductID = cart.ProductID;
+                            entity.Quantity = cart.Quantity;
+                            entity.TotalAmount = product.detail.LineAmount;
+                            entity.DiscountAmount = product.detail.DiscountAmount + product.detail.DiscountAmount2 + product.detail.DiscountAmount3;
+                            entity.DiscountInPercentage = product.detail.DiscountInPercentage;
+                            entity.Attributes = cart.Attributes;
+                            //entity.LineAmount = cart.Quantity * product.detail.LineAmount;
+                            entity.CreatedDate = DateTime.Now;
+                            entity.Username = UserName;
+                            entity.ItemStatus = ItemStatus.Requested;
+                            db.carts.Add(entity);
+                        }
+                        else
+                        {
+                            entity.Quantity += cart.Quantity;
+                            //entity.LineAmount = entity.Quantity * product.detail.LineAmount;
+                            db.Entry(entity).State = EntityState.Modified;
+                        }
+                        db.SaveChanges();
+                    }
+                    else
+                    {
+                        List<Cart> carts = AppSession.GetCartUsingCookie(this.HttpContext);
+                        if (carts == null) carts = new List<Cart>();
+
+                        Cart entity = carts != null ? carts.FirstOrDefault(x => x.Username == UserName && x.Attributes == cart.Attributes && x.ProductID == cart.ProductID) : null;
+                        if (entity == null)
+                        {
+                            entity = new Cart();
+                            entity.CartID = carts.Count() + 1;
+                            entity.ProductID = cart.ProductID;
+                            entity.product = new Product();
+                            entity.product.ProductName = product.ProductName;
+                            entity.product.detail = new ProductDt();
+                            entity.product.detail.LineAmount = product.detail.LineAmount;
+                            entity.Quantity = cart.Quantity;
+                            entity.Attributes = String.Join("|", cart.Attributes);
+                            entity.TotalAmount = product.detail.LineAmount;
+                            //entity.LineAmount = cart.Quantity * product.detail.Price;
+                            entity.CreatedDate = DateTime.Now;
+                            entity.Username = UserName;
+                            entity.ItemStatus = ItemStatus.Requested;
+                            entity.product.ImgLink = product.ImgLink;
+                            carts.Add(entity);
+                        }
+                        else
+                        {
+                            entity.Quantity += cart.Quantity;
+                            //entity.LineAmount = entity.Quantity * product.detail.Price;
+                        }
+                        AppSession.SetCartUsingCookie(this.HttpContext, carts);
+                    }
+                }
+                return Json(new { ok = true, message = "Success" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { ok = false, message = ex.Message });
+            }
+
+        }
+
         [Authorize]
         [HttpPost, ActionName("Process")]
         public ActionResult ProcessCart()
@@ -56,6 +136,9 @@ namespace Todoku.Areas.Members.Controllers
                 String[] roles = Roles.GetRolesForUser(Membership.GetUser().UserName);
                 String OrderNo = "";
 
+                String DateTransaction = String.Format("{0}{1}{2}", DateTime.Now.Year, DateTime.Now.Month.ToString("00"), DateTime.Now.Day.ToString("00"));
+                Int32 count = db.purchaseorderhds.Where(x => x.OrderNo.Contains(DateTransaction)).Count() + 1;
+                
                 if (roles.Any(x => x.ToLower().Contains("member")))
                 {
                     UserProfile up = db.userprofiles.FirstOrDefault(x => x.UserName == UserName);
@@ -74,8 +157,7 @@ namespace Todoku.Areas.Members.Controllers
                         pohd.ShippingCharges = 0;
                         pohd.InsuranceCharges = 0;
                         pohd.CreatedDate = DateTime.Now;
-                        String DateTransaction = String.Format("{0}{1}{2}", DateTime.Now.Year, DateTime.Now.Month.ToString("00"), DateTime.Now.Day.ToString("00"));
-                        Int32 count = db.purchaseorderhds.Where(x => x.OrderNo.Contains(DateTransaction)).Count() + 1;
+                        
                         pohd.OrderNo = String.Format("{0}/{1}/{2}", TransactionNoPrefix.Purchase_Order, DateTransaction, count.ToString("000000"));
                         if (OrderNo == "") OrderNo = pohd.OrderNo;
                         pohd.PaymentMehod = PaymentMethod.TRANSFER;
@@ -107,6 +189,7 @@ namespace Todoku.Areas.Members.Controllers
                             db.customerOrder.Add(co);
                         }
                         #endregion
+                        count++;
                     }
                     db.SaveChanges();
                     return RedirectToAction("Index", "Cart");

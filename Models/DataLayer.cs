@@ -1038,8 +1038,6 @@ namespace Todoku.Models
         [Display(Name = "Alamat")]
         public String Address { get; set; }
 
-        public Boolean IsDeleted { get; set; }
-
         public String CreatedBy { get; set; }
 
         [DataType(DataType.DateTime)]

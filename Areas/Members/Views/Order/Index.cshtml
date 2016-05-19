@@ -1,60 +1,77 @@
 ﻿@model List<Todoku.Models.PurchaseOrderHd>
-
-<h1 class="page-header">Pemesanan</h1>
-<a href="#" class="lnkProses">Proses</a><div class="divider"></div><a href="#" class="lnkVoid">Batal</a>
-<div class="table-responsive">
-    <table class="table table-striped">
-        <colgroup>
-            <col width="3%"/>
-            <col width="15%"/>
-            <col />
-            <col width="13%"/>
-            <col width="11%"/>
-            <col width="15%"/>
-            <col width="12%"/>
-        </colgroup>
-        <thead>
-            <tr>
-                <th><input type="checkbox"/></th>
-                <th>No Pemesanan</th>
-                <th>Toko</th>
-                <th style="text-align:center">Berlaku Sampai</th>
-                <th style="text-align:right">Total</th>
-                <th style="text-align:center">Status</th>
-                <th style="text-align:center"></th>
-            </tr>
-        </thead>
-        <tbody>
-            @if(Model.Count() > 0)
-            {
-                foreach (var item in Model)
-                { 
-                    <tr>
-                        <td><input type="checkbox"/></td>
-                        <td>@item.OrderNo</td>
-                        <td>@item.merchant.MerchantName</td>
-                        <td align="center">
-                            @Html.DisplayFor(model => item.ValidUntil)
-                        </td>
-                        <td align="right">
-                            @Html.DisplayFor(model => item.TotalAmount)
-                        </td>
-                        <td align="center">@Html.DisplayFor(model => item.ScOrderStatus.StandardCodeName)</td>
-                        <td align="center">
-                            @Html.ActionLink("Proses", "Process", "Order", new { area = "Members", id = item.OrderID }, new { @class = "lnkProses" })
-                            <div class="divider"></div>
-                            @Html.ActionLink("Batal", "Void", "Order", new { area = "Members" }, new { @class = "lnkVoid" })
-                        </td>
-                    </tr>
-                }
-            }
-            else
-            {
-                <tr style="height:50px;">
-                    <td colspan="7" style="vertical-align:middle;"><center>No Data to Display</center></td>
+<script src="@Url.Content("~/Areas/Members/Scripts/OrderController.js")" type="text/javascript"></script>
+<div ng-controller="IndexController" ng-init='Init("@Url.Content("~/")")'>
+    <h1 class="page-header">Pemesanan</h1>
+    <div id="tpl-content" ng-include="template"></div>
+    <a href="#" ng-click="ProcessAll()">Proses</a><div class="divider"></div><a href="#" ng-click="VoidAll()">Batal</a>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <colgroup>
+                <col width="3%"/>
+                <col width="15%"/>
+                <col />
+                <col width="13%"/>
+                <col width="11%"/>
+                <col width="15%"/>
+                <col width="12%"/>
+            </colgroup>
+            <thead>
+                <tr>
+                    <th><input type="checkbox" ng-model="selectedAll" ng-click="CheckAll()"/></th>
+                    <th>No Pemesanan</th>
+                    <th>Toko</th>
+                    <th style="text-align:center">Berlaku Sampai</th>
+                    <th style="text-align:right">Total</th>
+                    <th style="text-align:center">Status</th>
+                    <th style="text-align:center"></th>
                 </tr>
-            }
-        </tbody>
-    </table>
-    @{Html.RenderAction("Pagination", "PartialView", new {area = "", Page = ViewBag.Page, Pages = ViewBag.Pages, PageAction = "Index", PageController = "Order", PageArea = "Members" });}
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in list | filter : OrderStatus = 'SC0006.001'">
+                    <td><input type="checkbox" ng-model="IsChecked[$index]"/></td>
+                    <td>{{item.OrderNo}}</td>
+                    <td>{{item.merchant.MerchantName}}</td>
+                    <td align="center">{{item.ValidUntil | date : "dd MMM yyyy"}}</td>
+                    <td align="right">{{item.TotalAmount | number | commatodecimal}}</td>
+                    <td align="center">{{item.ScOrderStatus.StandardCodeName}}</td>
+                    <td align="center">
+                        <a href="@Url.Content("~/Members/Order/Process/"){{item.OrderID}}" >Proses</a>
+                        <div class="divider"></div>
+                        <a href="#" ng-click="Void(item.OrderID)" >Batal</a>
+                    </td>
+                </tr>
+                @*@if (Model.Count() > 0)
+                {
+                    foreach (var item in Model)
+                    { 
+                        <tr>
+                            <td><input type="checkbox"/></td>
+                            <td>@item.OrderNo</td>
+                            <td>@item.merchant.MerchantName</td>
+                            <td align="center">
+                                @Html.DisplayFor(model => item.ValidUntil)
+                            </td>
+                            <td align="right">
+                                @Html.DisplayFor(model => item.TotalAmount)
+                            </td>
+                            <td align="center">@Html.DisplayFor(model => item.ScOrderStatus.StandardCodeName)</td>
+                            <td align="center">
+                                @Html.ActionLink("Proses", "Process", "Order", new { area = "Members", id = item.OrderID }, new { @class = "lnkProses" })
+                                <div class="divider"></div>
+                                @Html.ActionLink("Batal", "Void", "Order", new { area = "Members", id = item.OrderID }, new { @class = "lnkVoid" })
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr style="height:50px;">
+                        <td colspan="7" style="vertical-align:middle;"><center>No Data to Display</center></td>
+                    </tr>
+                }*@
+            </tbody>
+        </table>
+        @{Html.RenderAction("Pagination", "PartialView", new {area = "", Page = ViewBag.Page, Pages = ViewBag.Pages, PageAction = "Index", PageController = "Order", PageArea = "Members" });}
+    </div>
+    <div id="tpl-content" ng-include="'@Url.Content("~/Areas/Members/Template/global.tmpl.htm")'"></div>
 </div>

@@ -42,6 +42,9 @@
       <HintPath>bin\Ionic.Zip.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>packages\Newtonsoft.Json.8.0.3\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Web.Mvc, Version=3.0.0.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Web.WebPages, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
@@ -113,6 +116,9 @@
   <ItemGroup>
     <Content Include="App_Data\Todoku.sdf" />
     <Content Include="Areas\Members\Scripts\CartController.js" />
+    <Content Include="Areas\Members\Scripts\Layout.js" />
+    <Content Include="Areas\Members\Scripts\OrderController.js" />
+    <Content Include="Areas\Members\Template\global.tmpl.htm" />
     <Content Include="Content\admin.css" />
     <Content Include="Content\Registration.css" />
     <Content Include="Content\_Site.css" />
@@ -1536,6 +1542,8 @@
     <Content Include="Areas\Members\Views\Shared\EditorTemplates\Price.cshtml" />
     <Content Include="Areas\Agents\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\Agents\Views\Discount\Index.cshtml" />
+    <Content Include="Areas\Members\Views\UserProfile\EditShippingAddress.cshtml" />
+    <Content Include="Areas\Members\Views\Order\ProcessAll.cshtml" />
     <None Include="PlugIn\Angular\angular-animate.min.js.map" />
     <None Include="PlugIn\Angular\angular-aria.min.js.map" />
     <None Include="PlugIn\Angular\angular-cookies.min.js.map" />

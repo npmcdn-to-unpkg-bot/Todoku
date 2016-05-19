@@ -13,14 +13,25 @@
                 if (typeof ($('.att_' + arr[i] + ':checked').val()) != 'undefined') {
                     if (temp != "") temp += "|";
                     temp += $('.att_' + arr[i] + ':checked').val();
-                }    
+                }
             }
             var data = { ProductID: $('#ProductID').val(), Quantity: $('#Quantity').val(), Attributes: temp };
-            OnSaveData('@Url.Content("~/Members/Cart/AddToCart")', data, function () {
-                window.location.href = '@Url.Content("~/Stores/Detail/")' + $('#ProductID').val();
-            });
+            var url = "@Url.Content("~/Members/Cart/AddToCart")";
+            OnSaveData(url, data, OnSaveSuccessRefreshPage, OnSaveFailed);
         });
     });
+
+    function OnSaveSuccessRefreshPage(result){
+        if(result.ok)
+            window.location.reload();
+        else
+            OnSaveFailed(result);
+    }
+
+    function OnSaveFailed(result) {
+        console.log(result.message);
+        //$('#tmpl-danger').tmpl(result).appendTo('#alert-container');
+    }
 </script>
 
 <div>

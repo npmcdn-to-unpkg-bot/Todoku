@@ -60,14 +60,16 @@
 <div class="row">
     <div class="col-md-12">
         <div class="page-header">
-            <h3>Tambah Alamat</h3>
+            <h3>Ubah Alamat</h3>
         </div>
     </div>
 </div>
+
 <form name="form" class="form-horizontal" role="form" method="post" action="">
     <div class="row">
         <div class="form-group">
             <div class="col-md-12">
+                @Html.HiddenFor(model => model.ShippingID)
                 @Html.LabelFor(model => Model.AddressName, new { @class = "control-label col-md-2" })
                 <div class="col-md-3">
                     @Html.TextBoxFor(model => Model.AddressName, new { @class = "form-control input-sm" })
