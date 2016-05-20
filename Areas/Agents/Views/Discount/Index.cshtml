@@ -1,1 +1,45 @@
-﻿<h1 class="page-header">Pemberian Diskon</h1>
+﻿<script src="@Url.Content("~/Areas/Agents/Scripts/DiscountController.js")" type="text/javascript"></script>
+<h1 class="page-header">Pengaturan Diskon</h1>
+<div class="row" ng-app="Todoku" ng-controller="IndexController" ng-init='Init("@Url.Content("~/")")'>
+    <div class="col-md-12">
+        <a href="@Url.Content("~/Agents/Discount/Create")">Tambah</a><div class="divider"></div><a href="#">Hapus</a>
+    </div>
+    <div class="col-md-12">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <colgroup>
+                    <col width="3%"/>
+                    <col />
+                    <col width="12%"/>
+                    <col width="12%"/>
+                    <col width="12%"/>
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th><input type="checkbox" ng-model="selectedAll" ng-click="CheckAll()"/></th>
+                        <th align="center">Produk</th>
+                        <th style="text-align:right">Harga</th>
+                        <th style="text-align:right">Diskon</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="x in list">
+                        <td><input type="checkbox" ng-model="IsChecked[$index]"/></td>
+                        <td>
+                            <label>{{x.product !== null ? x.product.ProductName : "Semua Produk"}}</label>
+                        </td>
+                        <td class="number">{{x.product.detail.LineAmount | number | commatodecimal}}</td>
+                        <td class="number">{{x.DiscountAmount | number | commatodecimal}}</td>
+                        <td align="center">
+                            <a href="#" >Edit</a>
+                            <div class="divider"></div>
+                            <a href="#">Hapus</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div id="tpl-content" ng-include="'@Url.Content("~/Template/global.tmpl.htm")'"></div>

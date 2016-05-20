@@ -175,7 +175,11 @@ namespace Todoku.Models
         #region Custom
         public Int32 GetUserProfileID(){
             String Username = Membership.GetUser().UserName;
-            return this.userprofiles.FirstOrDefault(x => x.UserName == Username).UserProfileID;
+            return this.userprofiles.FirstOrDefault(x => x.UserName == Username && !x.IsDeleted).UserProfileID;
+        }
+        public Int32 GetAgentID() {
+            Int32 UserID = this.GetUserProfileID();
+            return this.agents.FirstOrDefault(x => x.UserID == UserID && x.IsActive && !x.IsDeleted).AgentID;
         }
         #endregion
 

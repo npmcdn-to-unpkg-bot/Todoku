@@ -1,0 +1,61 @@
+﻿@model Todoku.Models.AgentDiscountSetting
+           
+<script src="@Url.Content("~/Areas/Agents/Scripts/DiscountController.js")" type="text/javascript"></script>
+<h1 class="page-header">Tambah Data</h1>
+<div class="row" ng-app="Todoku" ng-controller="CreateController" ng-init='Init("@Url.Content("~/")")'>
+    <div id="tpl-content" ng-include="template"></div>
+    <div class="col-md-12">
+        <div class="col-md-6">
+            <form class="form-horizontal">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.product.ProductName, new { @class = "control-label col-md-4" })
+                    <div class="col-md-6">
+                        <div class="form-inline input-group">
+                            @Html.HiddenFor(m => m.ProductID)
+                            <input type="hidden" ng-model="Data.ProductID" />
+                            <input type="text" ng-model="Data.ProductName" ng-disabled="Data.IsForAll" class="form-control input-sm" />
+                            <span class = "input-group-btn">
+                                {{Data.IsForAll}}
+                                <button class = "btn btn-default input-sm" ng-disabled="Data.IsForAll" type="button">
+                                    <span class="glyphicon glyphicon-search"></span>
+                                </button>
+                            </span>
+                        </div>
+                        <label><input type="checkbox" ng-model="Data.IsForAll" /> Semua Produk</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-4">Harga</label>
+                    <div class="col-md-3">
+                        <input type="text" readonly="true" class="form-control input-sm" style="text-align:right;" ng-model="Data.ProductPrice" format="number | commatodecimal" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.DiscountAmount, new { @class = "control-label col-md-4" })
+                    <div class="col-md-2">
+                        <input type="text" class="form-control input-sm" style="text-align:right;" ng-change="CallculateDiscount(1)" ng-model="Data.DiscountPercentage" format="number" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.DiscountAmount, new { @class = "control-label col-md-4" })
+                    <div class="col-md-3">
+                        <input type="text" class="form-control input-sm" style="text-align:right;" ng-change="CallculateDiscount(2)" ng-model="Data.DiscountAmount" format="number | commatodecimal" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-4">Total</label>
+                    <div class="col-md-3">
+                        <input type="text" class="form-control input-sm" style="text-align:right;" ng-model="Data.LineAmount" format="number | commatodecimal" />
+                    </div>
+                </div>
+            </form>
+            <div class="col-md-4"></div>
+            <div class="col-md-6">
+                @Html.ActionLink("Kembali", "Index")
+                <div class="divider"></div>
+                <a href="#" ng-click="SaveData()">Simpan</a>
+            </div>
+        </div>
+    </div>
+    <div id="tpl-content" ng-include="'@Url.Content("~/Areas/Members/Template/global.tmpl.htm")'"></div>
+</div>

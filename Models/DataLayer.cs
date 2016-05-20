@@ -215,17 +215,26 @@ namespace Todoku.Models
 
         public Int32? ProductID { get; set; }
 
+        [Display(Name="Diskon")]
         public Decimal DiscountAmount { get; set; }
 
         public Boolean IsDeleted { get; set; }
 
         public String CreatedBy { get; set; }
 
+        [DataType(DataType.DateTime)]
         public DateTime CreatedDate { get; set; }
 
         public String LastUpdatedBy { get; set; }
 
+        [DataType(DataType.DateTime)]
         public DateTime? LastUpdatedDate { get; set; }
+
+        [ForeignKey("ProductID")]
+        public virtual Product product { get; set; }
+
+        [ForeignKey("AgentID")]
+        public virtual Agent agent { get; set; }
     }
 
     public class AgentRegistration 
@@ -1348,6 +1357,15 @@ namespace Todoku.Models
         public Int32 GroupID { get; set; }
 
         public Int32? Quantity { get; set; }
+    }
+
+    public class ProductSettingEntry 
+    {
+        public Int32 SettingID { get; set; }
+        public Int32 ProductID { get; set; }
+        public Boolean IsForAll { get; set; }
+        public Decimal DiscountAmount { get; set; }
+        //public Int32 DiscountPercentage { get; set; }
     }
 
     public class PurchaseOrderConfirmation

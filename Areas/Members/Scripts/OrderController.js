@@ -89,7 +89,7 @@
     }
 });
 
-app.controller('IndexController', function ($scope, $location, GlobalFunction, GlobalNotification) {
+app.controller('IndexController', function ($scope, GlobalFunction, GlobalNotification) {
     $scope.RootUrl = "";
     $scope.IsChecked = [];
 
@@ -181,6 +181,5 @@ app.controller('IndexController', function ($scope, $location, GlobalFunction, G
         });
         var url = $scope.RootUrl + "/Members/Order/ProcessAll?list="+list.join('|');
         window.location.href = url;
-        //$scope.$apply(function () { $location.path('/ProcessAll'); });
     }
 });
